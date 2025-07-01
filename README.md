@@ -1,69 +1,35 @@
-# React + TypeScript + Vite
+# Front-End 팀원
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+1. 강민서  
+2. 이소민  
+3. 장준영  
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📌 커밋 컨벤션
 
-## Expanding the ESLint configuration
+각 태그를 이용하여 어떤 내용이 변경되었는지를 나타내는 규칙입니다.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- `[FEAT]` : 새로운 기능 추가  
+- `[DESIGN]` : UI 수정  
+- `[REFACT]` : 코드 유지보수/가독성 향상  
+- `[FIX]` : 버그 에러 수정  
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## 📐 코드 컨벤션
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+코드에서 이름을 지정할 때의 케이스 규칙입니다.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- `PascalCase` : 컴포넌트, 클래스명 등  
+- `camelCase` : 변수, 함수명 등  
+- `UPPER_CASE` : 상수  
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+---
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+## 🧑‍💻 개발 환경 세팅 가이드
+### 코드 스타일 통일하기 위해 ESLint+Prettier 세팅했습니다.
+### 📥 1. 코드 가져오기 (clone 후) npm install 하면 자동으로 설정됩니다!
+
+- git clone https://github.com/LUNCH-CHAT/FRONTEND.git 
+- npm install 
