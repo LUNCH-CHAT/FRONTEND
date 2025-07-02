@@ -44,7 +44,7 @@
 - `PascalCase` : 컴포넌트 함수, 클래스, 타입, 인터페이스, 컴포넌트 파일  
 - `camelCase` : 변수, 일반함수 
 - `UPPER_CASE` : 상수
-- 'kebab-case' : 파일,폴더 (컴포넌트 파일만 예외로  PascalCase로 설정)
+- `kebab-case` : 파일,폴더 (컴포넌트 파일만 예외로  PascalCase로 설정)
 
 ---
 
