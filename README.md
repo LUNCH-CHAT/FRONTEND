@@ -23,7 +23,8 @@
 
 - `PascalCase` : 컴포넌트, 클래스명 등  
 - `camelCase` : 변수, 함수명 등  
-- `UPPER_CASE` : 상수  
+- `UPPER_CASE` : 상수
+- 'kebab-case' : 파일,폴더 (컴포넌트 파일만 예외로  PascalCase러 설정)
 
 ---
 
