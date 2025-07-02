@@ -53,4 +53,26 @@
 ### 📥 1. 코드 가져오기 (clone 후) npm install 하면 자동으로 설정됩니다!
 
 - git clone https://github.com/LUNCH-CHAT/FRONTEND.git 
-- npm install 
+- npm install
+
+---
+📦 사용 라이브러리
+- React : 사용자 인터페이스(UI) 구축을 위한 JavaScript 라이브러리
+
+- React DOM : React 컴포넌트를 브라우저 DOM에 렌더링
+
+- React Router DOM : SPA 내 페이지 이동을 위한 라우팅 라이브러리
+
+- React Query (@tanstack/react-query) : 서버 상태(데이터 fetching/caching)를 효율적으로 관리
+
+- Axios : REST API 호출을 위한 HTTP 클라이언트
+
+- Tailwind CSS : 유틸리티 기반 CSS 프레임워크, 빠른 스타일링 가능
+
+- PostCSS / Autoprefixer : Tailwind CSS 내부 동작과 브라우저 호환 자동화
+
+- TypeScript : JavaScript에 정적 타입을 추가해 안정성 향상
+
+- Vite : 빠른 개발 환경 구축을 위한 빌드 도구 및 번들러
+
+- ESLint / Prettier : 코드 스타일 및 문법 체크 자동화 도구
