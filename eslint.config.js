@@ -33,6 +33,7 @@ export default [
     },
   },
   {
+    // ✅ vitest용 글로벌 추가 (이게 지금 안 들어감)
     files: ['**/*.test.ts', '**/*.test.tsx'],
     languageOptions: {
       globals: {
