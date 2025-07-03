@@ -3,7 +3,7 @@ import js from '@eslint/js';
 import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
-import { eslintPlugin as tseslint } from '@typescript-eslint/eslint-plugin';
+import tseslintPlugin from '@typescript-eslint/eslint-plugin'; 
 import parser from '@typescript-eslint/parser';
 
 export default [
@@ -19,7 +19,7 @@ export default [
       globals: globals.browser,
     },
     plugins: {
-      '@typescript-eslint': tseslint,
+      '@typescript-eslint': tseslintPlugin, 
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
     },
