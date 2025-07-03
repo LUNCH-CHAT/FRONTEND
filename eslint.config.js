@@ -3,30 +3,35 @@ import js from '@eslint/js';
 import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
-import tseslint from 'typescript-eslint';
-import { globalIgnores } from 'eslint/config';
+import { eslintPlugin as tseslint } from '@typescript-eslint/eslint-plugin';
+import parser from '@typescript-eslint/parser';
 
-export default tseslint.config([
-  globalIgnores(['dist']),
+export default [
+  {
+    ignores: ['dist', 'node_modules'],
+  },
   {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
+      parser: parser,
       ecmaVersion: 2020,
       sourceType: 'module',
       globals: globals.browser,
     },
     plugins: {
+      '@typescript-eslint': tseslint,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
     },
     rules: {
-      // 원하는 룰 설정 가능
+      // 필요한 규칙을 여기에 정의
     },
     extends: [
-      js.configs.recommended,
-      tseslint.configs.recommended,
-      reactHooks.configs['recommended-latest'],
-      reactRefresh.configs.vite,
+      'eslint:recommended',
+      'plugin:@typescript-eslint/recommended',
+      'plugin:react-hooks/recommended',
+      'plugin:react-refresh/recommended',
+      'prettier',
     ],
   },
-]);
+];
