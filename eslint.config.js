@@ -3,8 +3,8 @@ import js from '@eslint/js';
 import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
-import tseslintPlugin from '@typescript-eslint/eslint-plugin'; 
 import parser from '@typescript-eslint/parser';
+import * as tseslint from '@typescript-eslint/eslint-plugin';
 
 export default [
   {
@@ -13,25 +13,21 @@ export default [
   {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
-      parser: parser,
+      parser,
       ecmaVersion: 2020,
       sourceType: 'module',
       globals: globals.browser,
     },
     plugins: {
-      '@typescript-eslint': tseslintPlugin, 
+      '@typescript-eslint': tseslint,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
     },
     rules: {
-      // 필요한 규칙을 여기에 정의
+      ...js.configs.recommended.rules,
+      ...tseslint.configs.recommended.rules,
+      ...reactHooks.configs['recommended'].rules,
+      ...reactRefresh.configs.recommended.rules,
     },
-    extends: [
-      'eslint:recommended',
-      'plugin:@typescript-eslint/recommended',
-      'plugin:react-hooks/recommended',
-      'plugin:react-refresh/recommended',
-      'prettier',
-    ],
   },
 ];
