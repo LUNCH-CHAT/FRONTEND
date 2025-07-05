@@ -114,7 +114,7 @@ const TimeTable = () => {
           <div
             role="columnheader"
             key={day}
-            className={`border border-[#969696] min-w-[3.5rem] p-2 font-bold text-sm text-center ${
+            className={`border border-[#969696] min-w-[3.5rem] p-2 font-[pretendard] font-medium text-sm text-center ${
               day === 'FRI' ? 'rounded-tr-md' : ''
             }`}
           >
@@ -129,7 +129,7 @@ const TimeTable = () => {
           <React.Fragment key={time}>
             <div
               role="rowheader"
-              className={`border border-[#969696] p-2 py-1 text-sm font-bold text-[#969696] ${
+              className={`border border-[#969696] p-2 text-sm font-[pretendard] text-[#969696] ${
                 index === times.length - 1 ? 'rounded-bl-md' : ''
               }`}
             >

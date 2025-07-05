@@ -15,7 +15,11 @@ const HomeHeader = ({ title }: HomeHeaderProps) => {
 
   return (
     <div className="flex justify-between px-10 py-6">
-      {title ? <h1>{title}</h1> : <img src={Logo} alt="LunchChat" />}
+      {title ? (
+        <h1 className="select-none font-[pretendard] font-semibold">{title}</h1>
+      ) : (
+        <img src={Logo} alt="LunchChat" />
+      )}
       {!title ? (
         <button type="button" className="cursor-pointer" onClick={handleClickAlarm}>
           <img src={Alarm} alt="알림 보기" />

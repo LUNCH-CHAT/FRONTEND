@@ -17,7 +17,7 @@ const BackHeader = ({ title }: BackHeaderProps) => {
       <button type="button" className="absolute left-10 cursor-pointer">
         <img src={Back} alt="뒤로가기" onClick={handleClickBack} />
       </button>
-      <h1 className="select-none">{title}</h1>
+      <h1 className="select-none font-[pretendard] font-semibold">{title}</h1>
     </div>
   );
 };
