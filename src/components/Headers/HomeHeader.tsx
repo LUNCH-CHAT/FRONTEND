@@ -14,7 +14,7 @@ const HomeHeader = ({ title }: HomeHeaderProps) => {
   };
 
   return (
-    <div className="max-w-[480px] w-full fixed top-0 flex justify-between px-5 py-7 z-100">
+    <div className="max-w-[480px] w-full fixed top-0 flex justify-between px-5 py-7 z-50 bg-[#ffffff]">
       {title ? (
         <h1 className="select-none font-[pretendard] font-semibold">{title}</h1>
       ) : (
