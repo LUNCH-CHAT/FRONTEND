@@ -15,7 +15,11 @@ export default [
       parser,
       ecmaVersion: 2020,
       sourceType: 'module',
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        React: 'readonly',
+        __dirname: 'readonly',
+      },
     },
     plugins: {
       '@typescript-eslint': tseslint,
@@ -33,7 +37,6 @@ export default [
     },
   },
   {
-    // ✅ vitest용 글로벌 추가 (이게 지금 안 들어감)
     files: ['**/*.test.ts', '**/*.test.tsx'],
     languageOptions: {
       globals: {
