@@ -20,3 +20,7 @@
   src: local('Pretendard SemiBold'), url('./assets/fonts/Pretendard-SemiBold.woff') format('woff'),
     url('./assets/fonts/Pretendard-SemiBold.woff2') format('woff2');
 }
+
+@theme {
+  --breakpoint-xs: 30rem;
+}
