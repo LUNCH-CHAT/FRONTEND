@@ -7,23 +7,24 @@ interface TimeSlot {
   time: string;
 }
 
-// interface TimeTableProps {
-//   onChange?: (slots: TimeSlot[]) => void;
-// }
+interface TimeTableProps {
+  isEditable?: boolean;
+  // onChange?: (slots: TimeSlot[]) => void;
+}
 
 const days: Day[] = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
 
 const times = [
-  '9:30 ~ 10:00',
-  '11:00 ~ 12:15',
-  '12:30 ~ 13:45',
-  '14:00 ~ 15:15',
-  '15:30 ~ 16:45',
-  '17:00 ~ 18:15',
-  '18:30 ~ 19:45',
+  '9:30~10:00',
+  '11:00~12:15',
+  '12:30~13:45',
+  '14:00~15:15',
+  '15:30~16:45',
+  '17:00~18:15',
+  '18:30~19:45',
 ];
 
-const TimeTable = () => {
+const TimeTable = ({ isEditable = false }: TimeTableProps) => {
   const [selectedSlots, setselectedSlots] = useState<TimeSlot[]>([]);
   // 포인터가 눌린 상태인지 추적 (드래그 선택에 사용)
   const isPointerDownRef = useRef(false);
@@ -96,17 +97,17 @@ const TimeTable = () => {
 
   return (
     <div
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerLeave={handlePointerUp}
+      onPointerDown={isEditable ? handlePointerDown : undefined}
+      onPointerMove={isEditable ? handlePointerMove : undefined}
+      onPointerUp={isEditable ? handlePointerUp : undefined}
+      onPointerLeave={isEditable ? handlePointerUp : undefined}
       className="select-none touch-none" // 텍스트 선택 방지, 터치 스크롤 방지
     >
       {/* 타임 테이블 그리드 */}
       <div
         role="table"
-        className="grid gap-0.5"
-        style={{ gridTemplateColumns: '70px repeat(5,1fr)' }}
+        className="grid gap-0.5 text-xs grid-cols-[50px_repeat(5,1fr)] mobile-sm:grid-cols-[87px_repeat(5,1fr)]"
+        // style={{ gridTemplateColumns: '100px repeat(5,1fr)' }}
       >
         {/* 요일 */}
         <div role="columnheader" className="border border-[#969696] p-2 rounded-tl-md"></div>
@@ -114,7 +115,7 @@ const TimeTable = () => {
           <div
             role="columnheader"
             key={day}
-            className={`border border-[#969696] min-w-[3.5rem] p-2 font-[pretendard] font-medium text-sm text-center ${
+            className={`border border-[#969696] p-2 font-[pretendard] font-medium text-sm text-center ${
               day === 'FRI' ? 'rounded-tr-md' : ''
             }`}
           >
@@ -129,7 +130,7 @@ const TimeTable = () => {
           <React.Fragment key={time}>
             <div
               role="rowheader"
-              className={`border border-[#969696] p-2 text-sm font-[pretendard] text-[#969696] ${
+              className={`border border-[#969696] p-2 py-3 text-[10px] break-all mobile-sm:text-xs text-center font-[pretendard] text-[#969696] ${
                 index === times.length - 1 ? 'rounded-bl-md' : ''
               }`}
             >
@@ -143,8 +144,8 @@ const TimeTable = () => {
                   key={`${day}-${time}`}
                   data-day={day}
                   data-time={time}
-                  className={`border border-[#969696] cursor-pointer ${
-                    isSelected ? 'bg-[#FF7C6A]' : 'hover:bg-[#FF9B8E]'
+                  className={`border border-[#969696] ${
+                    isSelected ? 'bg-[#FF7C6A]' : `${isEditable ? 'hover:bg-[#FF9B8E]' : ''} `
                   }`}
                 ></div>
               );
