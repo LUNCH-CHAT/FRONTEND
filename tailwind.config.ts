@@ -1,3 +1,5 @@
+// tailwind.config.ts
+
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
@@ -6,7 +8,11 @@ const config: Config = {
     fontFamily: {
       pretendard: ['Pretendard', 'sans-serif'],
     },
-    extend: {},
+    extend: {
+      screens: {
+        xs: '480px', 
+      },
+    },
   },
   plugins: [],
 };

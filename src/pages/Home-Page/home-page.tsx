@@ -1,5 +1,4 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
-
 import CategoryGridItem from '../../components/CategoryGridItem';
 import ProfileCard from '../../components/ProfileCard';
 import InfoCard from '../../components/InfoCard';
@@ -19,16 +18,14 @@ import QuestionIcon from '@/assets/icons/question.svg?react';
 export default function HomePage() {
   return (
     <div className="w-full min-h-screen bg-white font-pretendard flex justify-center">
-      <div className="w-full max-w-[480px]">
+      <div className="w-full px-4 max-w-[700px]">
         {/* 1. 메인 배너 */}
         <section className="w-full h-[236px] overflow-hidden">
-          <Swiper autoplay={{ delay: 4000 }} loop={true} slidesPerView={1}>
+          <Swiper autoplay={{ delay: 4000 }} loop slidesPerView={1}>
             <SwiperSlide>
               <div className="relative w-full h-[236px]">
-                <div className="absolute inset-0 z-0">
-                  <HomeBanner className="w-full h-full" />
-                </div>
-                <div className="absolute inset-0 z-10 bg-black/30 flex flex-col justify-end px-6 pb-6 text-white">
+                <HomeBanner className="w-full h-full" />
+                <div className="absolute inset-0 bg-black/30 flex flex-col justify-end px-6 pb-6 text-white">
                   <h2 className="text-[16px] font-bold leading-[22px] mb-1">
                     Lunch with Insight!
                   </h2>
@@ -55,51 +52,49 @@ export default function HomePage() {
           <CategoryGridItem icon={<SchoolIcon />} label="학교생활" />
         </section>
 
-        {/* 3. 추천 슬라이드 */}
+        {/* 3. 추천 슬라이드 (2열 → sm 이상 3열) */}
         <section className="px-4 pb-6">
-          <h2 className="text-[20px] leading-[22px] font-semibold text-black mb-4">
+          <h2 className="text-[20px] font-semibold mb-4">
             나와 ‘시간표 · 관심사’가 겹쳐요!
           </h2>
-          <div className="flex overflow-x-auto gap-4">
-            <ProfileCard
-              name="유엠씨"
-              department="컴퓨터공학과 21학번"
-              tags={['창업', '교환학생']}
-              image="/images/profile.png"
-            />
-            <ProfileCard
-              name="기본 프로필"
-              department="정보 없음"
-              tags={['창업']}
-              image="/images/profile.png"
-            />
+          <div className="grid grid-cols-2 xs:grid-cols-3 gap-4">
+
+            {[1, 2, 3].map((i) => (
+              <ProfileCard
+                key={i}
+                id={String(i)}
+                name={`유엠씨${i}`}
+                department="컴퓨터공학과 21학번"
+                tags={['창업', '교환학생']}
+                image="/images/profile.png"
+              />
+            ))}
           </div>
         </section>
 
-        {/* 4. 이런 사람 어때요? */}
+        {/* 4. 이런 사람 어때요? (2열 → sm 이상 3열) */}
         <section className="px-4 pb-6">
-          <h2 className="text-[20px] leading-[22px] font-semibold text-black mb-4">
-            이런 사람 어때요?
-          </h2>
-          <div className="grid grid-cols-2 gap-4">
-            <ProfileCard
-              name="유엠씨"
-              department="컴퓨터공학과 21학번"
-              tags={['창업', '교환학생']}
-              image="/images/profile.png"
-            />
-            <ProfileCard
-              name="유엠씨"
-              department="컴퓨터공학과 21학번"
-              tags={['고시준비']}
-              image="/images/profile.png"
-            />
+          <h2 className="text-[20px] font-semibold mb-4">이런 사람 어때요?</h2>
+          <div className="grid grid-cols-2 xs:grid-cols-3 gap-4">
+
+            {[4, 5, 6].map((i) => (
+              <ProfileCard
+                key={i}
+                id={String(i)}
+                name={`테스트${i}`}
+                department="테스트 학과"
+                tags={['테스트']}
+                image="/images/profile.png"
+              />
+            ))}
           </div>
         </section>
 
         {/* 5. 런치챗 소개 */}
         <section className="bg-gray-50 py-6 px-4">
-          <h2 className="text-[20px] leading-[22px] font-semibold text-black mb-4">런치챗 소개</h2>
+          <h2 className="text-[20px] font-semibold text-black mb-4">
+            런치챗 소개
+          </h2>
           <div className="grid grid-cols-2 gap-4">
             <InfoCard
               title="런치챗 소개"
