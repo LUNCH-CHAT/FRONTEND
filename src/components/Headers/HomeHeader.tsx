@@ -14,11 +14,13 @@ const HomeHeader = ({ title }: HomeHeaderProps) => {
   };
 
   return (
-    <div className="flex justify-between px-10 py-6">
+    <div className="max-w-[480px] w-full fixed top-0 flex justify-between px-5 py-7 z-50 bg-[#ffffff]">
       {title ? (
         <h1 className="select-none font-[pretendard] font-semibold">{title}</h1>
       ) : (
-        <img src={Logo} alt="LunchChat" />
+        <h1>
+          <img src={Logo} alt="LunchChat" />
+        </h1>
       )}
       {!title ? (
         <button type="button" className="cursor-pointer" onClick={handleClickAlarm}>

@@ -1,14 +1,18 @@
 // src/App.tsx
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './index.css';
 import HomePage from './pages/Home-Page/home-page';
+import MatchingListPage from './pages/matching-list-page';
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="max-w-[480px] w-full space-y-8 bg-white">
-          <HomePage />
+      <div className="flex items-center justify-center bg-gray-100">
+        <div className="max-w-[480px] w-full min-h-screen space-y-8 bg-white mx-auto">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/matching" element={<MatchingListPage />} />
+          </Routes>
         </div>
       </div>
     </BrowserRouter>
