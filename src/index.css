@@ -22,5 +22,6 @@
 }
 
 @theme {
+  --breakpoint-mobile-sm: 20rem;
   --breakpoint-xs: 30rem;
 }

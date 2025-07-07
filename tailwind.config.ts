@@ -10,7 +10,8 @@ const config: Config = {
     },
     extend: {
       screens: {
-        xs: '480px', 
+        'mobile-sm': '320px',
+        xs: '480px',
       },
     },
   },

@@ -8,8 +8,8 @@ import ProfileDetailPage from './pages/Profile-Detail/profile-detail-page';
 function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="max-w-[480px] w-full space-y-8 bg-white">
+      <div className="flex items-center justify-center bg-gray-100">
+        <div className="max-w-[480px] w-full min-h-screen space-y-8 bg-white">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/matching" element={<MatchingListPage />} />
