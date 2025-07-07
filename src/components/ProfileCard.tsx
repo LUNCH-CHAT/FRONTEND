@@ -1,6 +1,7 @@
-// src/components/ProfileCard.tsx
+import { useNavigate } from 'react-router-dom';
 
 interface ProfileCardProps {
+  id?: string;
   name: string;
   department: string;
   tags: string[];
@@ -8,30 +9,43 @@ interface ProfileCardProps {
   icon?: React.ReactNode;
 }
 
-export default function ProfileCard({ name, department, tags, image, icon }: ProfileCardProps) {
+export default function ProfileCard({
+  id,
+  name,
+  department,
+  tags,
+  image,
+  icon,
+}: ProfileCardProps) {
+  const navigate = useNavigate();
+  const handleClick = () => id && navigate(`/profile/${id}`);
+
   return (
-    <div className="w-[208px] bg-white rounded-[20px] shadow-sm p-4 flex-shrink-0">
-      <div className="w-[180px] h-[180px] rounded-[15px] bg-gray-100 flex items-center justify-center mb-3 overflow-hidden mx-auto">
+    <div
+      onClick={handleClick}
+      className={`bg-white rounded-2xl shadow p-4 ${
+        id ? 'cursor-pointer hover:shadow-md' : ''
+      }`}
+    >
+      <div className="w-full aspect-square rounded-lg overflow-hidden bg-gray-100 mb-3">
         {image ? (
           <img
             src={image}
-            alt={`${name} 프로필 이미지`}
+            alt={`${name} 프로필`}
             className="w-full h-full object-cover"
           />
         ) : (
           icon
         )}
       </div>
-      <div className="text-[15px] font-semibold text-black mb-1">{name}</div>
-      <div className="text-[13px] text-gray-600 mb-1">{department}</div>
-      <div className="text-[12px] text-gray-400 mb-2">
-        프로창업러 | 교환 준비 | 취미 요가
-      </div>
+      <h3 className="text-sm font-semibold text-black mb-1">{name}</h3>
+      <p className="text-xs text-gray-600 mb-1">{department}</p>
+      <p className="text-xs text-gray-400 mb-2">{tags.join(' | ')}</p>
       <div className="flex flex-wrap gap-1">
-        {tags.map((tag, index) => (
+        {tags.map((tag, i) => (
           <span
-            key={index}
-            className="text-[11px] px-2.5 py-0.5 border border-[#FF5A5A] text-[#FF5A5A] rounded-full"
+            key={i}
+            className="text-[10px] px-2 py-0.5 border border-[#FF5A5A] text-[#FF5A5A] rounded-full"
           >
             {tag}
           </span>
