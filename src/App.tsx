@@ -4,6 +4,7 @@ import './index.css';
 import HomePage from './pages/Home-Page/home-page';
 import MatchingListPage from './pages/matching-list-page';
 import ProfileDetailPage from './pages/Profile-Detail/profile-detail-page';
+import AlarmPage from './pages/alarm-page';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/matching" element={<MatchingListPage />} />
             <Route path="/profile/:id" element={<ProfileDetailPage />} />
+            <Route path="/alarm" element={<AlarmPage />} />
           </Routes>
         </div>
       </div>
