@@ -21,6 +21,13 @@
     url('./assets/fonts/Pretendard-SemiBold.woff2') format('woff2');
 }
 
+@font-face {
+  font-family: Pretendard;
+  font-weight: 700;
+  src: local('Pretendard Bold'), url('./assets/fonts/Pretendard-Bold.woff') format('woff'),
+    url('./assets/fonts/Pretendard-Bold.woff2') format('woff2');
+}
+
 @theme {
   --breakpoint-mobile-sm: 20rem;
   --breakpoint-xs: 30rem;
