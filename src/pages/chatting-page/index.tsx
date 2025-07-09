@@ -1,6 +1,4 @@
 import ChattingList from '../../components/ChattingPage/ChattingList';
-import HomeHeader from '../../components/Headers/HomeHeader';
-import Navbar from '../../components/Navbar';
 import { formatDate } from '../../utils/getDate';
 
 const mockData = [
@@ -22,9 +20,8 @@ export default function ChattingPage() {
   const sortedData = mockData.sort((a, b) => b.time - a.time);
 
   return (
-    <div>
-      <HomeHeader title="채팅" />
-      <div className="pt-[6rem] flex flex-col gap-4 select-none">
+    <>
+      <div className="flex flex-col gap-4 select-none">
         {sortedData?.map(data => {
           const { hours, minutes } = formatDate(data.time);
 
@@ -49,7 +46,6 @@ export default function ChattingPage() {
           );
         })}
       </div>
-      <Navbar />
-    </div>
+    </>
   );
 }

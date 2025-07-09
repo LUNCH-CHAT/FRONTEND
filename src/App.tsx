@@ -1,38 +1,83 @@
 // src/App.tsx
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './index.css';
-import HomePage from './pages/Home-Page/home-page';
-import MatchingListPage from './pages/matching-list-page';
-import ProfileDetailPage from './pages/Profile-Detail/profile-detail-page';
-import AlarmPage from './pages/alarm-page';
-import ChattingPage from './pages/chatting-page';
-import ChattingRoom from './pages/chatting-page/chatting-room';
+import { createBrowserRouter, RouterProvider, type RouteObject } from 'react-router-dom';
+
+import PublicLayout from './layouts/public-layout';
+import OnboardingPage from './pages/login-page/onboarding-page';
 import EmailStepPage from './pages/login-page/email-step-page';
 import ProfileStepPage from './pages/login-page/profile-step-page';
 import ProfileCompletePage from './pages/login-page/profile-complete-page';
-import OnboardingPage from './pages/login-page/onboarding-page';
+
+import ProtectedLayout from './layouts/protected-layout';
+import HomePage from './pages/Home-Page/home-page';
+import ChattingPage from './pages/chatting-page';
+import MatchingListPage from './pages/matching-list-page';
+import ProfileDetailPage from './pages/Profile-Detail/profile-detail-page';
+import AlarmPage from './pages/alarm-page';
+import ChattingRoom from './pages/chatting-page/chatting-room';
+
+const publicRoutes: RouteObject[] = [
+  {
+    path: '/onboarding',
+    element: <PublicLayout />,
+    children: [
+      {
+        index: true,
+        element: <OnboardingPage />,
+      },
+      {
+        path: 'email',
+        element: <EmailStepPage />,
+      },
+      {
+        path: 'profile',
+        element: <ProfileStepPage />,
+      },
+      {
+        path: 'complete',
+        element: <ProfileCompletePage />,
+      },
+    ],
+  },
+];
+
+const ProtectedRoutes: RouteObject[] = [
+  {
+    path: '/',
+    element: <ProtectedLayout />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: 'alarm',
+        element: <AlarmPage />,
+      },
+      {
+        path: 'chatting',
+        element: <ChattingPage />,
+      },
+      {
+        path: 'chatting/:id',
+        element: <ChattingRoom />,
+      },
+      {
+        path: 'profile/:id',
+        element: <ProfileDetailPage />,
+      },
+      {
+        path: 'matching',
+        element: <MatchingListPage />,
+      },
+    ],
+  },
+];
+
+const router = createBrowserRouter([...publicRoutes, ...ProtectedRoutes]);
 
 function App() {
-  return (
-    <BrowserRouter>
-      <div className="flex items-center justify-center bg-gray-100">
-        <div className="max-w-[480px] w-full min-h-screen space-y-8 bg-white">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/matching" element={<MatchingListPage />} />
-            <Route path="/profile/:id" element={<ProfileDetailPage />} />
-            <Route path="/alarm" element={<AlarmPage />} />
-            <Route path="chatting" element={<ChattingPage />} />
-            <Route path="chatting/:id" element={<ChattingRoom />} />
-            <Route path="/onboarding" element={<OnboardingPage />} />
-            <Route path="/onboarding/email" element={<EmailStepPage />} />
-            <Route path="/onboarding/profile" element={<ProfileStepPage />} />
-            <Route path="/onboarding/complete" element={<ProfileCompletePage />} />
-          </Routes>
-        </div>
-      </div>
-    </BrowserRouter>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
