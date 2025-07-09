@@ -1,6 +1,5 @@
 import AlarmCard from '../../components/AlarmPage/AlarmCard';
 import { formatDate } from '../../utils/getDate';
-// import BackHeader from '../../components/Headers/BackHeader';
 
 const mockData = [
   {
@@ -21,23 +20,21 @@ export default function AlarmPage() {
   const sortedData = mockData.sort((a, b) => b.time - a.time);
 
   return (
-    <div>
+    <>
       {/* <BackHeader title="알림" /> */}
-      <div className="pt-[5rem]">
-        {sortedData?.map(data => {
-          const { month, day, hours, minutes } = formatDate(data.time);
+      {sortedData?.map(data => {
+        const { month, day, hours, minutes } = formatDate(data.time);
 
-          return (
-            <div key={data.id}>
-              <AlarmCard
-                sender={data.sender}
-                type={data.type === 'request' ? '요청' : '수락'}
-                time={`${month}/${day} ${hours}:${minutes}`}
-              />
-            </div>
-          );
-        })}
-      </div>
-    </div>
+        return (
+          <div key={data.id}>
+            <AlarmCard
+              sender={data.sender}
+              type={data.type === 'request' ? '요청' : '수락'}
+              time={`${month}/${day} ${hours}:${minutes}`}
+            />
+          </div>
+        );
+      })}
+    </>
   );
 }

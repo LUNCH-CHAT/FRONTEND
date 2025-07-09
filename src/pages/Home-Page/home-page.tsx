@@ -14,14 +14,11 @@ import SchoolIcon from '@/assets/icons/campus.svg?react';
 import HomeBanner from '@/assets/icons/homebanner.svg?react';
 import LunchatIcon from '@/assets/icons/lunchat.svg?react';
 import QuestionIcon from '@/assets/icons/question.svg?react';
-import Navbar from '../../components/Navbar';
-import HomeHeader from '../../components/Headers/HomeHeader';
 
 export default function HomePage() {
   return (
     <div className="w-full min-h-screen bg-white font-pretendard flex justify-center">
-      <HomeHeader />
-      <div className="w-full px-4 max-w-[700px] pt-[4rem]">
+      <div className="w-full px-4 max-w-[700px]">
         {/* 1. 메인 배너 */}
         <section className="w-full h-[236px] overflow-hidden">
           <Swiper autoplay={{ delay: 4000 }} loop slidesPerView={1}>
@@ -99,7 +96,6 @@ export default function HomePage() {
           </div>
         </section>
       </div>
-      <Navbar />
     </div>
   );
 }
