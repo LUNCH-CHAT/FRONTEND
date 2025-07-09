@@ -5,6 +5,8 @@ import HomePage from './pages/Home-Page/home-page';
 import MatchingListPage from './pages/matching-list-page';
 import ProfileDetailPage from './pages/Profile-Detail/profile-detail-page';
 import AlarmPage from './pages/alarm-page';
+import ChattingPage from './pages/chatting-page';
+import ChattingRoom from './pages/chatting-page/chatting-room';
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
             <Route path="/matching" element={<MatchingListPage />} />
             <Route path="/profile/:id" element={<ProfileDetailPage />} />
             <Route path="/alarm" element={<AlarmPage />} />
+            <Route path="chatting" element={<ChattingPage />} />
+            <Route path="chatting/:id" element={<ChattingRoom />} />
           </Routes>
         </div>
       </div>
