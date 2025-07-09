@@ -14,22 +14,20 @@ const HomeHeader = ({ title }: HomeHeaderProps) => {
   };
 
   return (
-    <div className="max-w-[480px] w-full fixed top-0 flex justify-between px-5 pt-18 pb-7 z-50 bg-[#ffffff]">
+    <header className="max-w-[480px] w-full fixed top-0 z-50 bg-white h-[64px] flex items-center justify-between px-5">
       {title ? (
-        <h1 className="select-none font-[pretendard] font-semibold">{title}</h1>
+        <h1 className="select-none font-pretendard font-semibold">{title}</h1>
       ) : (
         <h1>
           <img src={Logo} alt="LunchChat" />
         </h1>
       )}
-      {!title ? (
+      {!title && (
         <button type="button" className="cursor-pointer" onClick={handleClickAlarm}>
           <img src={Alarm} alt="알림 보기" />
         </button>
-      ) : (
-        ''
       )}
-    </div>
+    </header>
   );
 };
 

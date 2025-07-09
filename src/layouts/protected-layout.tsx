@@ -32,7 +32,7 @@ export default function ProtectedLayout() {
           {isProfileDetailPage && <BackHeader title="프로필 상세" />}
           {isMyPage && <HomeHeader title="마이페이지" />}
           {isSearchPage && <HomeHeader title="둘러보기" />}
-          <div className="pt-[8rem] pb-[5rem]">
+          <div className="pt-[64px] pb-[80px]">
             <Outlet />
           </div>
           {isHomePage || isChattingPage || isMatchingPage || isMyPage || isSearchPage ? (
