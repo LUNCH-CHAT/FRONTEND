@@ -16,6 +16,11 @@ import MatchingListPage from './pages/matching-list-page';
 import ProfileDetailPage from './pages/Profile-Detail/profile-detail-page';
 import AlarmPage from './pages/alarm-page';
 import ExplorePage from './pages/Explore-Page/explore-page'; 
+import MyPage from './pages/my-page/my-page';
+import MyDetailPage from './pages/my-page/my-detail-page';
+import EditTagPage from './pages/my-page/edit-tag-page';
+import EditKeywordPage from './pages/my-page/edit-keyword-page';
+import EditTimePage from './pages/my-page/edit-time-page';
 
 const publicRoutes: RouteObject[] = [
   {
@@ -42,6 +47,11 @@ const protectedRoutes: RouteObject[] = [
       { path: 'profile/:id', element: <ProfileDetailPage /> },
       { path: 'matching', element: <MatchingListPage /> },
       { path: 'search', element: <ExplorePage /> }, 
+      { path: 'my', element: <MyPage /> },
+      { path: 'my/profile', element: <MyDetailPage /> },
+      { path: 'my/edit-tag', element: <EditTagPage /> },
+      { path: 'my/edit-keyword', element: <EditKeywordPage /> },
+      { path: 'my/edit-time', element: <EditTimePage /> },
     ],
   },
 ];
