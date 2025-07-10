@@ -16,15 +16,15 @@ export default function CategorySlider({
       className="flex items-center overflow-x-auto no-scrollbar gap-x-[24px] mb-6 px-5"
       style={{ height: '58px', boxSizing: 'border-box' }}
     >
-      {categories.map(({ label, icon }) => (
+      {categories.map((category) => (
         <button
-          key={label}
+          key={category.label}
           className={`flex-shrink-0 ${
-            selectedCategory === label ? 'opacity-100' : 'opacity-40'
+            selectedCategory === category.label ? 'opacity-100' : 'opacity-40'
           }`}
-          onClick={() => onSelect(label)}
+          onClick={() => onSelect(category.label)}
         >
-          <CategoryGridItem icon={icon} label={label} />
+          <CategoryGridItem icon={category.icon} label={category.label} />
         </button>
       ))}
     </div>
