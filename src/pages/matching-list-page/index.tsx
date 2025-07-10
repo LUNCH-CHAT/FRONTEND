@@ -7,7 +7,7 @@ export default function MatchingListPage() {
   return (
     <>
       {/* 상단 탭바 */}
-      <div className="max-w-[480px] w-full fixed top-[7rem] z-100 flex justify-between px-2 bg-[#ffffff] text-center font-[pretendard] font-normal text-[#7D7D7D]">
+      <div className="max-w-[480px] w-full fixed top-[4rem] z-100 flex justify-between px-2 bg-[#ffffff] text-center font-[pretendard] font-normal text-[#7D7D7D]">
         <button
           type="button"
           className={`w-1/3 pb-1 ${
