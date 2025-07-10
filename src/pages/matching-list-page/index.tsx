@@ -1,8 +1,14 @@
 import { useState } from 'react';
 import ProfileCard from '../../components/ProfileCard';
+import { useLocation } from 'react-router-dom';
 
 export default function MatchingListPage() {
-  const [selectedTab, setSelectedTab] = useState<'received' | 'sent' | 'matched'>('received');
+  const location = useLocation();
+  const selectTab = location.state?.selectTab;
+
+  const [selectedTab, setSelectedTab] = useState<'received' | 'sent' | 'matched'>(
+    selectTab ? selectTab : 'received'
+  );
 
   return (
     <>
