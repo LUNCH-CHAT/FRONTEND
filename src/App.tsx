@@ -15,7 +15,7 @@ import ChattingRoom from './pages/chatting-page/chatting-room';
 import MatchingListPage from './pages/matching-list-page';
 import ProfileDetailPage from './pages/Profile-Detail/profile-detail-page';
 import AlarmPage from './pages/alarm-page';
-import ExplorePage from './pages/Explore-Page/explore-page'; // ✅ 충돌 해결: ExplorePage 추가
+import ExplorePage from './pages/Explore-Page/explore-page'; 
 
 const publicRoutes: RouteObject[] = [
   {
@@ -41,7 +41,7 @@ const protectedRoutes: RouteObject[] = [
       { path: 'chatting/:id', element: <ChattingRoom /> },
       { path: 'profile/:id', element: <ProfileDetailPage /> },
       { path: 'matching', element: <MatchingListPage /> },
-      { path: 'search', element: <ExplorePage /> }, // ✅ 추가된 경로 포함
+      { path: 'search', element: <ExplorePage /> }, 
     ],
   },
 ];
