@@ -15,6 +15,10 @@ export default function ProtectedLayout() {
   const isProfileDetailPage = matchPath('/profile/:id', location.pathname);
   const isMyPage = matchPath('/my', location.pathname);
   const isSearchPage = matchPath('/search', location.pathname);
+  const isMyDetailPage = matchPath('/my/profile', location.pathname);
+  const isEditTagPage = matchPath('/my/edit-tag', location.pathname);
+  const isEditKeywordPage = matchPath('/my/edit-keyword', location.pathname);
+  const isEditTimePage = matchPath('/my/edit-time', location.pathname);
 
   // if (!accessToken) {
   //   return <Navigate to={'/onboarding'} replace />;
@@ -32,6 +36,11 @@ export default function ProtectedLayout() {
           {isProfileDetailPage && <BackHeader title="프로필 상세" />}
           {isMyPage && <HomeHeader title="마이페이지" />}
           {isSearchPage && <HomeHeader title="둘러보기" />}
+          {isMyDetailPage && <BackHeader title="나의 프로필" />}
+          {isEditTagPage && <BackHeader />}
+          {isEditKeywordPage && <BackHeader />}
+          {isEditTimePage && <BackHeader />}
+          
           <div className="pt-[64px] pb-[80px]">
             <Outlet />
           </div>
