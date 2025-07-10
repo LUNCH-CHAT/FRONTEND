@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ChatMessages from '../../components/ChattingPage/ChatMessages';
 import ChatHeader from '../../components/ChattingPage/ChatHeader';
@@ -50,8 +50,7 @@ const mockMessages = [
 ];
 
 export default function ChattingRoom() {
-  const { id } = useParams();
-  console.log(id);
+  // const { id } = useParams();
 
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<

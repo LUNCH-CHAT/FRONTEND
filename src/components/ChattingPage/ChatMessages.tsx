@@ -18,7 +18,7 @@ const ChatMessages = ({ messages }: ChatMessagesProps) => {
   let prevSender: string | null = null;
 
   return (
-    <div className="pt-[5rem]">
+    <div className="pt-2">
       {messages?.map((msg, index) => {
         const { year, month, day, hours, minutes } = formatDate(msg.timestamp);
         const dayOfWeek = getDayOfWeek(msg.timestamp);
