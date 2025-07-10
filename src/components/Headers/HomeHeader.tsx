@@ -16,7 +16,7 @@ const HomeHeader = ({ title }: HomeHeaderProps) => {
   return (
     <header className="max-w-[480px] w-full fixed top-0 z-50 bg-white h-[64px] flex items-center justify-between px-5">
       {title ? (
-        <h1 className="select-none font-pretendard font-semibold">{title}</h1>
+        <h1 className="select-none font-[pretendard] font-semibold">{title}</h1>
       ) : (
         <h1>
           <img src={Logo} alt="LunchChat" />
