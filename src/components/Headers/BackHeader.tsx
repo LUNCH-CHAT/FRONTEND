@@ -13,12 +13,16 @@ const BackHeader = ({ title }: BackHeaderProps) => {
   };
 
   return (
-    <div className="max-w-[480px] w-full fixed top-0 flex justify-center items-center pt-18 pb-5 z-50 bg-[#ffffff]">
-      <button type="button" className="absolute left-5 cursor-pointer">
-        <img src={Back} alt="뒤로가기" onClick={handleClickBack} />
+    <header className="max-w-[480px] w-full fixed top-0 z-50 bg-white h-[64px] flex items-center justify-center px-5">
+      <button
+        type="button"
+        className="absolute left-5 cursor-pointer"
+        onClick={handleClickBack}
+      >
+        <img src={Back} alt="뒤로가기" />
       </button>
-      <h1 className="select-none font-[pretendard] font-semibold">{title}</h1>
-    </div>
+      <h1 className="select-none font-pretendard font-semibold">{title}</h1>
+    </header>
   );
 };
 

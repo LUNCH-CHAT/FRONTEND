@@ -9,6 +9,9 @@ const config: Config = {
       pretendard: ['Pretendard', 'sans-serif'],
     },
     extend: {
+      colors: {
+        primary: '#4F46E5', 
+      },
       screens: {
         'mobile-sm': '320px',
         xs: '480px',
