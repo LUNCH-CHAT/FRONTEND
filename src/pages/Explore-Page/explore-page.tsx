@@ -18,14 +18,14 @@ import HobbyIcon from '@/assets/icons/extreaactivities.svg?react';
 import SchoolIcon from '@/assets/icons/campus.svg?react';
 
 export default function ExplorePage() {
-  const [selectedCategory, setSelectedCategory] = useState('전체');
+  const [selectedCategory] = useState('전체');
   const [showDepartmentMajorModal, setShowDepartmentMajorModal] = useState(false);
   const [showYearModal, setShowYearModal] = useState(false);
 
   const [selectedDepartment, setSelectedDepartment] = useState('전체');
   const [selectedMajor, setSelectedMajor] = useState('전체');
   const [selectedYear, setSelectedYear] = useState('전체');
-  const [sortOrder, setSortOrder] = useState<'추천순' | '최신순'>('최신순');
+  const [sortOrder] = useState<'추천순' | '최신순'>('최신순');
 
   useEffect(() => {
     document.body.style.overflow =
@@ -80,8 +80,8 @@ export default function ExplorePage() {
         (selectedYear === '전체' || profile.department.includes(selectedYear))
     )
     .sort((a, b) => {
-      if (sortOrder === '추천순') return a.name.localeCompare(b.name); 
-      return b.id.localeCompare(a.id); 
+      if (sortOrder === '추천순') return a.name.localeCompare(b.name);
+      return b.id.localeCompare(a.id);
     });
 
   return (
@@ -90,15 +90,10 @@ export default function ExplorePage() {
         <CategorySlider
           categories={categories}
           selectedCategory={selectedCategory}
-          onSelect={setSelectedCategory}
         />
 
         <div className="flex gap-2 flex-wrap justify-start mt-4 mb-4">
-          <SortDropdown
-            selected={sortOrder}
-            options={['추천순', '최신순']}
-            onSelect={value => setSortOrder(value as '추천순' | '최신순')}
-          />
+          <SortDropdown selected={sortOrder} options={['추천순', '최신순']} />
           <FilterButton
             label="단대/학과"
             onClick={() => setShowDepartmentMajorModal(true)}
@@ -158,15 +153,13 @@ export default function ExplorePage() {
             '전자공학과',
           ]}
           localDepartment={selectedDepartment}
-          setLocalDepartment={setSelectedDepartment}
           localMajor={selectedMajor}
-          setLocalMajor={setSelectedMajor}
-          applyFilters={() => setShowDepartmentMajorModal(false)}
+          onClose={() => setShowDepartmentMajorModal(false)}
           resetFilters={() => {
             setSelectedDepartment('전체');
             setSelectedMajor('전체');
           }}
-          onClose={() => setShowDepartmentMajorModal(false)}
+          applyFilters={() => setShowDepartmentMajorModal(false)}
         />
       )}
 
@@ -174,9 +167,9 @@ export default function ExplorePage() {
         <FilterModalYear
           years={['25학번', '24학번', '23학번', '22학번', '21학번', '20학번 이상']}
           localYear={selectedYear}
-          setLocalYear={setSelectedYear}
-          applyFilters={() => setShowYearModal(false)}
+    
           resetFilters={() => setSelectedYear('전체')}
+          applyFilters={() => setShowYearModal(false)}
         />
       )}
     </div>

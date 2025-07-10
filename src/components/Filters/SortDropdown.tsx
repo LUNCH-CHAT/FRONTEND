@@ -4,10 +4,9 @@ import { ChevronDown } from 'lucide-react';
 interface SortDropdownProps {
   selected: string;
   options: string[];
-  onSelect: (value: string) => void;
 }
 
-export default function SortDropdown({ selected, options, onSelect }: SortDropdownProps) {
+export default function SortDropdown({ selected, options }: SortDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -39,7 +38,6 @@ export default function SortDropdown({ selected, options, onSelect }: SortDropdo
             <button
               key={option}
               onClick={() => {
-                onSelect(option);
                 setIsOpen(false);
               }}
               className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 ${
