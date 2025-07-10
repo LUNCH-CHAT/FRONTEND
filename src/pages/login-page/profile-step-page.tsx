@@ -3,11 +3,28 @@ import TimeTable from '../../components/TimeTable';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../../components/Modal';
 import TagSelectList from '../../components/TagSelect/TagSelectList';
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
 
 export default function ProfileStepPage() {
   const [step, setStep] = useState(0);
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
+  const [selectCollege, setSelectCollege] = useState("");
+  const [selectMajor, setSelectMajor] = useState("");
+
+  const college = [
+    "인문과학대학",
+    "자연과학대학",
+    "사회과학대학",
+    "음악대학",
+  ];
+
+  const major = [
+    "국어국문학과",
+    "중어중문학과",
+    "불어불문학과",
+    "독어독문학과",
+  ];
 
   const modalText =
     '런치챗은 교내 자기계발을 위한\n관심사 기반 밥약/커피챗 플랫폼입니다.\n건강한 소통 문화를 위해\n실명제로 운영됩니다.';
@@ -76,29 +93,61 @@ export default function ProfileStepPage() {
             <p className="text-black text-[22px] font-[pretendard] font-semibold mt-[57px] mb-[25px] flex items-center">
               <span className="text-[#FF7C6A] font-bold">학과</span>를 선택해주세요
             </p>
-            <div className="flex gap-[19px]">
-              <select
-                id="school"
-                name="school"
-                className="w-full border-b border-[#7D7D7D] text-[16px] font-[pretendard] font-regular focus:border-[#FF7C6A]"
-              >
-                <option value="" disabled hidden className="text-[#B6B6B6]">
-                  단과대 선택
-                </option>
-                <option>인문과학대학</option>
-                <option>사회과학대학</option>
-              </select>
-              <select
-                id="major"
-                name="major"
-                className="w-full border-b border-[#7D7D7D] text-[16px] font-[pretendard] font-regular focus:border-[#FF7C6A]"
-              >
-                <option value="" disabled hidden className="text-[#B6B6B6]">
-                  학과 선택
-                </option>
-                <option>컴공</option>
-                <option>미콘</option>
-              </select>
+
+            <div className="flex w-full gap-[19px]">
+
+              <Listbox value={selectCollege} onChange={setSelectCollege}>
+
+                <div className="relative w-full">
+                  <ListboxButton className={`w-full pb-1 border-b border-[#7D7D7D] text-left focus:border-[#FF7C6A] text-[16px] font-[pretendard] font-medium 
+                    ${selectCollege ? "text-black" : "text-[#B6B6B6]" }`}>
+                    <div className="flex justify-between items-center">    
+                      {selectCollege || "단과대 선택"}
+                      <img src="/src/assets/icons/dropdown.svg" alt="드롭다운" className="size-3 cursor-pointer"/>
+                    </div>
+                  </ListboxButton>
+
+                  {/* 옵션 */}
+                  <ListboxOptions className="absolute right-0 w-[127px] px-[11px] py-[10px] border border-[#D4D4D4] mt-1 flex flex-col gap-3">
+                    {college.map((value, idx) => (
+                      <ListboxOption
+                        key={idx}
+                        value={value}
+                        className="select-none text-4 font-[pretendard] font-regular leading-4"
+                      >
+                        {value}
+                      </ListboxOption>
+                    ))}
+                  </ListboxOptions>
+                </div>
+              </Listbox>
+              
+              <Listbox value={selectMajor} onChange={setSelectMajor}>
+
+                <div className="relative w-full">
+                  <ListboxButton className={`w-full pb-1 border-b border-[#7D7D7D] text-left focus:border-[#FF7C6A] text-[16px] font-[pretendard] font-medium 
+                    ${selectMajor ? "text-black" : "text-[#B6B6B6]" }`}>
+                    <div className="flex justify-between items-center">    
+                      {selectMajor || "학과 선택"}
+                      <img src="/src/assets/icons/dropdown.svg" alt="드롭다운" className="size-3 cursor-pointer"/>
+                    </div>
+                  </ListboxButton>
+
+                  {/* 옵션 */}
+                  <ListboxOptions className="absolute right-0 w-[127px] px-[11px] py-[10px] border border-[#D4D4D4] mt-1 flex flex-col gap-3">
+                    {major.map((value, idx) => (
+                      <ListboxOption
+                        key={idx}
+                        value={value}
+                        className="select-none text-4 font-[pretendard] font-regular leading-4"
+                      >
+                        {value}
+                      </ListboxOption>
+                    ))}
+                  </ListboxOptions>
+                </div>
+              </Listbox>
+
             </div>
           </div>
         )}
