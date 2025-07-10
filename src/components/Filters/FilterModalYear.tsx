@@ -1,3 +1,5 @@
+// src/components/Filters/FilterModalYear.tsx
+
 import { useEffect, useState } from 'react';
 import FilterTagOption from './FilterTagOption';
 import FilterButton from './FilterButton';
@@ -5,7 +7,6 @@ import FilterButton from './FilterButton';
 interface FilterModalYearProps {
   years: string[];
   localYear: string;
-  setLocalYear: (value: string) => void;
   resetFilters: () => void;
   applyFilters: () => void;
 }
@@ -13,7 +14,6 @@ interface FilterModalYearProps {
 export default function FilterModalYear({
   years,
   localYear,
-  setLocalYear,
   resetFilters,
   applyFilters,
 }: FilterModalYearProps) {
@@ -34,7 +34,6 @@ export default function FilterModalYear({
       <FilterTagOption
         options={years}
         selected={localYear}
-        onSelect={setLocalYear}
       />
       <div className="flex gap-4 mt-6">
         <FilterButton label="초기화" onClick={resetFilters} selected={false} />

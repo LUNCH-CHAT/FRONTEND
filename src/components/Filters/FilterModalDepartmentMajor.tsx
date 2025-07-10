@@ -1,3 +1,5 @@
+// src/components/Filters/FilterModalDepartmentMajor.tsx
+
 import { useEffect, useState } from 'react';
 import FilterTagOption from './FilterTagOption';
 import FilterButton from './FilterButton';
@@ -6,9 +8,9 @@ interface Props {
   departments: string[];
   majors: string[];
   localDepartment: string;
-  setLocalDepartment: (value: string) => void;
+
   localMajor: string;
-  setLocalMajor: (value: string) => void;
+
   applyFilters: () => void;
   resetFilters: () => void;
   onClose: () => void;
@@ -18,9 +20,9 @@ export default function FilterModalDepartmentMajor({
   departments,
   majors,
   localDepartment,
-  setLocalDepartment,
+
   localMajor,
-  setLocalMajor,
+
   applyFilters,
   resetFilters,
   onClose,
@@ -43,7 +45,7 @@ export default function FilterModalDepartmentMajor({
         <FilterTagOption
           options={departments}
           selected={localDepartment}
-          onSelect={setLocalDepartment}
+        
         />
       </div>
 
@@ -52,16 +54,12 @@ export default function FilterModalDepartmentMajor({
         <FilterTagOption
           options={majors}
           selected={localMajor}
-          onSelect={setLocalMajor}
+          
         />
       </div>
 
       <div className="flex gap-4 mt-4">
-        <FilterButton
-          label="초기화"
-          onClick={resetFilters}
-          selected={false}
-        />
+        <FilterButton label="초기화" onClick={resetFilters} selected={false} />
         <FilterButton
           label="적용하기"
           onClick={() => {

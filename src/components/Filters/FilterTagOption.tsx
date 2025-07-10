@@ -1,20 +1,19 @@
+// src/components/Filters/FilterTagOption.tsx
+
 interface FilterTagOptionProps {
   options: string[];
   selected: string;
-  onSelect: (value: string) => void;
 }
 
 export default function FilterTagOption({
   options,
   selected,
-  onSelect,
 }: FilterTagOptionProps) {
   return (
     <div className="flex flex-wrap gap-2">
       {options.map(option => (
         <button
           key={option}
-          onClick={() => onSelect(option)}
           className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${
             selected === option
               ? 'bg-primary text-white border-primary'
