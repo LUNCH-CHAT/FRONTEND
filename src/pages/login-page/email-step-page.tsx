@@ -1,9 +1,36 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { validateSignin } from '../../utils/validate';
+import Modal from '../../components/Modal';
 
 export default function EmailStepPage() {
   const [step, setStep] = useState<'email' | 'code'>('email');
   const navigate = useNavigate();
+  const [schoolEmail,setSchoolEmail] = useState("");
+  const [error,setError] = useState("");
+  const [modalOpen,setModalOpen] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSchoolEmail(e.target.value);
+  };
+
+  const handleEmailClick = () => {
+    if (error==""){
+      setStep('code');
+    } else {
+      setModalOpen(true);
+    }
+  }
+
+  const modalClose = () => {
+    setModalOpen(false);
+  }
+
+  useEffect(()=>{
+    const newError=validateSignin({email: schoolEmail});
+    setError(newError.email);
+  },[schoolEmail])
+
 
   return (
     <div>
@@ -16,22 +43,27 @@ export default function EmailStepPage() {
           <div className="px-[20px]">
             <input
               type="email"
-              id="schoolEmail"
-              name="schoolEmail"
+              onChange={handleChange}
               placeholder="lunchchat@ewha.ac.kr"
               className="w-full text-black text-[16px] font-[pretendard] font-medium leading-[20px] border-b border-[#7D7D7D] focus:border-[#FF7C6A] focus:outline-none"
             />
           </div>
           <div className="fixed bottom-0 px-[20px] pb-[23px] w-full">
             <button
-              type="submit"
-              onClick={() => setStep('code')}
+              type="button"
+              onClick={handleEmailClick}
               className="w-full h-[48px] bg-[#FF7C6A] rounded-[10px] text-center text-white font-[pretendard] font-semibold cursor-pointer"
             >
               인증번호 보내기
             </button>
           </div>
+          {modalOpen && (
+          <>
+            <Modal modalText={error} onClose={modalClose}/>
+          </>
+        )}
         </div>
+        
       )}
 
       {step === 'code' && (
