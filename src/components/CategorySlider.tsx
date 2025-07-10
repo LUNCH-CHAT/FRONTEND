@@ -1,3 +1,5 @@
+// src/components/CategorySlider.tsx
+
 import CategoryGridItem from './CategoryGridItem';
 
 interface CategorySliderProps {
@@ -16,15 +18,15 @@ export default function CategorySlider({
       className="flex items-center overflow-x-auto no-scrollbar gap-x-[24px] mb-6 px-5"
       style={{ height: '58px', boxSizing: 'border-box' }}
     >
-      {categories.map((category) => (
+      {categories.map(({ label, icon }) => (
         <button
-          key={category.label}
+          key={label}
           className={`flex-shrink-0 ${
-            selectedCategory === category.label ? 'opacity-100' : 'opacity-40'
+            selectedCategory === label ? 'opacity-100' : 'opacity-40'
           }`}
-          onClick={() => onSelect(category.label)}
+          onClick={() => onSelect(label)}
         >
-          <CategoryGridItem icon={category.icon} label={category.label} />
+          <CategoryGridItem icon={icon} label={label} />
         </button>
       ))}
     </div>
