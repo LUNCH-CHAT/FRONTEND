@@ -35,7 +35,7 @@ export default function ProfileStepPage() {
 
   return (
     <div>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col">
         <div className="flex justify-between items-start px-[22px]">
           <div>
             <p className="text-black text-[20px] font-[pretendard] font-semibold mb-[10px]">
