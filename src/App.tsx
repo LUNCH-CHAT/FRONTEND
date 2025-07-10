@@ -41,7 +41,7 @@ const protectedRoutes: RouteObject[] = [
       { path: 'chatting/:id', element: <ChattingRoom /> },
       { path: 'profile/:id', element: <ProfileDetailPage /> },
       { path: 'matching', element: <MatchingListPage /> },
-      { path: 'search', element: <ExplorePage /> }, 
+      { path: 'explore', element: <ExplorePage /> }, 
     ],
   },
 ];

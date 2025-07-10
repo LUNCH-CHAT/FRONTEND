@@ -1,16 +1,15 @@
-// src/components/CategorySlider.tsx
-
 import CategoryGridItem from './CategoryGridItem';
 
 interface CategorySliderProps {
   categories: { label: string; icon: React.ReactNode }[];
   selectedCategory: string;
-  
+  onSelect: (label: string) => void;
 }
 
 export default function CategorySlider({
   categories,
   selectedCategory,
+  onSelect,
 }: CategorySliderProps) {
   return (
     <div
@@ -23,7 +22,7 @@ export default function CategorySlider({
           className={`flex-shrink-0 ${
             selectedCategory === category.label ? 'opacity-100' : 'opacity-40'
           }`}
-          onClick={() => (category.label)}
+          onClick={() => onSelect(category.label)} 
         >
           <CategoryGridItem icon={category.icon} label={category.label} />
         </button>

@@ -1,3 +1,4 @@
+import { useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ProfileCard from '../../components/ProfileCard';
 import Navbar from '../../components/Navbar';
@@ -18,7 +19,14 @@ import HobbyIcon from '@/assets/icons/extreaactivities.svg?react';
 import SchoolIcon from '@/assets/icons/campus.svg?react';
 
 export default function ExplorePage() {
-  const [selectedCategory] = useState('전체');
+  const [searchParams] = useSearchParams();
+  const [selectedCategory, setSelectedCategory] = useState('전체');
+
+  useEffect(() => {
+    const param = searchParams.get('category') || '전체';
+    setSelectedCategory(param);
+  }, [searchParams]);
+
   const [showDepartmentMajorModal, setShowDepartmentMajorModal] = useState(false);
   const [showYearModal, setShowYearModal] = useState(false);
 
@@ -90,6 +98,7 @@ export default function ExplorePage() {
         <CategorySlider
           categories={categories}
           selectedCategory={selectedCategory}
+          onSelect={setSelectedCategory}
         />
 
         <div className="flex gap-2 flex-wrap justify-start mt-4 mb-4">
@@ -124,34 +133,8 @@ export default function ExplorePage() {
 
       {showDepartmentMajorModal && (
         <FilterModalDepartmentMajor
-          departments={[
-            '인문과학대학',
-            '사회과학대학',
-            '자연과학대학',
-            '공과대학',
-            '음악대학',
-            '조형예술대학',
-            '사범대학',
-            '경영대학',
-            '신산업융합대학',
-            '의과대학',
-            '간호대학',
-            '약학대학',
-            '스마트인재대학',
-            '인공지능대학',
-            '초교과융합대학',
-          ]}
-          majors={[
-            '국어국문학과',
-            '중어중문학과',
-            '독어독문학과',
-            '사학과',
-            '철학과',
-            '기독교교육과',
-            '영어영문학과',
-            '컴퓨터공학과',
-            '전자공학과',
-          ]}
+          departments={['공과대학', '자연과학대학', '인문과학대학']}
+          majors={['컴퓨터공학과', '전자공학과', '국어국문학과']}
           localDepartment={selectedDepartment}
           localMajor={selectedMajor}
           onClose={() => setShowDepartmentMajorModal(false)}
@@ -165,9 +148,8 @@ export default function ExplorePage() {
 
       {showYearModal && (
         <FilterModalYear
-          years={['25학번', '24학번', '23학번', '22학번', '21학번', '20학번 이상']}
+          years={['25학번', '24학번', '23학번', '22학번', '21학번']}
           localYear={selectedYear}
-    
           resetFilters={() => setSelectedYear('전체')}
           applyFilters={() => setShowYearModal(false)}
         />
