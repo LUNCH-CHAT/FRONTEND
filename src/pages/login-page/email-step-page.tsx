@@ -7,16 +7,34 @@ export default function EmailStepPage() {
   const [step, setStep] = useState<'email' | 'code'>('email');
   const navigate = useNavigate();
   const [schoolEmail,setSchoolEmail] = useState("");
+  const [code,setCode] = useState(["", "", "", "", ""]);
   const [error,setError] = useState("");
   const [modalOpen,setModalOpen] = useState(false);
+  const isEmailDisabled = schoolEmail.trim() === "";
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSchoolEmail(e.target.value);
   };
 
   const handleEmailClick = () => {
     if (error==""){
       setStep('code');
+    } else {
+      setModalOpen(true);
+    }
+  }
+
+  const handleCodeChange = (index: number, value: string) => {
+    const newCode = [...code];
+    newCode[index]=value;
+    setCode(newCode);
+  };
+
+  const handleCodeClick = () => {
+    {/*일단 11111만 통과하도록 설정*/}
+    if (code.join("") === "11111"){
+      navigate(`/onboarding/profile`);
     } else {
       setModalOpen(true);
     }
@@ -43,7 +61,7 @@ export default function EmailStepPage() {
           <div className="px-[20px]">
             <input
               type="email"
-              onChange={handleChange}
+              onChange={handleEmailChange}
               placeholder="lunchchat@ewha.ac.kr"
               className="w-full text-black text-[16px] font-[pretendard] font-medium leading-[20px] border-b border-[#7D7D7D] focus:border-[#FF7C6A] focus:outline-none"
             />
@@ -52,7 +70,7 @@ export default function EmailStepPage() {
             <button
               type="button"
               onClick={handleEmailClick}
-              className="w-full h-[48px] bg-[#FF7C6A] rounded-[10px] text-center text-white font-[pretendard] font-semibold cursor-pointer"
+              className={`w-full h-[48px] rounded-[10px] text-center text-white font-[pretendard] font-semibold cursor-pointer ${isEmailDisabled ? 'bg-gray-300' : 'bg-[#FF7C6A]'}`}
             >
               인증번호 보내기
             </button>
@@ -80,6 +98,7 @@ export default function EmailStepPage() {
                 <input
                   key={i}
                   maxLength={1}
+                  onChange={(e) => handleCodeChange(i, e.target.value)}
                   type="text"
                   className="w-[40px] border-b border-[#7D7D7D] outline-none text-center font-[pretendard] font-semibold text-[22px] focus:border-[#FF7C6A]"
                 />
@@ -97,13 +116,14 @@ export default function EmailStepPage() {
             <button
               type="button"
               className="w-full h-[48px] bg-[#FF7C6A] rounded-[10px] text-center text-white font-[pretendard] font-semibold cursor-pointer"
-              onClick={() => {
-                navigate(`/onboarding/profile`);
-              }}
+              onClick={handleCodeClick}
             >
               인증하기
             </button>
           </div>
+          {modalOpen && (
+            <Modal modalText='인증번호가 일치하지 않아요' onClose={modalClose}/>
+          )}
         </div>
       )}
     </div>
