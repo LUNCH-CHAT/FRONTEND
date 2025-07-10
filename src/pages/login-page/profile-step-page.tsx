@@ -129,7 +129,7 @@ export default function ProfileStepPage() {
           </div>
         )}
         {step === 5 && <>{navigate(`/onboarding/complete`)}</>}
-        <div className="fixed bottom-0 px-[22px] w-full pb-[23px]">
+        <div className="fixed max-w-[480px] bottom-0 px-[22px] w-full pb-[23px]">
           <button
             type="button"
             onClick={() => setStep(step + 1)}

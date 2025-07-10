@@ -48,7 +48,7 @@ export default function EmailStepPage() {
               className="w-full text-black text-[16px] font-[pretendard] font-medium leading-[20px] border-b border-[#7D7D7D] focus:border-[#FF7C6A] focus:outline-none"
             />
           </div>
-          <div className="fixed bottom-0 px-[20px] pb-[23px] w-full">
+          <div className="fixed max-w-[480px] bottom-0 px-[20px] pb-[23px] w-full">
             <button
               type="button"
               onClick={handleEmailClick}
@@ -86,7 +86,7 @@ export default function EmailStepPage() {
               ))}
           </div>
 
-          <div className="w-full fixed bottom-0 flex flex-col items-center px-[20px] pb-[23px]">
+          <div className="w-full fixed max-w-[480px] bottom-0 flex flex-col items-center px-[20px] pb-[23px]">
             <button
               type="button"
               className="inline-block border-b border-[#FF7C6A] text-[#FF7C6A] font-[pretendard] font-medium text-[13px] mb-[13px] cursor-pointer"

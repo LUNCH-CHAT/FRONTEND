@@ -20,7 +20,7 @@ export default function OnboardingPage() {
                         </button>
                         <button 
                             type="button" 
-                            className="w-[212px] h-[40px] bg-white rounded-[10px] text-center text-black font-[pretendard] font-medium cursor-pointer flex items-center justify-center">
+                            className="w-[212px] h-[40px] bg-white rounded-[10px] text-center text-black font-[pretendard] font-medium cursor-pointer flex items-center justify-center  border border-[#D4D4D4]">
                             <img src="/src/assets/icons/google-logo.svg" alt="구글 로고 이미지" className="size-[19px] pr-[7px]"/> 이메일 로그인
                         </button> 
                     </div>
