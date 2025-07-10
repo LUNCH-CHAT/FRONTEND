@@ -2,13 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import Back from '@/assets/back.svg';
 import BasicProfile from '@/assets/basic-profile.png';
 
-// interface ChatHeaderProps {
-//   image?: string;
-//   name: string;
-//   major: string;
-// }
+interface ChatHeaderProps {
+  name: string;
+}
 
-const ChatHeader = () => {
+const ChatHeader = ({ name }: ChatHeaderProps) => {
   const navigate = useNavigate();
 
   const handleBack = () => {
@@ -26,7 +24,7 @@ const ChatHeader = () => {
         className="w-[35px] h-[35px] rounded-full object-cover mt-1 ml-2"
       />
       <div>
-        <p className="font-[pretendard] font-normal">유엠씨</p>
+        <p className="font-[pretendard] font-normal">{name}</p>
         <p className="font-[pretendard] font-normal text-[13px]">컴퓨터공학과</p>
       </div>
     </div>

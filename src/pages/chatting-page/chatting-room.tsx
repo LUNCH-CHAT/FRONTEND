@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import ChatMessages from '../../components/ChattingPage/ChatMessages';
 import ChatHeader from '../../components/ChattingPage/ChatHeader';
 import ChatInput from '../../components/ChattingPage/ChatInput';
+import { useLocation } from 'react-router-dom';
 
 const mockMessages = [
   {
@@ -52,6 +53,10 @@ const mockMessages = [
 export default function ChattingRoom() {
   // const { id } = useParams();
 
+  const location = useLocation();
+  const { name } = location.state;
+  console.log(name);
+
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<
     {
@@ -75,7 +80,7 @@ export default function ChattingRoom() {
   return (
     <>
       {/* 헤더 */}
-      <ChatHeader />
+      <ChatHeader name={name} />
       {/* 대화 내용 */}
       <ChatMessages messages={messages} />
       {/* 입력창 */}
