@@ -123,29 +123,38 @@ export default function ExplorePage() {
         </div>
       </div>
 
+      {/* ====== 수정된 모달 래퍼 코드 시작 ====== */}
       {showDepartmentMajorModal && (
-        <FilterModalDepartmentMajor
-          departments={['공과대학', '자연과학대학', '인문과학대학']}
-          majors={['컴퓨터공학과', '전자공학과', '국어국문학과']}
-          localDepartment={selectedDepartment}
-          localMajor={selectedMajor}
-          onClose={() => setShowDepartmentMajorModal(false)}
-          resetFilters={() => {
-            setSelectedDepartment('전체');
-            setSelectedMajor('전체');
-          }}
-          applyFilters={() => setShowDepartmentMajorModal(false)}
-        />
+        <div className="fixed inset-x-0 bottom-0 z-50 flex justify-center">
+          <div className="w-full sm:max-w-[700px]">
+            <FilterModalDepartmentMajor
+              departments={['공과대학', '자연과학대학', '인문과학대학']}
+              majors={['컴퓨터공학과', '전자공학과', '국어국문학과']}
+              localDepartment={selectedDepartment}
+              localMajor={selectedMajor}
+              onClose={() => setShowDepartmentMajorModal(false)}
+              resetFilters={() => {
+                setSelectedDepartment('전체');
+                setSelectedMajor('전체');
+              }}
+              applyFilters={() => setShowDepartmentMajorModal(false)}
+            />
+          </div>
+        </div>
       )}
 
       {showYearModal && (
-        <FilterModalYear
-          years={['25학번', '24학번', '23학번', '22학번', '21학번']}
-          localYear={selectedYear}
-          resetFilters={() => setSelectedYear('전체')}
-          applyFilters={() => setShowYearModal(false)}
-          onClose={() => setShowYearModal(false)}
-        />
+        <div className="fixed inset-x-0 bottom-0 z-50 flex justify-center">
+          <div className="w-full sm:max-w-[700px]">
+            <FilterModalYear
+              years={['25학번', '24학번', '23학번', '22학번', '21학번']}
+              localYear={selectedYear}
+              resetFilters={() => setSelectedYear('전체')}
+              applyFilters={() => setShowYearModal(false)}
+              onClose={() => setShowYearModal(false)}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

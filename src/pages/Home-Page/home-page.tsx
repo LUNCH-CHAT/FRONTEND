@@ -12,9 +12,9 @@ import GradeIcon from '@/assets/icons/graditmanagement.svg?react';
 import LanguageIcon from '@/assets/icons/forienlanguage.svg?react';
 import HobbyIcon from '@/assets/icons/extreaactivities.svg?react';
 import SchoolIcon from '@/assets/icons/campus.svg?react';
-import HomeBanner from '@/assets/icons/homebanner.svg?react';
 import LunchatIcon from '@/assets/icons/lunchat.svg?react';
 import QuestionIcon from '@/assets/icons/question.svg?react';
+import homeBg from '@/assets/images/home-bg.png'; 
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -31,7 +31,11 @@ export default function HomePage() {
           <Swiper autoplay={{ delay: 4000 }} loop slidesPerView={1}>
             <SwiperSlide>
               <div className="w-full h-[236px]">
-                <HomeBanner className="w-full h-full" />
+                <img
+                  src={homeBg}
+                  alt="홈 배경"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </SwiperSlide>
           </Swiper>
