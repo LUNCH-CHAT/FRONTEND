@@ -1,9 +1,54 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { validateSignin } from '../../utils/validate';
+import Modal from '../../components/Modal';
 
 export default function EmailStepPage() {
   const [step, setStep] = useState<'email' | 'code'>('email');
   const navigate = useNavigate();
+  const [schoolEmail,setSchoolEmail] = useState("");
+  const [code,setCode] = useState(["", "", "", "", ""]);
+  const [error,setError] = useState("");
+  const [modalOpen,setModalOpen] = useState(false);
+  const isEmailDisabled = schoolEmail.trim() === "";
+
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSchoolEmail(e.target.value);
+  };
+
+  const handleEmailClick = () => {
+    if (error==""){
+      setStep('code');
+    } else {
+      setModalOpen(true);
+    }
+  }
+
+  const handleCodeChange = (index: number, value: string) => {
+    const newCode = [...code];
+    newCode[index]=value;
+    setCode(newCode);
+  };
+
+  const handleCodeClick = () => {
+    {/*일단 11111만 통과하도록 설정*/}
+    if (code.join("") === "11111"){
+      navigate(`/onboarding/profile`);
+    } else {
+      setModalOpen(true);
+    }
+  }
+
+  const modalClose = () => {
+    setModalOpen(false);
+  }
+
+  useEffect(()=>{
+    const newError=validateSignin({email: schoolEmail});
+    setError(newError.email);
+  },[schoolEmail])
+
 
   return (
     <div>
@@ -16,22 +61,27 @@ export default function EmailStepPage() {
           <div className="px-[20px]">
             <input
               type="email"
-              id="schoolEmail"
-              name="schoolEmail"
+              onChange={handleEmailChange}
               placeholder="lunchchat@ewha.ac.kr"
               className="w-full text-black text-[16px] font-[pretendard] font-medium leading-[20px] border-b border-[#7D7D7D] focus:border-[#FF7C6A] focus:outline-none"
             />
           </div>
-          <div className="fixed bottom-0 px-[20px] pb-[23px] w-full">
+          <div className="fixed max-w-[480px] bottom-0 px-[20px] pb-[23px] w-full">
             <button
-              type="submit"
-              onClick={() => setStep('code')}
-              className="w-full h-[48px] bg-[#FF7C6A] rounded-[10px] text-center text-white font-[pretendard] font-semibold cursor-pointer"
+              type="button"
+              onClick={handleEmailClick}
+              className={`w-full h-[48px] rounded-[10px] text-center text-white font-[pretendard] font-semibold cursor-pointer ${isEmailDisabled ? 'bg-gray-300' : 'bg-[#FF7C6A]'}`}
             >
               인증번호 보내기
             </button>
           </div>
+          {modalOpen && (
+          <>
+            <Modal modalText={error} onClose={modalClose}/>
+          </>
+        )}
         </div>
+        
       )}
 
       {step === 'code' && (
@@ -48,13 +98,14 @@ export default function EmailStepPage() {
                 <input
                   key={i}
                   maxLength={1}
+                  onChange={(e) => handleCodeChange(i, e.target.value)}
                   type="text"
                   className="w-[40px] border-b border-[#7D7D7D] outline-none text-center font-[pretendard] font-semibold text-[22px] focus:border-[#FF7C6A]"
                 />
               ))}
           </div>
 
-          <div className="w-full fixed bottom-0 flex flex-col items-center px-[20px] pb-[23px]">
+          <div className="w-full fixed max-w-[480px] bottom-0 flex flex-col items-center px-[20px] pb-[23px]">
             <button
               type="button"
               className="inline-block border-b border-[#FF7C6A] text-[#FF7C6A] font-[pretendard] font-medium text-[13px] mb-[13px] cursor-pointer"
@@ -65,13 +116,14 @@ export default function EmailStepPage() {
             <button
               type="button"
               className="w-full h-[48px] bg-[#FF7C6A] rounded-[10px] text-center text-white font-[pretendard] font-semibold cursor-pointer"
-              onClick={() => {
-                navigate(`/onboarding/profile`);
-              }}
+              onClick={handleCodeClick}
             >
               인증하기
             </button>
           </div>
+          {modalOpen && (
+            <Modal modalText='인증번호가 일치하지 않아요' onClose={modalClose}/>
+          )}
         </div>
       )}
     </div>
