@@ -38,14 +38,14 @@ export default function ProfileCard({
           icon
         )}
       </div>
-      <h3 className="text-sm font-semibold text-black mb-1">{name}</h3>
+      <h3 className="text-sm font-[semibold] text-black mb-1">{name}</h3>
       <p className="text-xs text-gray-600 mb-1">{department}</p>
       <p className="text-xs text-gray-400 mb-2">{tags.join(' | ')}</p>
       <div className="flex flex-wrap gap-1">
         {tags.map((tag, i) => (
           <span
             key={i}
-            className="text-[10px] px-2 py-0.5 border border-[#FF5A5A] text-[#FF5A5A] rounded-full"
+            className="text-[10px] px-2 py-0.5 border border-[#FF5A5A] text-black rounded-full"
           >
             {tag}
           </span>
