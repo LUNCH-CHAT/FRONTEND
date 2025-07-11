@@ -1,7 +1,7 @@
 interface FilterTagOptionProps {
   options: string[];
   selected: string;
-  onSelect?: (value: string) => void;
+  onSelect?: (_value: string) => void;
 }
 
 export default function FilterTagOption({

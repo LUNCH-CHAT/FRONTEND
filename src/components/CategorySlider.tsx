@@ -3,7 +3,7 @@ import CategoryGridItem from './CategoryGridItem';
 interface CategorySliderProps {
   categories: { label: string; icon: React.ReactNode }[];
   selectedCategory: string;
-  onSelect: (label: string) => void;
+  onSelect: (_label: string) => void;
 }
 
 export default function CategorySlider({
