@@ -13,7 +13,11 @@ const ChattingList = ({ id, image, name, lastMessage, time }: ChattingListProps)
   const navigate = useNavigate();
 
   const handleEnterRoom = () => {
-    navigate(`/chatting/${id}`);
+    navigate(`/chatting/${id}`, {
+      state: {
+        name,
+      },
+    });
   };
 
   return (

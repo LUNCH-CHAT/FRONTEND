@@ -1,4 +1,5 @@
 import BasicProfile from '@/assets/basic-profile.png';
+import { useNavigate } from 'react-router-dom';
 
 interface AlarmCardProps {
   image?: string;
@@ -8,8 +9,18 @@ interface AlarmCardProps {
 }
 
 const AlarmCard = ({ image, sender, type, time }: AlarmCardProps) => {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate('/matching', {
+      state: {
+        selectTab: 'matched',
+      },
+    });
+  };
+
   return (
-    <div className="flex gap-3 p-4">
+    <div className="flex gap-3 m-4 cursor-pointer" onClick={handleNavigate}>
       <img
         src={image ? image : BasicProfile}
         alt={`${sender}님의 프로필`}

@@ -1,7 +1,9 @@
+// src/pages/Explore-Page/explore-page.tsx
+
 import { useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useNav } from '../../context/NavContext';
 import ProfileCard from '../../components/ProfileCard';
-import Navbar from '../../components/Navbar';
 import CategorySlider from '../../components/CategorySlider';
 import FilterModalDepartmentMajor from '../../components/Filters/FilterModalDepartmentMajor';
 import FilterModalYear from '../../components/Filters/FilterModalYear';
@@ -20,13 +22,9 @@ import SchoolIcon from '@/assets/icons/campus.svg?react';
 
 export default function ExplorePage() {
   const [searchParams] = useSearchParams();
+  const { setHideNav } = useNav();
+
   const [selectedCategory, setSelectedCategory] = useState('전체');
-
-  useEffect(() => {
-    const param = searchParams.get('category') || '전체';
-    setSelectedCategory(param);
-  }, [searchParams]);
-
   const [showDepartmentMajorModal, setShowDepartmentMajorModal] = useState(false);
   const [showYearModal, setShowYearModal] = useState(false);
 
@@ -36,12 +34,21 @@ export default function ExplorePage() {
   const [sortOrder] = useState<'추천순' | '최신순'>('최신순');
 
   useEffect(() => {
+    const param = searchParams.get('category') || '전체';
+    setSelectedCategory(param);
+  }, [searchParams]);
+
+  useEffect(() => {
     document.body.style.overflow =
       showDepartmentMajorModal || showYearModal ? 'hidden' : 'auto';
     return () => {
       document.body.style.overflow = 'auto';
     };
   }, [showDepartmentMajorModal, showYearModal]);
+
+  useEffect(() => {
+    setHideNav(showDepartmentMajorModal || showYearModal);
+  }, [showDepartmentMajorModal, showYearModal, setHideNav]);
 
   const categories = [
     { label: '전체', icon: <AllIcon /> },
@@ -56,27 +63,12 @@ export default function ExplorePage() {
   ];
 
   const profiles = [
-    {
-      id: '1',
-      name: '쑤기',
-      department: '컴퓨터공학과 23학번',
-      tags: ['학점관리'],
-      image: '/images/profile.png',
-    },
-    {
-      id: '2',
-      name: '소피아',
-      department: '국어국문학과 22학번',
-      tags: ['창업', '취미/여가'],
-      image: '/images/profile.png',
-    },
-    {
-      id: '3',
-      name: '제임스',
-      department: '전자공학과 21학번',
-      tags: ['교환학생', '외국어 공부'],
-      image: '/images/profile.png',
-    },
+    { id: '1', name: '쑤기', department: '컴퓨터공학과 23학번', tags: ['학점관리'], image: '/images/profile.png' },
+    { id: '2', name: '소피아', department: '국어국문학과 22학번', tags: ['창업', '취미/여가'], image: '/images/profile.png' },
+    { id: '3', name: '제임스', department: '전자공학과 21학번', tags: ['교환학생', '외국어 공부'], image: '/images/profile.png' },
+    { id: '4', name: '마피아', department: '국어국문학과 22학번', tags: ['취업/진로', '취미/여가'], image: '/images/profile.png' },
+    { id: '5', name: '쑥', department: '전자공학과 21학번', tags: ['고시', '외국어 공부'], image: '/images/profile.png' },
+    { id: '6', name: '바이크', department: '전자공학과 21학번', tags: ['학교생활', '외국어 공부'], image: '/images/profile.png' },
   ];
 
   const filteredProfiles = profiles
@@ -93,7 +85,7 @@ export default function ExplorePage() {
     });
 
   return (
-    <div className="w-full min-h-screen bg-white font-pretendard flex flex-col items-center pb-28">
+    <div className="w-full min-h-screen bg-white font-[pretendard] flex flex-col items-center pb-28">
       <div className="w-full max-w-[700px] px-4 pt-[86px]">
         <CategorySlider
           categories={categories}
@@ -107,11 +99,13 @@ export default function ExplorePage() {
             label="단대/학과"
             onClick={() => setShowDepartmentMajorModal(true)}
             selected={selectedDepartment !== '전체' || selectedMajor !== '전체'}
+            variant="pill"
           />
           <FilterButton
             label="학번"
             onClick={() => setShowYearModal(true)}
             selected={selectedYear !== '전체'}
+            variant="pill"
           />
         </div>
 
@@ -128,8 +122,6 @@ export default function ExplorePage() {
           ))}
         </div>
       </div>
-
-      <Navbar />
 
       {showDepartmentMajorModal && (
         <FilterModalDepartmentMajor
@@ -152,6 +144,7 @@ export default function ExplorePage() {
           localYear={selectedYear}
           resetFilters={() => setSelectedYear('전체')}
           applyFilters={() => setShowYearModal(false)}
+          onClose={() => setShowYearModal(false)}
         />
       )}
     </div>

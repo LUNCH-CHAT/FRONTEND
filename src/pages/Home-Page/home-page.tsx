@@ -51,7 +51,7 @@ export default function HomePage() {
 
         {/* 추천 슬라이드 */}
         <section className="px-4 pb-6">
-          <h2 className="text-[20px] font-semibold mb-4">나와 ‘시간표 · 관심사’가 겹쳐요!</h2>
+          <h2 className="text-[20px] font-[semibold] mb-4">나와 ‘시간표 · 관심사’가 겹쳐요!</h2>
           <div className="grid grid-cols-2 xs:grid-cols-3 gap-4">
             {[1, 2, 3].map(i => (
               <ProfileCard
@@ -68,7 +68,7 @@ export default function HomePage() {
 
         {/* 이런 사람 어때요? */}
         <section className="px-4 pb-6">
-          <h2 className="text-[20px] font-semibold mb-4">이런 사람 어때요?</h2>
+          <h2 className="text-[20px] font-[semibold] mb-4">이런 사람 어때요?</h2>
           <div className="grid grid-cols-2 xs:grid-cols-3 gap-4">
             {[4, 5, 6].map(i => (
               <ProfileCard
@@ -85,7 +85,7 @@ export default function HomePage() {
 
         {/* 런치챗 소개 */}
         <section className="bg-gray-50 py-6 px-4">
-          <h2 className="text-[20px] font-semibold text-black mb-4">런치챗 소개</h2>
+          <h2 className="text-[20px] font-[semibold] text-black mb-4">런치챗 소개</h2>
           <div className="grid grid-cols-2 gap-4">
             <InfoCard title="런치챗 소개" icon={<LunchatIcon className="w-[101px] h-[29px]" />} />
             <InfoCard title="자주 묻는 질문" icon={<QuestionIcon className="w-[20px] h-[29px]" />} />

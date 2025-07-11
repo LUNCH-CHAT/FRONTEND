@@ -13,7 +13,7 @@ function CategoryGridItem({ icon, label, onClick }: CategoryGridItemProps) {
       <div className="w-[40px] h-[40px] flex items-center justify-center aspect-square mb-2">
         {icon}
       </div>
-      <span className="text-[13px] leading-[16px] font-normal text-black font-pretendard">
+      <span className="text-[13px] leading-[16px] font-[normal] text-black font-[pretendard]">
         {label}
       </span>
     </div>
