@@ -1,5 +1,3 @@
-// src/components/CategorySlider.tsx
-
 import CategoryGridItem from './CategoryGridItem';
 
 interface CategorySliderProps {
@@ -26,7 +24,10 @@ export default function CategorySlider({
           }`}
           onClick={() => onSelect(category.label)}
         >
-          <CategoryGridItem icon={category.icon} label={category.label} />
+          <CategoryGridItem 
+            icon={category.icon} 
+            label={category.label} 
+          />
         </button>
       ))}
     </div>

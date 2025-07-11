@@ -1,11 +1,11 @@
 // src/context/NavContext.tsx
 
 import { createContext, useContext, useState } from 'react';
-import type { ReactNode } from 'react';
+import type { Dispatch, SetStateAction, ReactNode } from 'react';
 
 type NavContextType = {
   hideNav: boolean;
-  setHideNav: (_hide: boolean) => void;
+  setHideNav: Dispatch<SetStateAction<boolean>>;
 };
 
 const NavContext = createContext<NavContextType | undefined>(undefined);

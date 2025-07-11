@@ -1,5 +1,3 @@
-// src/components/Filters/FilterTagOption.tsx
-
 interface FilterTagOptionProps {
   options: string[];
   selected: string;
