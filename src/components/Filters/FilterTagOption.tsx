@@ -3,7 +3,7 @@
 interface FilterTagOptionProps {
   options: string[];
   selected: string;
-  onSelect?: (value: string) => void;  // 클릭 이벤트 추가 가능
+  onSelect?: (value: string) => void;
 }
 
 export default function FilterTagOption({

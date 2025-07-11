@@ -1,3 +1,5 @@
+// src/components/CategorySlider.tsx
+
 import CategoryGridItem from './CategoryGridItem';
 
 interface CategorySliderProps {
@@ -22,7 +24,7 @@ export default function CategorySlider({
           className={`flex-shrink-0 ${
             selectedCategory === category.label ? 'opacity-100' : 'opacity-40'
           }`}
-          onClick={() => onSelect(category.label)} 
+          onClick={() => onSelect(category.label)}
         >
           <CategoryGridItem icon={category.icon} label={category.label} />
         </button>

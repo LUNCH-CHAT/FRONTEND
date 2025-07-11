@@ -1,11 +1,13 @@
 // src/context/NavContext.tsx
+
 import { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
 
 type NavContextType = {
   hideNav: boolean;
-  setHideNav: (hide: boolean) => void;
+  setHideNav: (_hide: boolean) => void;
 };
+
 const NavContext = createContext<NavContextType | undefined>(undefined);
 
 export function NavProvider({ children }: { children: ReactNode }) {
