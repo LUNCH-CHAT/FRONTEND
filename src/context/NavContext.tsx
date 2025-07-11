@@ -1,5 +1,3 @@
-// src/context/NavContext.tsx
-
 import { createContext, useContext, useState } from 'react';
 import type { Dispatch, SetStateAction, ReactNode } from 'react';
 
