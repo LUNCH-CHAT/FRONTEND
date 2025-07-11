@@ -15,7 +15,7 @@ import ChattingRoom from './pages/chatting-page/chatting-room';
 import MatchingListPage from './pages/matching-list-page';
 import ProfileDetailPage from './pages/Profile-Detail/profile-detail-page';
 import AlarmPage from './pages/alarm-page';
-import ExplorePage from './pages/Explore-Page/explore-page'; 
+import ExplorePage from './pages/Explore-Page/explore-page';
 import MyPage from './pages/my-page/my-page';
 import MyDetailPage from './pages/my-page/my-detail-page';
 import EditTagPage from './pages/my-page/edit-tag-page';
@@ -46,7 +46,7 @@ const protectedRoutes: RouteObject[] = [
       { path: 'chatting/:id', element: <ChattingRoom /> },
       { path: 'profile/:id', element: <ProfileDetailPage /> },
       { path: 'matching', element: <MatchingListPage /> },
-      { path: 'search', element: <ExplorePage /> }, 
+      { path: 'explore', element: <ExplorePage /> },
       { path: 'my', element: <MyPage /> },
       { path: 'my/profile', element: <MyDetailPage /> },
       { path: 'my/edit-tag', element: <EditTagPage /> },

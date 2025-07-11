@@ -10,7 +10,7 @@ const Navbar = () => {
     <nav className="max-w-[480px] w-full flex justify-between px-5 pb-5 pt-2 fixed bottom-0 z-100 bg-[#ffffff]">
       <Navlink to="/" Icon={Home} alt="홈" />
       <Navlink to="/chatting" Icon={Chatting} alt="채팅" />
-      <Navlink to="/search" Icon={Search} alt="둘러보기" />
+      <Navlink to="/explore" Icon={Search} alt="둘러보기" />
       <Navlink to="/matching" Icon={Matching} alt="매칭리스트" />
       <Navlink to="/my" Icon={My} alt="마이" />
     </nav>

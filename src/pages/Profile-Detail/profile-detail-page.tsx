@@ -42,20 +42,20 @@ export default function ProfileDetailPage() {
             className="w-[140px] h-[140px] rounded-full border-4 border-white object-cover"
           />
           <div className="mt-3">
-            <h2 className="text-[22px] font-bold leading-[28px] text-black font-pretendard">
+            <h2 className="text-[22px] font-[bold] leading-[28px] text-black font-[pretendard]">
               유엠씨
             </h2>
-            <p className="text-[16px] font-medium text-black font-pretendard">
+            <p className="text-[16px] font-[medium] text-black font-[pretendard]">
               21학번, 컴퓨터공학과
             </p>
-            <p className="text-[13px] text-gray-500 font-pretendard">
+            <p className="text-[13px] text-gray-500 font-[pretendard]">
               프로창업러 | 교환준비생 | 취미 요가
             </p>
             <div className="flex gap-2 mt-2 text-xs">
-              <span className="px-3 py-0.5 rounded-full border border-[#FF706A] text-[#FF706A] font-pretendard">
+              <span className="px-3 py-0.5 rounded-full border border-[#FF706A] text-[#FF706A] font-[pretendard]">
                 창업
               </span>
-              <span className="px-3 py-0.5 rounded-full border border-[#FF706A] text-[#FF706A] font-pretendard">
+              <span className="px-3 py-0.5 rounded-full border border-[#FF706A] text-[#FF706A] font-[pretendard]">
                 교환학생
               </span>
             </div>
@@ -71,7 +71,7 @@ export default function ProfileDetailPage() {
         {['소개', '커피챗 가능 시간'].map(tab => (
           <button
             key={tab}
-            className={`p-2.5 py-2 pt-4 text-[16px] font-normal leading-[24px] font-[pretendard] ${
+            className={`p-2.5 py-2 pt-4 text-[16px] font-[normal] leading-[24px] font-[pretendard] ${
               activeTab === tab ? 'border-b-2 border-black text-black' : 'text-gray-400'
             }`}
             onClick={() => setActiveTab(tab as '소개' | '커피챗 가능 시간')}
@@ -86,7 +86,7 @@ export default function ProfileDetailPage() {
         {activeTab === '소개' ? (
           <>
             {/* 상단 제목 */}
-            <h3 className="text-[20px] font-semibold text-black font-[pretendard] mb-2">소개</h3>
+            <h3 className="text-[20px] font-[semibold] text-black font-[pretendard] mb-2">소개</h3>
 
             <p className="text-sm text-gray-500 mb-4 font-[pretendard]">
               세 가지 “키워드”로 나를 소개할게요!
@@ -108,7 +108,7 @@ export default function ProfileDetailPage() {
 
       {/* 하단 버튼 */}
       <div className="w-full max-w-[480px] fixed bottom-0 flex justify-center bg-white px-4 pb-6 pt-3">
-        <button className="w-full bg-[#FF706A] text-white py-3 rounded-xl font-semibold shadow-md font-[pretendard]">
+        <button className="w-full bg-[#FF706A] text-white py-3 rounded-xl font-[semibold] shadow-md font-[pretendard]">
           런치챗 보내기
         </button>
       </div>

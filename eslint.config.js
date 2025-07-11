@@ -7,11 +7,9 @@ import tseslint from '@typescript-eslint/eslint-plugin';
 import parser from '@typescript-eslint/parser';
 
 export default [
-  // ─ ignore 처리
   {
     ignores: ['dist', 'node_modules'],
   },
-  // ─ .ts/.tsx 전용 룰
   {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
@@ -30,12 +28,22 @@ export default [
       'react-refresh': reactRefresh,
     },
     rules: {
+      // 0) 먼저 Recommended JS 룰을 스프레드
       ...js.configs.recommended.rules,
-      // _ 로 시작하는 인자·변수는 unused-vars 검사하지 않음
+
+      // 1) core no-unused-vars 끄기 (Recommended 에서 켜진 걸 다시 끔)
+      'no-unused-vars': 'off',
+
+      // 2) TS-ESLint no-unused-vars 켜서 언더스코어 패턴만 무시
       '@typescript-eslint/no-unused-vars': [
         'warn',
-        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+        },
       ],
+
+      // 나머지 TS·React 룰들
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
       'react-hooks/rules-of-hooks': 'error',
@@ -43,7 +51,6 @@ export default [
       'react-refresh/only-export-components': 'warn',
     },
   },
-  // ─ 테스트 파일 전용 글로벌
   {
     files: ['**/*.test.ts', '**/*.test.tsx'],
     languageOptions: {
