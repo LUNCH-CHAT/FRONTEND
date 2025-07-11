@@ -4,27 +4,37 @@ import { useNavigate } from 'react-router-dom';
 import Modal from '../../components/Modal';
 import TagSelectList from '../../components/TagSelect/TagSelectList';
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
+import Help from '@/assets/icons/help.svg';
+import DropDown from '@/assets/icons/dropdown.svg';
+import Step1 from '@/assets/icons/step1.svg';
+import Step2 from '@/assets/icons/step2.svg';
+import Step3 from '@/assets/icons/step3.svg';
+import Step4 from '@/assets/icons/step4.svg';
+import Step5 from '@/assets/icons/step5.svg';
 
 export default function ProfileStepPage() {
   const [step, setStep] = useState(0);
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectCollege, setSelectCollege] = useState("");
-  const [selectMajor, setSelectMajor] = useState("");
+  const [selectCollege, setSelectCollege] = useState('');
+  const [selectMajor, setSelectMajor] = useState('');
 
-  const college = [
-    "인문과학대학",
-    "자연과학대학",
-    "사회과학대학",
-    "음악대학",
-  ];
+  const StepImages =
+    step === 0
+      ? Step1
+      : step === 1
+      ? Step2
+      : step === 2
+      ? Step3
+      : step === 3
+      ? Step4
+      : step === 4
+      ? Step5
+      : undefined;
 
-  const major = [
-    "국어국문학과",
-    "중어중문학과",
-    "불어불문학과",
-    "독어독문학과",
-  ];
+  const college = ['인문과학대학', '자연과학대학', '사회과학대학', '음악대학'];
+
+  const major = ['국어국문학과', '중어중문학과', '불어불문학과', '독어독문학과'];
 
   const modalText =
     '런치챗은 교내 자기계발을 위한\n관심사 기반 밥약/커피챗 플랫폼입니다.\n건강한 소통 문화를 위해\n실명제로 운영됩니다.';
@@ -46,7 +56,7 @@ export default function ProfileStepPage() {
               <br />* 추후 프로필 수정에서 수정 가능합니다.
             </p>
           </div>
-          <img src={`/src/assets/icons/step${step + 1}.svg`} alt={`스탭 ${step + 1} 이미지`} />
+          <img src={StepImages} alt={`스탭 ${step + 1} 이미지`} />
         </div>
         {step === 0 && (
           <div className="px-[22px] ">
@@ -58,11 +68,7 @@ export default function ProfileStepPage() {
                   setModalOpen(true);
                 }}
               >
-                <img
-                  src="/src/assets/icons/help.svg"
-                  alt="안내 로고 이미지"
-                  className="size-[16.77px]"
-                />
+                <img src={Help} alt="안내 로고 이미지" className="size-[16.77px]" />
               </button>
             </p>
             <input
@@ -95,15 +101,15 @@ export default function ProfileStepPage() {
             </p>
 
             <div className="flex w-full gap-[19px]">
-
               <Listbox value={selectCollege} onChange={setSelectCollege}>
-
                 <div className="relative w-full">
-                  <ListboxButton className={`w-full pb-1 border-b border-[#7D7D7D] text-left focus:border-[#FF7C6A] text-[16px] font-[pretendard] font-medium 
-                    ${selectCollege ? "text-black" : "text-[#B6B6B6]" }`}>
-                    <div className="flex justify-between items-center">    
-                      {selectCollege || "단과대 선택"}
-                      <img src="/src/assets/icons/dropdown.svg" alt="드롭다운" className="size-3 cursor-pointer"/>
+                  <ListboxButton
+                    className={`w-full pb-1 border-b border-[#7D7D7D] text-left focus:border-[#FF7C6A] text-[16px] font-[pretendard] font-medium 
+                    ${selectCollege ? 'text-black' : 'text-[#B6B6B6]'}`}
+                  >
+                    <div className="flex justify-between items-center">
+                      {selectCollege || '단과대 선택'}
+                      <img src={DropDown} alt="드롭다운" className="size-3 cursor-pointer" />
                     </div>
                   </ListboxButton>
 
@@ -121,15 +127,16 @@ export default function ProfileStepPage() {
                   </ListboxOptions>
                 </div>
               </Listbox>
-              
-              <Listbox value={selectMajor} onChange={setSelectMajor}>
 
+              <Listbox value={selectMajor} onChange={setSelectMajor}>
                 <div className="relative w-full">
-                  <ListboxButton className={`w-full pb-1 border-b border-[#7D7D7D] text-left focus:border-[#FF7C6A] text-[16px] font-[pretendard] font-medium 
-                    ${selectMajor ? "text-black" : "text-[#B6B6B6]" }`}>
-                    <div className="flex justify-between items-center">    
-                      {selectMajor || "학과 선택"}
-                      <img src="/src/assets/icons/dropdown.svg" alt="드롭다운" className="size-3 cursor-pointer"/>
+                  <ListboxButton
+                    className={`w-full pb-1 border-b border-[#7D7D7D] text-left focus:border-[#FF7C6A] text-[16px] font-[pretendard] font-medium 
+                    ${selectMajor ? 'text-black' : 'text-[#B6B6B6]'}`}
+                  >
+                    <div className="flex justify-between items-center">
+                      {selectMajor || '학과 선택'}
+                      <img src={DropDown} alt="드롭다운" className="size-3 cursor-pointer" />
                     </div>
                   </ListboxButton>
 
@@ -147,7 +154,6 @@ export default function ProfileStepPage() {
                   </ListboxOptions>
                 </div>
               </Listbox>
-
             </div>
           </div>
         )}
