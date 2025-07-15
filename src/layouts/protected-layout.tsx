@@ -28,7 +28,7 @@ function LayoutContent() {
 
   // 페이지 상단 헤더
   let header: JSX.Element | null = null;
-  if (isHomePage)          header = <HomeHeader />;
+  if (isHomePage)          header = <HomeHeader scrollToggle/>;
   else if (isAlarmPage)    header = <BackHeader title="알림" />;
   else if (isChattingPage) header = <HomeHeader title="채팅" />;
   else if (isMatchingPage) header = <HomeHeader title="매칭리스트" />;
@@ -49,7 +49,7 @@ function LayoutContent() {
     <>
       <ScrollToTop />
       <div className="flex items-center justify-center bg-gray-100">
-        <div className="max-w-[480px] w-full min-h-screen bg-white">
+        <div className={`max-w-[480px] w-full min-h-screen ${isHomePage ? 'bg-transparent' : 'bg-white'}`}>
           {header}
 
           <div className="pt-[64px] pb-[80px]">

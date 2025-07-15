@@ -1,34 +1,67 @@
+// src/components/Headers/HomeHeader.tsx
+
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Logo from '/src/assets/logo.svg';
 import Alarm from '/src/assets/alarm.svg';
-import { useNavigate } from 'react-router-dom';
 
 interface HomeHeaderProps {
   title?: string;
+  scrollToggle?: boolean;
 }
 
-const HomeHeader = ({ title }: HomeHeaderProps) => {
+export default function HomeHeader({
+  title,
+  scrollToggle = false,
+}: HomeHeaderProps) {
   const navigate = useNavigate();
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  const handleClickAlarm = () => {
-    navigate('/alarm');
-  };
+  useEffect(() => {
+    if (!scrollToggle) return;
+
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    // 초기 상태 체크
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [scrollToggle]);
+
+  const headerBgClass = scrollToggle
+    ? isScrolled
+      ? 'bg-white shadow-md'
+      : 'bg-transparent'
+    : 'bg-white'; // scrollToggle false 면 항상 흰색
 
   return (
-    <header className="max-w-[480px] w-full fixed top-0 z-50 bg-white h-[64px] flex items-center justify-between px-5">
+    <header
+      className={`
+        fixed top-0 left-1/2 -translate-x-1/2 z-50
+        w-full max-w-[480px] h-[64px] flex items-center justify-between
+        px-5 transition-colors duration-300
+        ${headerBgClass}
+      `}
+    >
       {title ? (
-        <h1 className="select-none font-[pretendard] font-semibold">{title}</h1>
+        <h1 className="font-[pretendard] font-semibold">{title}</h1>
       ) : (
-        <h1>
+        <button onClick={() => navigate('/')}>
           <img src={Logo} alt="LunchChat" />
-        </h1>
+        </button>
       )}
+
       {!title && (
-        <button type="button" className="cursor-pointer" onClick={handleClickAlarm}>
+        <button
+          type="button"
+          onClick={() => navigate('/alarm')}
+          className="cursor-pointer"
+        >
           <img src={Alarm} alt="알림 보기" />
         </button>
       )}
     </header>
   );
-};
-
-export default HomeHeader;
+}
