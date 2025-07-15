@@ -7,7 +7,7 @@ import My from '/src/assets/my.svg?react';
 
 const Navbar = () => {
   return (
-    <nav className="max-w-[480px] w-full flex justify-between px-5 pb-5 pt-2 fixed bottom-0 z-100 bg-[#ffffff]">
+    <nav className="max-w-[480px] w-full flex justify-between px-5 pb-3 pt-2 fixed bottom-0 z-100 bg-[#ffffff] border-t border-[#D4D4D4]">
       <Navlink to="/" Icon={Home} alt="홈" />
       <Navlink to="/chatting" Icon={Chatting} alt="채팅" />
       <Navlink to="/explore" Icon={Search} alt="둘러보기" />

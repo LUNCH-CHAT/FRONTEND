@@ -18,7 +18,7 @@ const ChatMessages = ({ messages }: ChatMessagesProps) => {
   let prevSender: string | null = null;
 
   return (
-    <div className="pt-2">
+    <div>
       {messages?.map((msg, index) => {
         const { year, month, day, hours, minutes } = formatDate(msg.timestamp);
         const dayOfWeek = getDayOfWeek(msg.timestamp);
@@ -48,7 +48,7 @@ const ChatMessages = ({ messages }: ChatMessagesProps) => {
         return (
           <div key={msg.id}>
             {showDate && (
-              <time className="font-[pretendard] font-normal text-[12px] text-[#A3A3A3] flex justify-center">
+              <time className="font-[pretendard] font-normal text-[12px] text-[#A3A3A3] flex justify-center pt-7 pb-3.5">
                 {date}
               </time>
             )}

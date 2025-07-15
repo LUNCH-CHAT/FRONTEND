@@ -1,9 +1,10 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import KeywordCard from '../../components/KeywordCard';
 import TimeTable from '../../components/TimeTable';
 import profileBg from '@/assets/images/profile-bg.png';
 import sampleProfile from '@/assets/images/sample-profile.png';
-import KeywordCard from '../../components/KeywordCard';
-import { useNavigate } from 'react-router-dom';
+import Pencil from '@/assets/icons/pencil.svg';
 
 const mockData = [
   {
@@ -68,11 +69,7 @@ export default function MyDetailPage() {
                 className="flex gap-[5px] text-[13px] text-[#A0A0A0] font-[pretendard] font-light leading-[11px] cursor-pointer"
               >
                 관심사 태그 수정
-                <img 
-                  src="/src/assets/icons/pencil.svg" 
-                  alt="수정"
-                  className='size-[10px]'
-                />
+                <img src={Pencil} alt="수정" className="size-[10px]" />
               </button>
             </div>
           </div>
@@ -105,16 +102,12 @@ export default function MyDetailPage() {
             <div className="flex justify-between items-center">
               <h3 className="text-[20px] font-semibold text-black font-[pretendard] mb-2">소개</h3>
               <button
-                  type="button"
-                  onClick={() => navigate(`/my/edit-keyword`)}
-                  className="flex gap-[5px] text-[13px] text-[#A0A0A0] font-[pretendard] font-light leading-[11px] cursor-pointer"
+                type="button"
+                onClick={() => navigate(`/my/edit-keyword`)}
+                className="flex gap-[5px] text-[13px] text-[#A0A0A0] font-[pretendard] font-light leading-[11px] cursor-pointer"
               >
                 키워드 소개 수정
-                <img 
-                  src="/src/assets/icons/pencil.svg" 
-                  alt="수정"
-                  className='size-[10px]'
-                />
+                <img src={Pencil} alt="수정" className="size-[10px]" />
               </button>
             </div>
             <p className="text-sm text-gray-500 mb-4 font-[pretendard]">
@@ -133,20 +126,18 @@ export default function MyDetailPage() {
         ) : (
           <>
             <div className="flex justify-between items-center">
-                <h3 className="text-[20px] font-semibold text-black font-[pretendard] mb-2">런치챗 가능 시간</h3>
-                <button
-                    type="button"
-                    onClick={() => navigate(`/my/edit-time`)}
-                    className="flex gap-[5px] text-[13px] text-[#A0A0A0] font-[pretendard] font-light leading-[11px] cursor-pointer"
-                >
-                  시간 수정
-                  <img 
-                    src="/src/assets/icons/pencil.svg" 
-                    alt="수정"
-                    className='size-[10px]'
-                  />
-                </button>
-              </div>
+              <h3 className="text-[20px] font-semibold text-black font-[pretendard] mb-2">
+                런치챗 가능 시간
+              </h3>
+              <button
+                type="button"
+                onClick={() => navigate(`/my/edit-time`)}
+                className="flex gap-[5px] text-[13px] text-[#A0A0A0] font-[pretendard] font-light leading-[11px] cursor-pointer"
+              >
+                시간 수정
+                <img src={Pencil} alt="수정" className="size-[10px]" />
+              </button>
+            </div>
             <TimeTable />
           </>
         )}
@@ -154,9 +145,10 @@ export default function MyDetailPage() {
 
       {/* 하단 버튼 */}
       <div className="w-full max-w-[480px] fixed bottom-0 flex justify-center bg-white px-4 pb-6 pt-3">
-        <button 
+        <button
           onClick={() => navigate(`/my/`)}
-          className="w-full bg-[#FF706A] text-white py-3 rounded-xl font-semibold shadow-md font-[pretendard] cursor-pointer">
+          className="w-full bg-[#FF706A] text-white py-3 rounded-xl font-semibold shadow-md font-[pretendard] cursor-pointer"
+        >
           수정 완료
         </button>
       </div>
