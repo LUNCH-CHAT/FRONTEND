@@ -14,7 +14,7 @@ const ChatHeader = ({ name }: ChatHeaderProps) => {
   };
 
   return (
-    <div className="flex gap-1 px-4 p-7 fixed top-0 select-none">
+    <div className="w-full max-w-[480px] flex gap-1 px-5 pt-7 fixed top-0 select-none bg-[#ffffff]">
       <button type="button" className="cursor-pointer" onClick={handleBack}>
         <img src={Back} alt="뒤로가기" />
       </button>
