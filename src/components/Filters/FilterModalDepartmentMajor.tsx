@@ -36,9 +36,11 @@ export default function FilterModalDepartmentMajor({
       onMouseDown={onClose}
     >
       <div
-        className={`w-full max-w-[700px] rounded-t-2xl bg-white p-6 transition-all duration-300 ${
-          visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'
-        }`}
+        className={`
+          w-full max-w-[480px] rounded-t-2xl bg-white p-6
+          transition-all duration-300
+          ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'}
+        `}
         onMouseDown={(e) => e.stopPropagation()}
       >
         <div className="mb-6">
@@ -51,24 +53,26 @@ export default function FilterModalDepartmentMajor({
           <FilterTagOption options={majors} selected={localMajor} />
         </div>
 
-        <div className="flex gap-4 mt-4">
-         <FilterButton
-           label="초기화"
-           onClick={resetFilters}
-           selected={false}
-           variant="pill"   
-           hideIcon
-         />
+        <div className="flex gap-4 mt-16">
           <FilterButton
-            label="적용하기"
-            onClick={() => {
-              applyFilters();
-              onClose();
-            }}
-            selected={true}
-            variant="bottom"
+            label="초기화"
+            onClick={resetFilters}
+            selected={false}
+            variant="pill"
             hideIcon
           />
+          <div className="flex-1">
+            <FilterButton
+              label="적용하기"
+              onClick={() => {
+                applyFilters();
+                onClose();
+              }}
+              selected={true}
+              variant="bottom"
+              hideIcon
+            />
+          </div>
         </div>
       </div>
     </div>

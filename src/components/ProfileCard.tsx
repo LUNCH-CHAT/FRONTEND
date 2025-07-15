@@ -23,7 +23,7 @@ export default function ProfileCard({
   return (
     <div
       onClick={handleClick}
-      className={`bg-white rounded-2xl shadow p-4 ${
+      className={`bg-white rounded-2xl shadow  ${
         id ? 'cursor-pointer hover:shadow-md' : ''
       }`}
     >
@@ -38,10 +38,19 @@ export default function ProfileCard({
           icon
         )}
       </div>
-      <h3 className="text-sm font-[semibold] text-black mb-1">{name}</h3>
-      <p className="text-xs text-gray-600 mb-1">{department}</p>
-      <p className="text-xs text-gray-400 mb-2">{tags.join(' | ')}</p>
-      <div className="flex flex-wrap gap-1">
+      <h3 className="text-base font-semibold leading-4 text-black mb-1 font-[pretendard]">{name}</h3>
+      <p className="text-[13px] leading-[13px] font-normal text-black mb-1 font-[pretendard]">{department}</p>
+      <p className="flex text-xs leading-4 mb-2 font-[pretendard]">
+      {tags.map((tag, i) => (
+        <span key={tag} className="flex items-center">
+          <span className="text-[#7D7D7D] font-normal">{tag}</span>
+          {i < tags.length - 1 && (
+            <span className="text-[#D4D4D4] mx-[4px]">|</span>
+          )}
+        </span>
+      ))}
+      </p>
+      <div className="flex flex-wrap gap-1 font-[pretendard]">
         {tags.map((tag, i) => (
           <span
             key={i}

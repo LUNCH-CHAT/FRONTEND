@@ -86,14 +86,14 @@ export default function ExplorePage() {
 
   return (
     <div className="w-full min-h-screen bg-white font-[pretendard] flex flex-col items-center pb-28">
-      <div className="w-full max-w-[700px] px-4 pt-[86px]">
+      <div className="w-full max-w-[700px] ">
         <CategorySlider
           categories={categories}
           selectedCategory={selectedCategory}
           onSelect={setSelectedCategory}
         />
 
-        <div className="flex gap-2 flex-wrap justify-start mt-4 mb-4">
+        <div className="mb-[17px] flex gap-2 flex-wrap justify-start  px-4 mt-4 mb-4">
           <SortDropdown selected={sortOrder} options={['추천순', '최신순']} />
           <FilterButton
             label="단대/학과"
@@ -109,7 +109,7 @@ export default function ExplorePage() {
           />
         </div>
 
-        <div className="grid grid-cols-2 xs:grid-cols-3 gap-4">
+        <div className="px-5 grid grid-cols-2 xs:grid-cols-3 gap-4">
           {filteredProfiles.map(profile => (
             <ProfileCard
               key={profile.id}
@@ -147,7 +147,7 @@ export default function ExplorePage() {
         <div className="fixed inset-x-0 bottom-0 z-50 flex justify-center">
           <div className="w-full sm:max-w-[700px]">
             <FilterModalYear
-              years={['25학번', '24학번', '23학번', '22학번', '21학번']}
+              years={['25학번', '24학번', '23학번', '22학번', '21학번', '20학번 이상']}
               localYear={selectedYear}
               resetFilters={() => setSelectedYear('전체')}
               applyFilters={() => setShowYearModal(false)}

@@ -11,6 +11,7 @@ interface FilterButtonProps {
   selected: boolean;
   hideIcon?: boolean;
   variant?: Variant;
+  className?: string;
 }
 
 export default function FilterButton({

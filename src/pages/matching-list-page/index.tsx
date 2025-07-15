@@ -43,7 +43,7 @@ export default function MatchingListPage() {
         </button>
       </div>
 
-      <div className="pt-7 grid grid-cols-2 xs:grid-cols-3 gap-2 justify-items-center">
+      <div className="mt-[27px] pt-7 px-5 grid grid-cols-2 xs:grid-cols-3 gap-2 justify-items-center">
         <ProfileCard
           id="1"
           name="유엠씨"
