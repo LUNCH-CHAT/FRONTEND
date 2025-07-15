@@ -27,7 +27,7 @@ const AlarmCard = ({ image, sender, type, time }: AlarmCardProps) => {
         className="w-[35px] h-[35px] rounded-full object-cover mt-1"
       />
       <div className="select-none">
-        <h2 className="font-[pretendard] font-bold">런치챗 요청 알림</h2>
+        <h2 className="font-[pretendard] font-bold text-[#FF7C6A]">런치챗 요청 알림</h2>
         <p className="font-[pretendard] font-normal">
           {sender}님이 런치챗을 {type}했어요!
         </p>
