@@ -147,7 +147,7 @@ export default function ExplorePage() {
         <div className="fixed inset-x-0 bottom-0 z-50 flex justify-center">
           <div className="w-full sm:max-w-[700px]">
             <FilterModalYear
-              years={['25학번', '24학번', '23학번', '22학번', '21학번']}
+              years={['25학번', '24학번', '23학번', '22학번', '21학번', '20학번 이상']}
               localYear={selectedYear}
               resetFilters={() => setSelectedYear('전체')}
               applyFilters={() => setShowYearModal(false)}
