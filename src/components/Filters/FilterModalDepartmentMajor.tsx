@@ -1,5 +1,4 @@
 // src/components/Filters/FilterModalDepartmentMajor.tsx
-
 import { useEffect, useState } from 'react';
 import FilterTagOption from './FilterTagOption';
 import FilterButton from './FilterButton';
@@ -53,26 +52,32 @@ export default function FilterModalDepartmentMajor({
           <FilterTagOption options={majors} selected={localMajor} />
         </div>
 
-        <div className="flex gap-4 mt-16">
+        {/* 버튼 그룹 */}
+        <div className="flex justify-center gap-2 mt-16">
+
           <FilterButton
             label="초기화"
-            onClick={resetFilters}
+            onClick={() => {
+              resetFilters();
+              onClose();
+            }}
             selected={false}
-            variant="pill"
             hideIcon
+            variant="bottom"
+            className="xs:w-[107px]"
           />
-          <div className="flex-1">
-            <FilterButton
-              label="적용하기"
-              onClick={() => {
-                applyFilters();
-                onClose();
-              }}
-              selected={true}
-              variant="bottom"
-              hideIcon
-            />
-          </div>
+
+          <FilterButton
+            label="적용하기"
+            onClick={() => {
+              applyFilters();
+              onClose();
+            }}
+            selected={true}
+            hideIcon
+            variant="bottom"
+            className="w-[235px] xs:w-[322px]"
+          />
         </div>
       </div>
     </div>

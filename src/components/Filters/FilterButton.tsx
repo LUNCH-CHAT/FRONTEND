@@ -1,5 +1,4 @@
 // src/components/Filters/FilterButton.tsx
-
 import { ChevronDown } from 'lucide-react';
 import clsx from 'clsx';
 
@@ -11,7 +10,7 @@ interface FilterButtonProps {
   selected: boolean;
   hideIcon?: boolean;
   variant?: Variant;
-  className?: string;
+  className?: string;    
 }
 
 export default function FilterButton({
@@ -20,15 +19,17 @@ export default function FilterButton({
   selected,
   hideIcon = false,
   variant = 'pill',
+  className,             
 }: FilterButtonProps) {
-  // 1) variant별 기본 크기&모양
-  const sizeStyles = variant === 'pill'
-    ? 'px-4 py-1.5 rounded-full text-sm font-medium'
-    : 'px-4 py-3 rounded-xl text-base font-medium flex-1';
+ 
+  const pillStyles = 'px-4 py-1.5 rounded-full text-sm font-medium';
 
-  // 2) 선택 여부에 따른 색상
+  const bottomStyles =
+    'w-[92px] h-[50px] px-[15px] py-[17px] rounded-[10px] text-sm font-medium flex-none';
+
+
   const colorStyles = selected
-    ? 'bg-[#FF786A] text-white border-[#FF786A]'
+    ? 'bg-[#FF786A] text-white border-transparent'
     : 'bg-white text-gray-700 border-gray-300';
 
   return (
@@ -36,13 +37,13 @@ export default function FilterButton({
       type="button"
       onClick={onClick}
       className={clsx(
-        'flex items-center gap-1 border transition-all',
-        sizeStyles,
-        colorStyles
+        'flex items-center justify-center gap-1 border transition-all',
+        variant === 'bottom' ? bottomStyles : pillStyles,
+        colorStyles,
+        className   
       )}
     >
       {label}
-      {/* 모달 하단처럼 아이콘 숨기고 싶으면 hideIcon */}
       {!hideIcon && <ChevronDown size={16} />}
     </button>
   );

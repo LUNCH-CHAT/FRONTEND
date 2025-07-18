@@ -14,7 +14,7 @@ export default function CategorySlider({
   return (
     <div
       className="flex items-center overflow-x-auto no-scrollbar gap-x-[24px] mb-6 px-5"
-      style={{ height: '58px', boxSizing: 'border-box' }}
+      style={{ height: '65px', boxSizing: 'border-box' }}
     >
       {categories.map((category) => (
         <button

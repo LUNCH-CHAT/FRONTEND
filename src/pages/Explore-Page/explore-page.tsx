@@ -96,7 +96,7 @@ export default function ExplorePage() {
         <div className="mb-[17px] flex gap-2 flex-wrap justify-start  px-4 mt-4 mb-4">
           <SortDropdown selected={sortOrder} options={['추천순', '최신순']} />
           <FilterButton
-            label="단대/학과"
+            label="학과"
             onClick={() => setShowDepartmentMajorModal(true)}
             selected={selectedDepartment !== '전체' || selectedMajor !== '전체'}
             variant="pill"
