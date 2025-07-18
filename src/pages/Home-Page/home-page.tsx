@@ -1,3 +1,4 @@
+// src/pages/Home-Page/home-page.tsx
 import { useNavigate } from 'react-router-dom';
 import HomeHeader from '../../components/Headers/HomeHeader';  
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -30,19 +31,17 @@ export default function HomePage() {
       {/* 고정 헤더 */}
       <HomeHeader />
 
-      <div className=" w-full min-h-screen bg-white font-[pretendard] flex justify-center">
+      <div className="w-full min-h-screen bg-white font-[pretendard] flex justify-center">
         <div className="w-full max-w-[700px]">
-          {/* 메인 배너 */}
-          <section className="w-full h-[236px] overflow-hidden">
+          {/* 메인 배너 (고정 높이 제거, 비율 유지) */}
+          <section className="w-full overflow-hidden">
             <Swiper autoplay={{ delay: 4000 }} loop slidesPerView={1}>
               <SwiperSlide>
-                <div className="w-full h-[236px]">
-                  <img
-                    src={homeBg}
-                    alt="홈 배경"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                <img
+                  src={homeBg}
+                  alt="홈 배경"
+                  className="w-full h-auto object-contain"
+                />
               </SwiperSlide>
             </Swiper>
           </section>
@@ -63,7 +62,7 @@ export default function HomePage() {
           <section className="pl-5 pb-6">
             <h2 className="text-[20px] font-semibold mb-4">나와 ‘시간표 · 관심사’가 겹쳐요!</h2>
             <Swiper
-              className='pl-4' 
+              className="pl-4"
               spaceBetween={16}
               breakpoints={{
                 0: { slidesPerView: 2 },
@@ -88,7 +87,7 @@ export default function HomePage() {
           <section className="pl-5 pb-6">
             <h2 className="text-[20px] font-semibold mb-4">이런 사람 어때요?</h2>
             <Swiper
-              className='pl-4'
+              className="pl-4"
               spaceBetween={16}
               breakpoints={{
                 0: { slidesPerView: 2 },
@@ -113,8 +112,16 @@ export default function HomePage() {
           <section className="bg-gray-50 py-6 px-4">
             <h2 className="text-[20px] font-semibold text-black mb-4">런치챗 소개</h2>
             <div className="grid grid-cols-2 gap-4">
-              <InfoCard title="런치챗 소개" icon={<LunchatIcon className="w-[101px] h-[29px]" />} />
-              <InfoCard title="자주 묻는 질문" icon={<QuestionIcon className="w-[20px] h-[29px]" />} />
+              <InfoCard
+                title="런치챗 소개"
+                icon={<LunchatIcon className="w-[104px] h-[29px]" />}
+                onClick={() => window.open('https://www.notion.so/native/1f283f3bbb0280c48b1be5c7118739f5?pvs=0&deepLinkOpenNewTab=true', '_blank')}
+              />
+              <InfoCard
+                title="자주 묻는 질문"
+                icon={<QuestionIcon className="w-[104px] h-[29px]" />}
+                onClick={() => window.open('https://www.notion.so/native/1f283f3bbb0280c48b1be5c7118739f5?pvs=0&deepLinkOpenNewTab=true', '_blank')}
+              />
             </div>
           </section>
         </div>

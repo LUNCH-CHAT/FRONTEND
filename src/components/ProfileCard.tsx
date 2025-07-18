@@ -23,7 +23,7 @@ export default function ProfileCard({
   return (
     <div
       onClick={handleClick}
-      className={`bg-white rounded-2xl shadow  ${
+      className={`bg-white rounded-2xl  ${
         id ? 'cursor-pointer hover:shadow-md' : ''
       }`}
     >

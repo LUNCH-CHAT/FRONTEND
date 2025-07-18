@@ -1,5 +1,4 @@
 // src/components/Filters/FilterModalYear.tsx
-
 import { useEffect, useState } from 'react';
 import FilterTagOption from './FilterTagOption';
 import FilterButton from './FilterButton';
@@ -27,12 +26,10 @@ export default function FilterModalYear({
   }, []);
 
   return (
-    // 1) backdrop: 화면 전체 + 중앙 정렬 
     <div
       className="fixed inset-0 z-40 bg-black/40 flex justify-center items-end"
       onMouseDown={onClose}
     >
-      {/* 2) 모달 본체: w-full + max-w-[480px] */}
       <div
         className={`
           w-full max-w-[480px] rounded-t-2xl bg-white p-6
@@ -44,27 +41,32 @@ export default function FilterModalYear({
         <h3 className="font-semibold text-base mb-2">학번</h3>
         <FilterTagOption options={years} selected={localYear} />
 
-        <div className="flex gap-4 mt-16">
+        {/* 버튼 그룹 */}
+        <div className="flex justify-center gap-2 mt-16">
+          {/* 초기화: 기본 92px, 480px 이상(xs) → 107px */}
           <FilterButton
             label="초기화"
-            onClick={resetFilters}
+            onClick={() => {
+              resetFilters();
+              onClose();
+            }}
             selected={false}
             hideIcon
-            variant="pill"
+            variant="bottom"
+            className="xs:w-[107px]"
           />
 
-          <div className="flex-1 center">
-            <FilterButton
-              label="적용하기"
-              onClick={() => {
-                applyFilters();
-                onClose();
-              }}
-              selected={true}
-              hideIcon
-              variant="bottom"
-            />
-          </div>
+          <FilterButton
+            label="적용하기"
+            onClick={() => {
+              applyFilters();
+              onClose();
+            }}
+            selected={true}
+            hideIcon
+            variant="bottom"
+            className="w-[235px] xs:w-[322px]"
+          />
         </div>
       </div>
     </div>
