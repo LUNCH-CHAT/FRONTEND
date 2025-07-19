@@ -105,7 +105,7 @@ export default function EmailStepPage() {
               ))}
           </div>
 
-          <div className="w-full fixed max-w-[480px] bottom-0 flex flex-col items-center px-[20px] pb-[23px]">
+          <div className="w-full fixed max-w-[480px] bottom-0 flex flex-col items-center px-5 pb-4">
             <button
               type="button"
               className="inline-block border-b border-[#FF7C6A] text-[#FF7C6A] font-[pretendard] font-medium text-[13px] mb-[13px] cursor-pointer"

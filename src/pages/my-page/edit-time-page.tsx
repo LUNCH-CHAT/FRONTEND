@@ -14,7 +14,7 @@ export default function EditTimePage() {
                     <TimeTable isEditable={true}/>
                 </div>
             </div>
-            <div className="fixed w-full max-w-[480px] bottom-0 px-[20px] pb-[23px]">
+            <div className="fixed w-full max-w-[480px] bottom-0 px-5 pb-4">
                 <button
                     type="button"
                     onClick={() => {
