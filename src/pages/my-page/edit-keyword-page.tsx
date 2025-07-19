@@ -61,7 +61,7 @@ export default function EditKeywordPage() {
                 />
             </div>
         </div>
-        <div className="fixed w-full max-w-[480px] bottom-0 px-[20px] pb-[23px]">
+        <div className="fixed w-full max-w-[480px] bottom-0 px-5 pb-4 pt-[10px] bg-white border-t border-gray-200">
             <button
                 type="button"
                 onClick={() => {
