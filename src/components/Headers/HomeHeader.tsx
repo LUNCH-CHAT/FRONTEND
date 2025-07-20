@@ -1,5 +1,3 @@
-// src/components/Headers/HomeHeader.tsx
-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '/src/assets/logo.svg';
@@ -24,7 +22,7 @@ export default function HomeHeader({
       setIsScrolled(window.scrollY > 0);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     // 초기 상태 체크
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
@@ -34,7 +32,7 @@ export default function HomeHeader({
     ? isScrolled
       ? 'bg-white shadow-md'
       : 'bg-transparent'
-    : 'bg-white'; // scrollToggle false 면 항상 흰색
+    : 'bg-white'; 
 
   return (
     <header
@@ -46,7 +44,7 @@ export default function HomeHeader({
       `}
     >
       {title ? (
-        <h1 className="font-[pretendard] font-semibold">{title}</h1>
+        <h1 className="font-pretendard font-semibold">{title}</h1>
       ) : (
         <button onClick={() => navigate('/')}>
           <img src={Logo} alt="LunchChat" />

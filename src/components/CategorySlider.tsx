@@ -19,10 +19,14 @@ export default function CategorySlider({
       {categories.map((category) => (
         <button
           key={category.label}
-          className={`flex-shrink-0 ${
-            selectedCategory === category.label ? 'opacity-100' : 'opacity-40'
-          }`}
+          type="button"
           onClick={() => onSelect(category.label)}
+          className={`
+            flex-shrink-0 pb-1
+            ${selectedCategory === category.label
+              ? 'text-[#FF7C6A] font-bold border-b-2 border-[#FF7C6A]'
+              : 'text-[#7D7D7D]'}
+          `}
         >
           <CategoryGridItem
             icon={category.icon}

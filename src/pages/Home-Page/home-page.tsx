@@ -1,4 +1,3 @@
-// src/pages/Home-Page/home-page.tsx
 import { useNavigate } from 'react-router-dom';
 import HomeHeader from '../../components/Headers/HomeHeader';  
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -28,10 +27,11 @@ export default function HomePage() {
 
   return (
     <>
-      {/* 고정 헤더 */}
-      <HomeHeader />
+      {/* 고정 헤더: 홈 페이지만 scrollToggle 활성화 */}
+      <HomeHeader scrollToggle />
 
-      <div className="w-full min-h-screen bg-white font-[pretendard] flex justify-center">
+      <div className="w-full min-h-screen bg-white font-pretendard flex justify-center">
+        
         <div className="w-full max-w-[700px]">
           {/* 메인 배너 (고정 높이 제거, 비율 유지) */}
           <section className="w-full overflow-hidden">
@@ -48,19 +48,53 @@ export default function HomePage() {
 
           {/* 관심사 카테고리 */}
           <section className="grid grid-cols-4 gap-x-[40px] gap-y-[18px] justify-items-center pt-[25px] px-[20px] mt-[25px] mb-[42px]">
-            <CategoryGridItem icon={<ExchangeIcon />} label="교환학생" onClick={() => handleCategoryClick('교환학생')} />
-            <CategoryGridItem icon={<CareerIcon />} label="취업/진로" onClick={() => handleCategoryClick('취업/진로')} />
-            <CategoryGridItem icon={<ExamIcon />} label="고시준비" onClick={() => handleCategoryClick('고시준비')} />
-            <CategoryGridItem icon={<StartupIcon />} label="창업" onClick={() => handleCategoryClick('창업')} />
-            <CategoryGridItem icon={<GradeIcon />} label="학점관리" onClick={() => handleCategoryClick('학점관리')} />
-            <CategoryGridItem icon={<LanguageIcon />} label="외국어 공부" onClick={() => handleCategoryClick('외국어 공부')} />
-            <CategoryGridItem icon={<HobbyIcon />} label="취미/여가" onClick={() => handleCategoryClick('취미/여가')} />
-            <CategoryGridItem icon={<SchoolIcon />} label="학교생활" onClick={() => handleCategoryClick('학교생활')} />
+            <CategoryGridItem
+              icon={<ExchangeIcon />}
+              label="교환학생"
+              onClick={() => handleCategoryClick('교환학생')}
+            />
+            <CategoryGridItem
+              icon={<CareerIcon />}
+              label="취업/진로"
+              onClick={() => handleCategoryClick('취업/진로')}
+            />
+            <CategoryGridItem
+              icon={<ExamIcon />}
+              label="고시준비"
+              onClick={() => handleCategoryClick('고시준비')}
+            />
+            <CategoryGridItem
+              icon={<StartupIcon />}
+              label="창업"
+              onClick={() => handleCategoryClick('창업')}
+            />
+            <CategoryGridItem
+              icon={<GradeIcon />}
+              label="학점관리"
+              onClick={() => handleCategoryClick('학점관리')}
+            />
+            <CategoryGridItem
+              icon={<LanguageIcon />}
+              label="외국어 공부"
+              onClick={() => handleCategoryClick('외국어 공부')}
+            />
+            <CategoryGridItem
+              icon={<HobbyIcon />}
+              label="취미/여가"
+              onClick={() => handleCategoryClick('취미/여가')}
+            />
+            <CategoryGridItem
+              icon={<SchoolIcon />}
+              label="학교생활"
+              onClick={() => handleCategoryClick('학교생활')}
+            />
           </section>
 
           {/* 나와 ‘시간표 · 관심사’가 겹쳐요 */}
           <section className="pl-5 pb-6">
-            <h2 className="text-[20px] font-semibold mb-4">나와 ‘시간표 · 관심사’가 겹쳐요!</h2>
+            <h2 className="text-[20px] font-semibold mb-4">
+              나와 ‘시간표 · 관심사’가 겹쳐요!
+            </h2>
             <Swiper
               className="pl-4"
               spaceBetween={16}
@@ -85,7 +119,9 @@ export default function HomePage() {
 
           {/* 이런 사람 어때요? */}
           <section className="pl-5 pb-6">
-            <h2 className="text-[20px] font-semibold mb-4">이런 사람 어때요?</h2>
+            <h2 className="text-[20px] font-semibold mb-4">
+              이런 사람 어때요?
+            </h2>
             <Swiper
               className="pl-4"
               spaceBetween={16}
@@ -110,17 +146,29 @@ export default function HomePage() {
 
           {/* 런치챗 소개 */}
           <section className="bg-gray-50 py-6 px-4">
-            <h2 className="text-[20px] font-semibold text-black mb-4">런치챗 소개</h2>
+            <h2 className="text-[20px] font-semibold text-black mb-4">
+              런치챗 소개
+            </h2>
             <div className="grid grid-cols-2 gap-4">
               <InfoCard
                 title="런치챗 소개"
                 icon={<LunchatIcon className="w-[104px] h-[29px]" />}
-                onClick={() => window.open('https://www.notion.so/native/1f283f3bbb0280c48b1be5c7118739f5?pvs=0&deepLinkOpenNewTab=true', '_blank')}
+                onClick={() =>
+                  window.open(
+                    'https://www.notion.so/native/1f283f3bbb0280c48b1be5c7118739f5?pvs=0&deepLinkOpenNewTab=true',
+                    '_blank'
+                  )
+                }
               />
               <InfoCard
                 title="자주 묻는 질문"
                 icon={<QuestionIcon className="w-[104px] h-[29px]" />}
-                onClick={() => window.open('https://www.notion.so/native/1f283f3bbb0280c48b1be5c7118739f5?pvs=0&deepLinkOpenNewTab=true', '_blank')}
+                onClick={() =>
+                  window.open(
+                    'https://www.notion.so/native/1f283f3bbb0280c48b1be5c7118739f5?pvs=0&deepLinkOpenNewTab=true',
+                    '_blank'
+                  )
+                }
               />
             </div>
           </section>
