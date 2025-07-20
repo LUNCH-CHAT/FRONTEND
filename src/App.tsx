@@ -1,44 +1,64 @@
-import { useState } from 'react'
-import viteLogo from '/vite.svg'
-import reactLogo from './assets/react.svg'
+// src/App.tsx
+import './index.css';
+import { createBrowserRouter, RouterProvider, type RouteObject } from 'react-router-dom';
+
+import PublicLayout from './layouts/public-layout';
+import OnboardingPage from './pages/login-page/onboarding-page';
+import EmailStepPage from './pages/login-page/email-step-page';
+import ProfileStepPage from './pages/login-page/profile-step-page';
+import ProfileCompletePage from './pages/login-page/profile-complete-page';
+
+import ProtectedLayout from './layouts/protected-layout';
+import HomePage from './pages/Home-Page/home-page';
+import ChattingPage from './pages/chatting-page';
+import ChattingRoom from './pages/chatting-page/chatting-room';
+import MatchingListPage from './pages/matching-list-page';
+import ProfileDetailPage from './pages/Profile-Detail/profile-detail-page';
+import AlarmPage from './pages/alarm-page';
+import ExplorePage from './pages/Explore-Page/explore-page';
+import MyPage from './pages/my-page/my-page';
+import EditTagPage from './pages/my-page/edit-tag-page';
+import EditKeywordPage from './pages/my-page/edit-keyword-page';
+import EditTimePage from './pages/my-page/edit-time-page';
+
+const publicRoutes: RouteObject[] = [
+  {
+    path: '/onboarding',
+    element: <PublicLayout />,
+    children: [
+      { index: true, element: <OnboardingPage /> },
+      { path: 'email', element: <EmailStepPage /> },
+      { path: 'profile', element: <ProfileStepPage /> },
+      { path: 'complete', element: <ProfileCompletePage /> },
+    ],
+  },
+];
+
+const protectedRoutes: RouteObject[] = [
+  {
+    path: '/',
+    element: <ProtectedLayout />,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: 'alarm', element: <AlarmPage /> },
+      { path: 'chatting', element: <ChattingPage /> },
+      { path: 'chatting/:id', element: <ChattingRoom /> },
+      { path: 'profile/:id', element: <ProfileDetailPage /> },
+      { path: 'matching', element: <MatchingListPage /> },
+      { path: 'explore', element: <ExplorePage /> },
+      { path: 'my', element: <MyPage /> },
+      { path: 'my/profile', element: <ProfileDetailPage my={true} /> },
+      { path: 'my/edit-tag', element: <EditTagPage /> },
+      { path: 'my/edit-keyword', element: <EditKeywordPage /> },
+      { path: 'my/edit-time', element: <EditTimePage /> },
+    ],
+  },
+];
+
+const router = createBrowserRouter([...publicRoutes, ...protectedRoutes]);
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4">
-      <div className="max-w-[480px] w-full space-y-8">
-        <header className="flex justify-center gap-4">
-          <a href="https://vite.dev" target="_blank" rel="noopener noreferrer">
-            <img src={viteLogo} className="h-12" alt="Vite logo" />
-          </a>
-          <a href="https://react.dev" target="_blank" rel="noopener noreferrer">
-            <img src={reactLogo} className="h-12" alt="React logo" />
-          </a>
-        </header>
-
-        <main className="text-center">
-          <h1 className="text-3xl font-bold mb-4 text-white">Vite + React</h1>
-
-          <div className="rounded-lg bg-gray-800 p-6">
-            <button
-              onClick={() => setCount((c) => c + 1)}
-              className="w-full rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-            >
-              count is {count}
-            </button>
-            <p className="mt-4 text-sm text-gray-300">
-              Edit <code>src/App.tsx</code> and save to test HMR
-            </p>
-          </div>
-
-          <p className="mt-6 text-sm text-gray-400">
-            Click on the Vite and React logos to learn more
-          </p>
-        </main>
-      </div>
-    </div>
-  )
+  return <RouterProvider router={router} />;
 }
 
-export default App
+export default App;
