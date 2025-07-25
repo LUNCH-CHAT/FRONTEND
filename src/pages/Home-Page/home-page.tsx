@@ -1,3 +1,5 @@
+// src/pages/Home-Page/home-page.tsx
+
 import { useNavigate } from 'react-router-dom';
 import HomeHeader from '../../components/Headers/HomeHeader';  
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -52,41 +54,49 @@ export default function HomePage() {
               icon={<ExchangeIcon />}
               label="교환학생"
               onClick={() => handleCategoryClick('교환학생')}
+              textClassName="text-[13px] leading-[16px]"
             />
             <CategoryGridItem
               icon={<CareerIcon />}
               label="취업/진로"
               onClick={() => handleCategoryClick('취업/진로')}
+              textClassName="text-[13px] leading-[16px]"
             />
             <CategoryGridItem
               icon={<ExamIcon />}
               label="고시준비"
               onClick={() => handleCategoryClick('고시준비')}
+              textClassName="text-[13px] leading-[16px]"
             />
             <CategoryGridItem
               icon={<StartupIcon />}
               label="창업"
               onClick={() => handleCategoryClick('창업')}
+              textClassName="text-[13px] leading-[16px]"
             />
             <CategoryGridItem
               icon={<GradeIcon />}
               label="학점관리"
               onClick={() => handleCategoryClick('학점관리')}
+              textClassName="text-[13px] leading-[16px]"
             />
             <CategoryGridItem
               icon={<LanguageIcon />}
               label="외국어 공부"
               onClick={() => handleCategoryClick('외국어 공부')}
+              textClassName="text-[13px] leading-[16px]"
             />
             <CategoryGridItem
               icon={<HobbyIcon />}
               label="취미/여가"
               onClick={() => handleCategoryClick('취미/여가')}
+              textClassName="text-[13px] leading-[16px]"
             />
             <CategoryGridItem
               icon={<SchoolIcon />}
               label="학교생활"
               onClick={() => handleCategoryClick('학교생활')}
+              textClassName="text-[13px] leading-[16px]"
             />
           </section>
 
@@ -103,7 +113,7 @@ export default function HomePage() {
                 480: { slidesPerView: 3 },
               }}
             >
-              {[1, 2, 3].map((i) => (
+              {[1, 2, 3].map(i => (
                 <SwiperSlide key={i}>
                   <ProfileCard
                     id={String(i)}
@@ -118,7 +128,7 @@ export default function HomePage() {
           </section>
 
           {/* 이런 사람 어때요? */}
-          <section className="pl-5 pb-6">
+          <section className="pl-5 pb-6 mt-10">
             <h2 className="text-[20px] font-semibold mb-4">
               이런 사람 어때요?
             </h2>
@@ -130,7 +140,7 @@ export default function HomePage() {
                 480: { slidesPerView: 3 },
               }}
             >
-              {[4, 5, 6].map((i) => (
+              {[4, 5, 6].map(i => (
                 <SwiperSlide key={i}>
                   <ProfileCard
                     id={String(i)}

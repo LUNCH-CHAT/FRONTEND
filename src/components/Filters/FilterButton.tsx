@@ -21,15 +21,22 @@ export default function FilterButton({
   variant = 'pill',
   className,             
 }: FilterButtonProps) {
- 
-  const pillStyles = 'px-4 py-1.5 rounded-full text-sm font-medium';
-
+  // pill 모드일 때는 outline 형태로, bottom 모드일 땐 배경 채움 형태로
+  const pillStyles = `
+    px-4
+    h-[30px]
+    py-[7px]
+    rounded-full
+    text-[13px]
+    font-medium
+  `;
   const bottomStyles =
-    'w-[92px] h-[50px] px-[15px] py-[17px] rounded-[10px] text-sm font-medium flex-none';
-
+    'w-[65.5px] h-[30px] px-[11px] py-[17px] rounded-[10px] text-sm font-medium flex-none';
 
   const colorStyles = selected
-    ? 'bg-[#FF786A] text-white border-transparent'
+    ? variant === 'pill'
+      ? 'bg-white text-[#FF786A] border-[#FF786A]'  
+      : 'bg-[#FF786A] text-white border-transparent' 
     : 'bg-white text-gray-700 border-gray-300';
 
   return (
@@ -40,7 +47,7 @@ export default function FilterButton({
         'flex items-center justify-center gap-1 border transition-all',
         variant === 'bottom' ? bottomStyles : pillStyles,
         colorStyles,
-        className   
+        className
       )}
     >
       {label}

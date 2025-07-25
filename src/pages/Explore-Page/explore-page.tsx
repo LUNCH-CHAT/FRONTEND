@@ -1,5 +1,4 @@
 // src/pages/Explore-Page/explore-page.tsx
-
 import { useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useNav } from '../../context/NavContext';
@@ -31,7 +30,7 @@ export default function ExplorePage() {
   const [selectedDepartment, setSelectedDepartment] = useState('전체');
   const [selectedMajor, setSelectedMajor] = useState('전체');
   const [selectedYear, setSelectedYear] = useState('전체');
-  const [sortOrder] = useState<'추천순' | '최신순'>('최신순');
+  const [sortOrder, setSortOrder] = useState<'추천순' | '최신순'>('최신순');
 
   useEffect(() => {
     const param = searchParams.get('category') || '전체';
@@ -93,18 +92,28 @@ export default function ExplorePage() {
           onSelect={setSelectedCategory}
         />
 
-        <div className="mb-[17px] flex gap-2 flex-wrap justify-start  px-4 mt-4 mb-4">
-          <SortDropdown selected={sortOrder} options={['추천순', '최신순']} />
+        <div className="mb-[17px] flex gap-2 flex-wrap justify-start px-4 mt-4 mb-4">
+          <SortDropdown
+            selected={sortOrder}
+            options={['추천순', '최신순']}
+            onSelect={(option) => setSortOrder(option as '추천순' | '최신순')}
+          />
+
           <FilterButton
             label="학과"
             onClick={() => setShowDepartmentMajorModal(true)}
-            selected={selectedDepartment !== '전체' || selectedMajor !== '전체'}
+            selected={
+              showDepartmentMajorModal ||
+              selectedDepartment !== '전체' ||
+              selectedMajor !== '전체'
+            }
             variant="pill"
           />
+
           <FilterButton
             label="학번"
             onClick={() => setShowYearModal(true)}
-            selected={selectedYear !== '전체'}
+            selected={showYearModal || selectedYear !== '전체'}
             variant="pill"
           />
         </div>
@@ -123,7 +132,6 @@ export default function ExplorePage() {
         </div>
       </div>
 
-      {/* ====== 수정된 모달 래퍼 코드 시작 ====== */}
       {showDepartmentMajorModal && (
         <div className="fixed inset-x-0 bottom-0 z-50 flex justify-center">
           <div className="w-full sm:max-w-[700px]">
@@ -136,8 +144,13 @@ export default function ExplorePage() {
               resetFilters={() => {
                 setSelectedDepartment('전체');
                 setSelectedMajor('전체');
+                setShowDepartmentMajorModal(false);
               }}
-              applyFilters={() => setShowDepartmentMajorModal(false)}
+              applyFilters={(dept, maj) => {
+                setSelectedDepartment(dept);
+                setSelectedMajor(maj);
+                setShowDepartmentMajorModal(false);
+              }}
             />
           </div>
         </div>
@@ -149,8 +162,14 @@ export default function ExplorePage() {
             <FilterModalYear
               years={['25학번', '24학번', '23학번', '22학번', '21학번', '20학번 이상']}
               localYear={selectedYear}
-              resetFilters={() => setSelectedYear('전체')}
-              applyFilters={() => setShowYearModal(false)}
+              resetFilters={() => {
+                setSelectedYear('전체');
+                setShowYearModal(false);
+              }}
+              applyFilters={(year) => {
+                setSelectedYear(year);
+                setShowYearModal(false);
+              }}
               onClose={() => setShowYearModal(false)}
             />
           </div>
