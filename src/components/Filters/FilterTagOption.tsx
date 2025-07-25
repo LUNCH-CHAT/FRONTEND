@@ -15,7 +15,7 @@ export default function FilterTagOption({
     <div
       className={`
         flex flex-wrap gap-[10px]
-        [@media(min-width:480px)]:flex-nowrap
+        [@media(min-width:480px)]:flex-wrap
         [@media(min-width:480px)]:overflow-x-auto
         [@media(min-width:480px)]:gap-2
       `}
@@ -31,12 +31,12 @@ export default function FilterTagOption({
               flex-shrink-0 whitespace-nowrap rounded-full border transition
 
               /* 모바일 (<480px)용 작게 */
-              py-[10px] px-[12px] text-sm
+              py-[10px] px-[12px] text-[13px]
 
               /* 데스크탑 (>=480px)용 원래 크기 */
               [@media(min-width:480px)]:py-2
-              [@media(min-width:480px)]:px-5
-              [@media(min-width:480px)]:text-base
+              [@media(min-width:480px)]:px-2
+              [@media(min-width:480px)]:text-text-[13px]
 
               ${isSelected
                 ? 'bg-[#FF786A] text-white border-[#FF786A]'

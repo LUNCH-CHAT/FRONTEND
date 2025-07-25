@@ -26,9 +26,9 @@ function LayoutContent() {
   const isEditKeywordPage   = !!matchPath('/my/edit-keyword', location.pathname);
   const isEditTimePage      = !!matchPath('/my/edit-time',    location.pathname);
 
-  // 페이지 상단 헤더
+
   let header: JSX.Element | null = null;
-  if (isHomePage)          header = <HomeHeader scrollToggle/>;
+  if (isHomePage)          header = <HomeHeader scrollToggle />;
   else if (isAlarmPage)    header = <BackHeader title="알림" />;
   else if (isChattingPage) header = <HomeHeader title="채팅" />;
   else if (isMatchingPage) header = <HomeHeader title="매칭리스트" />;
@@ -40,7 +40,7 @@ function LayoutContent() {
         || isEditKeywordPage
         || isEditTimePage)    header = <BackHeader />;
 
-  // 하단바 노출 여부: 특정 페이지 + hideNav 플래그
+
   const showNavbar =
     (isHomePage || isChattingPage || isMatchingPage || isMyPage || isExplorePage)
     && !hideNav;
@@ -52,7 +52,7 @@ function LayoutContent() {
         <div className={`max-w-[480px] w-full min-h-screen ${isHomePage ? 'bg-transparent' : 'bg-white'}`}>
           {header}
 
-          <div className="pt-[64px] pb-[80px]">
+          <div className={`pb-[80px] ${isHomePage ? '' : 'pt-[64px]'}`}>
             <Outlet />
           </div>
 
