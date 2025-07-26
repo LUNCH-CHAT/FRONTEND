@@ -23,15 +23,15 @@ export default function FilterButton({
 }: FilterButtonProps) {
   // pill 모드일 때는 outline 형태로, bottom 모드일 땐 배경 채움 형태로
   const pillStyles = `
-    px-4
-    h-[30px]
-    py-[7px]
-    rounded-full
-    text-[13px]
-    font-medium
-  `;
+  w-[65.5px]
+  h-[30px]
+  px-[11px]
+  rounded-full
+  text-[13px]
+  font-medium
+`;
   const bottomStyles =
-    'w-[65.5px] h-[30px] px-[11px] py-[17px] rounded-[10px] text-sm font-medium flex-none';
+    'w-[65.5px] h-[30px] px-[11px]  rounded-[10px] text-sm font-medium flex-none';
 
   const colorStyles = selected
     ? variant === 'pill'
@@ -51,7 +51,7 @@ export default function FilterButton({
       )}
     >
       {label}
-      {!hideIcon && <ChevronDown size={16} />}
+      {!hideIcon && <ChevronDown size={15} />}
     </button>
   );
 }

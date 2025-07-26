@@ -17,7 +17,7 @@ export default function CategorySlider({
   onSelect,
 }: CategorySliderProps) {
   return (
-    <div className="w-full px-5">
+    <div className="w-full px-4 box-border">
       <Swiper
         spaceBetween={16}
         slidesPerView="auto"
@@ -33,7 +33,7 @@ export default function CategorySlider({
               onClick={() => onSelect(category.label)}
               className={`
                 flex flex-col items-center
-                px-3 pb-1
+                px-2 pb-1
                 ${selectedCategory === category.label
                   ? 'text-[#FF7C6A] font-bold'
                   : 'text-[#7D7D7D]'}

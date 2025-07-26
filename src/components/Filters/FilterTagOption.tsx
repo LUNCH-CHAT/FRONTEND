@@ -36,7 +36,7 @@ export default function FilterTagOption({
               /* 데스크탑 (>=480px)용 원래 크기 */
               [@media(min-width:480px)]:py-2
               [@media(min-width:480px)]:px-2
-              [@media(min-width:480px)]:text-text-[13px]
+              [@media(min-width:480px)]:text-[13px]
 
               ${isSelected
                 ? 'bg-[#FF786A] text-white border-[#FF786A]'
