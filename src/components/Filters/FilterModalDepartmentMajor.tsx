@@ -1,14 +1,13 @@
 // src/components/Filters/FilterModalDepartmentMajor.tsx
 import { useEffect, useState } from 'react';
 import FilterTagOption from './FilterTagOption';
-import FilterButton from './FilterButton';
 
-interface Props {
+interface FilterModalDepartmentMajorProps {
   departments: string[];
   majors: string[];
   localDepartment: string;
   localMajor: string;
-  applyFilters: () => void;
+  applyFilters: (department: string, major: string) => void;
   resetFilters: () => void;
   onClose: () => void;
 }
@@ -21,8 +20,10 @@ export default function FilterModalDepartmentMajor({
   applyFilters,
   resetFilters,
   onClose,
-}: Props) {
+}: FilterModalDepartmentMajorProps) {
   const [visible, setVisible] = useState(false);
+  const [selectedDept, setSelectedDept] = useState(localDepartment);
+  const [selectedMaj, setSelectedMaj] = useState(localMajor);
 
   useEffect(() => {
     const timeout = setTimeout(() => setVisible(true), 10);
@@ -36,7 +37,9 @@ export default function FilterModalDepartmentMajor({
     >
       <div
         className={`
-          w-full max-w-[480px] rounded-t-2xl bg-white p-6
+          w-full max-w-[480px]
+          rounded-t-2xl bg-white
+          pt-6 pb-6 pl-5 pr-[19px]
           transition-all duration-300
           ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'}
         `}
@@ -44,40 +47,61 @@ export default function FilterModalDepartmentMajor({
       >
         <div className="mb-6">
           <h3 className="font-semibold text-base mb-2">단대</h3>
-          <FilterTagOption options={departments} selected={localDepartment} />
+          <FilterTagOption
+            options={departments}
+            selected={selectedDept}
+            onSelect={setSelectedDept}
+          />
         </div>
 
         <div className="mb-6">
           <h3 className="font-semibold text-base mb-2">학과</h3>
-          <FilterTagOption options={majors} selected={localMajor} />
+          <FilterTagOption
+            options={majors}
+            selected={selectedMaj}
+            onSelect={setSelectedMaj}
+          />
         </div>
 
         {/* 버튼 그룹 */}
-        <div className="flex justify-center gap-2 mt-16">
-
-          <FilterButton
-            label="초기화"
+        <div className="flex justify-between items-center gap-2 mt-16">
+          {/* 초기화 버튼 */}
+          <button
+            type="button"
             onClick={() => {
               resetFilters();
               onClose();
             }}
-            selected={false}
-            hideIcon
-            variant="bottom"
-            className="xs:w-[107px]"
-          />
+            className={`
+              h-[50px]
+              w-[92px] xs:w-[107px]
+              text-[16px] font-medium
+              rounded-[10px]
+              border border-gray-300
+              bg-white text-gray-700
+            `}
+          >
+            초기화
+          </button>
 
-          <FilterButton
-            label="적용하기"
+          {/* 적용하기 버튼 */}
+          <button
+            type="button"
             onClick={() => {
-              applyFilters();
+              applyFilters(selectedDept, selectedMaj);
               onClose();
             }}
-            selected={true}
-            hideIcon
-            variant="bottom"
-            className="w-[235px] xs:w-[322px]"
-          />
+            className={`
+              h-[50px]
+              w-[235px] xs:w-[322px]
+              text-[16px] font-medium
+              rounded-[10px]
+              border border-transparent
+              bg-[#FF786A] text-white
+            `}
+          >
+            적용하기
+          </button>
         </div>
       </div>
     </div>

@@ -1,13 +1,12 @@
 // src/components/Filters/FilterModalYear.tsx
 import { useEffect, useState } from 'react';
 import FilterTagOption from './FilterTagOption';
-import FilterButton from './FilterButton';
 
 interface FilterModalYearProps {
   years: string[];
   localYear: string;
   resetFilters: () => void;
-  applyFilters: () => void;
+  applyFilters: (year: string) => void;
   onClose: () => void;
 }
 
@@ -19,6 +18,7 @@ export default function FilterModalYear({
   onClose,
 }: FilterModalYearProps) {
   const [visible, setVisible] = useState(false);
+  const [selected, setSelected] = useState(localYear);
 
   useEffect(() => {
     const timeout = setTimeout(() => setVisible(true), 10);
@@ -32,41 +32,62 @@ export default function FilterModalYear({
     >
       <div
         className={`
-          w-full max-w-[480px] rounded-t-2xl bg-white p-6
+          w-full max-w-[480px]
+          rounded-t-2xl bg-white
+          pt-6 pb-6 pl-5 pr-[19px]       
           transition-all duration-300
           ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'}
         `}
         onMouseDown={(e) => e.stopPropagation()}
       >
         <h3 className="font-semibold text-base mb-2">학번</h3>
-        <FilterTagOption options={years} selected={localYear} />
+
+        {/* 선택 옵션 */}
+        <FilterTagOption
+          options={years}
+          selected={selected}
+          onSelect={(year) => setSelected(year)}
+        />
 
         {/* 버튼 그룹 */}
-        <div className="flex justify-center gap-2 mt-16">
-          {/* 초기화: 기본 92px, 480px 이상(xs) → 107px */}
-          <FilterButton
-            label="초기화"
+        <div className="flex justify-between items-center gap-2 mt-16">
+          {/* 초기화 버튼 */}
+          <button
+            type="button"
             onClick={() => {
               resetFilters();
               onClose();
             }}
-            selected={false}
-            hideIcon
-            variant="bottom"
-            className="xs:w-[107px]"
-          />
+            className={`
+              h-[50px]
+              w-[92px] xs:w-[107px]
+              text-[16px] font-medium
+              rounded-[10px]
+              border border-gray-300
+              bg-white text-gray-700
+            `}
+          >
+            초기화
+          </button>
 
-          <FilterButton
-            label="적용하기"
+          {/* 적용하기 버튼 */}
+          <button
+            type="button"
             onClick={() => {
-              applyFilters();
+              applyFilters(selected);
               onClose();
             }}
-            selected={true}
-            hideIcon
-            variant="bottom"
-            className="w-[235px] xs:w-[322px]"
-          />
+            className={`
+              h-[50px]
+              w-[235px] xs:w-[322px]
+              text-[16px] font-medium
+              rounded-[10px]
+              border border-transparent
+              bg-[#FF786A] text-white
+            `}
+          >
+            적용하기
+          </button>
         </div>
       </div>
     </div>
