@@ -1,7 +1,6 @@
 // src/components/Filters/FilterModalYear.tsx
 import { useEffect, useState } from 'react';
 import FilterTagOption from './FilterTagOption';
-import FilterButton from './FilterButton';
 
 interface FilterModalYearProps {
   years: string[];
@@ -52,29 +51,43 @@ export default function FilterModalYear({
 
         {/* 버튼 그룹 */}
         <div className="flex justify-between items-center gap-2 mt-16">
-          <FilterButton
-            label="초기화"
+          {/* 초기화 버튼 */}
+          <button
+            type="button"
             onClick={() => {
               resetFilters();
               onClose();
             }}
-            selected={false}
-            hideIcon
-            variant="bottom"
-            className="xs:w-[107px]"
-          />
+            className={`
+              h-[50px]
+              w-[92px] xs:w-[107px]
+              text-[16px] font-medium
+              rounded-[10px]
+              border border-gray-300
+              bg-white text-gray-700
+            `}
+          >
+            초기화
+          </button>
 
-          <FilterButton
-            label="적용하기"
+          {/* 적용하기 버튼 */}
+          <button
+            type="button"
             onClick={() => {
               applyFilters(selected);
               onClose();
             }}
-            selected={true}
-            hideIcon
-            variant="bottom"
-            className="w-[235px] xs:w-[322px]"
-          />
+            className={`
+              h-[50px]
+              w-[235px] xs:w-[322px]
+              text-[16px] font-medium
+              rounded-[10px]
+              border border-transparent
+              bg-[#FF786A] text-white
+            `}
+          >
+            적용하기
+          </button>
         </div>
       </div>
     </div>

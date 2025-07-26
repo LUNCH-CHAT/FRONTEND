@@ -28,7 +28,8 @@ export default function SortDropdown({ selected, options, onSelect }: SortDropdo
         onClick={() => setIsOpen(!isOpen)}
         className="
           flex items-center gap-1
-          px-3  
+          px-[8px]
+          w-[71px]
           h-[30px]
           rounded-full
           text-[13px]
@@ -37,7 +38,7 @@ export default function SortDropdown({ selected, options, onSelect }: SortDropdo
           bg-gray-100 text-gray-700 border-gray-300
         "
       >
-        <ChoiceIcon className="w-4 h-4" /> 
+        <ChoiceIcon className="w-3 h-3" /> 
         {selected}
       </button>
 
