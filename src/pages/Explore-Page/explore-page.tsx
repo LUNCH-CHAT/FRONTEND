@@ -90,7 +90,7 @@ export default function ExplorePage() {
   }, [showDeptModal, showYearModal, setHideNav]);
 
   const categories = [
-    { label: '', icon: <AllIcon /> },
+    { label: '전체', icon: <AllIcon /> },
     { label: '교환학생', icon: <ExchangeIcon /> },
     { label: '취업/진로', icon: <CareerIcon /> },
     { label: '고시준비', icon: <ExamIcon /> },
