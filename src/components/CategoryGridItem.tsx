@@ -1,21 +1,35 @@
+// src/components/CategoryGridItem.tsx
+
 import React from 'react';
 
 interface CategoryGridItemProps {
   icon: React.ReactNode;
   label: string;
-  onClick?: () => void; 
+  textClassName?: string;  // 폰트 크기 조절용 prop
+  onClick?: () => void;
 }
 
-export default function CategoryGridItem({ icon, label, onClick }: CategoryGridItemProps) {
+export default function CategoryGridItem({ icon, label, textClassName, onClick }: CategoryGridItemProps) {
   return (
     <div
-      className="flex flex-col items-center w-[64px] text-center cursor-pointer"
+      className="flex flex-col items-center w-full text-center cursor-pointer"
       onClick={onClick}
     >
-      <div className="w-[40px] h-[40px] flex items-center justify-center aspect-square mb-2">
+      <div
+        className="
+          w-[39px] h-[34px]       /* 기본: 39px */
+          xs:w-[54px] xs:h-[54px] /* ≥480px: 54px */
+          flex items-center justify-center
+          mb-2
+        "
+      >
         {icon}
       </div>
-      <span className="text-[13px] leading-[16px] font-normal text-current font-pretendard">
+      <span
+        className={
+          `font-normal text-current font-pretendard ${textClassName ?? 'text-[11px] leading-[14px]'}`
+        }
+      >
         {label}
       </span>
     </div>
