@@ -21,6 +21,10 @@ import EditTagPage from './pages/my-page/edit-tag-page';
 import EditKeywordPage from './pages/my-page/edit-keyword-page';
 import EditTimePage from './pages/my-page/edit-time-page';
 
+import { useEffect } from 'react';
+import { onMessage } from 'firebase/messaging';
+import { messaging } from './firebase/firebase';
+
 const publicRoutes: RouteObject[] = [
   {
     path: '/onboarding',
@@ -58,6 +62,23 @@ const protectedRoutes: RouteObject[] = [
 const router = createBrowserRouter([...publicRoutes, ...protectedRoutes]);
 
 function App() {
+  // store된 로그인 사용자 ID 가져와서 전달
+  // useFCM(memberId);
+
+  // 포그라운드 메시지 처리
+  useEffect(() => {
+    const unsubscribe = onMessage(messaging, payload => {
+      const { title, body } = payload.notification ?? {};
+
+      if (title && body) {
+        // toast ui
+        alert(`새 알림: ${title}\n${body}`);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return <RouterProvider router={router} />;
 }
 
