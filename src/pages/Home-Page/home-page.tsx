@@ -33,8 +33,6 @@ export default function HomePage() {
     navigate(`/explore?category=${encodeURIComponent(label)}`);
   };
 
-  /** ────────────────────────────────────── */
-  /** 추천 프로필을 담을 state & API 호출 */
   const [recommendations, setRecommendations] = useState<RecommendationProfile[]>([]);
   const currentMemberId = 1; // 테스트용 하드코딩
 
@@ -51,7 +49,6 @@ export default function HomePage() {
         console.error('추천 사용자 불러오기 실패:', err);
       });
   }, []);
-  /** ────────────────────────────────────── */
 
   return (
     <>
