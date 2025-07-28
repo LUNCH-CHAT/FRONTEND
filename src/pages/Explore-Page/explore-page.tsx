@@ -113,7 +113,7 @@ export default function ExplorePage() {
   const filteredProfiles = profiles
     .filter(
       (p) =>
-        (!selectedCategory || p.tags.includes(selectedCategory)) &&
+        (selectedCategory === '' || selectedCategory === '전체' || p.tags.includes(selectedCategory)) &&
         (!selectedDepartment || p.department.includes(selectedDepartment)) &&
         (!selectedMajor || p.department.includes(selectedMajor)) &&
         (!selectedYear || p.department.includes(selectedYear))
