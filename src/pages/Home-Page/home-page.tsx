@@ -1,9 +1,14 @@
 // src/pages/Home-Page/home-page.tsx
 
 import { useNavigate } from 'react-router-dom';
-import HomeHeader from '../../components/Headers/HomeHeader';  
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import type { ResponseRecommendationDto, RecommendationProfile } from '../../types/profile';
+
+import HomeHeader from '../../components/Headers/HomeHeader';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
+
 import CategoryGridItem from '../../components/CategoryGridItem';
 import ProfileCard from '../../components/ProfileCard';
 import InfoCard from '../../components/InfoCard';
@@ -23,19 +28,38 @@ import homeBg from '@/assets/images/home-bg.png';
 export default function HomePage() {
   const navigate = useNavigate();
 
+  /** 카테고리 클릭 시 ExplorePage로 이동 */
   const handleCategoryClick = (label: string) => {
     navigate(`/explore?category=${encodeURIComponent(label)}`);
   };
 
+  /** ────────────────────────────────────── */
+  /** 추천 프로필을 담을 state & API 호출 */
+  const [recommendations, setRecommendations] = useState<RecommendationProfile[]>([]);
+  const currentMemberId = 1; // 테스트용 하드코딩
+
+  useEffect(() => {
+    axios
+      .get<ResponseRecommendationDto>('/api/members/recommendations', {
+        params: { currentMemberId },
+      })
+      .then(res => {
+        console.log('추천 API 응답:', res.data);
+        setRecommendations(res.data.result ?? []);
+      })
+      .catch(err => {
+        console.error('추천 사용자 불러오기 실패:', err);
+      });
+  }, []);
+  /** ────────────────────────────────────── */
+
   return (
     <>
-      {/* 고정 헤더: 홈 페이지만 scrollToggle 활성화 */}
       <HomeHeader scrollToggle />
 
       <div className="w-full min-h-screen bg-white font-pretendard flex justify-center">
-        
         <div className="w-full max-w-[700px]">
-          {/* 메인 배너 (고정 높이 제거, 비율 유지) */}
+          {/* 메인 배너 */}
           <section className="w-full overflow-hidden">
             <Swiper autoplay={{ delay: 4000 }} loop slidesPerView={1}>
               <SwiperSlide>
@@ -100,7 +124,7 @@ export default function HomePage() {
             />
           </section>
 
-          {/* 나와 ‘시간표 · 관심사’가 겹쳐요 */}
+          {/* 나와 ‘시간표 · 관심사’가 겹쳐요! */}
           <section className="pl-5 pb-6">
             <h2 className="text-[20px] font-semibold mb-4">
               나와 ‘시간표 · 관심사’가 겹쳐요!
@@ -108,37 +132,29 @@ export default function HomePage() {
             <Swiper
               className="pl-4"
               spaceBetween={16}
-              breakpoints={{
-                0: { slidesPerView: 2 },
-                480: { slidesPerView: 3 },
-              }}
+              breakpoints={{ 0: { slidesPerView: 2 }, 480: { slidesPerView: 3 } }}
             >
-              {[1, 2, 3].map(i => (
-                <SwiperSlide key={i}>
+              {recommendations.map(profile => (
+                <SwiperSlide key={profile.memberId}>
                   <ProfileCard
-                    id={String(i)}
-                    name={`유엠씨${i}`}
-                    department="컴퓨터공학과 21학번"
-                    tags={['창업', '교환학생']}
-                    image="/images/profile.png"
+                    id={String(profile.memberId)}
+                    name={profile.memberName}
+                    department={`${profile.department} ${profile.studentNo}`}
+                    tags={profile.userInterests}
+                    image={profile.profileImageUrl}
                   />
                 </SwiperSlide>
               ))}
             </Swiper>
           </section>
 
-          {/* 이런 사람 어때요? */}
+          {/* 이런 사람 어때요? (더미 유지) */}
           <section className="pl-5 pb-6 mt-10">
-            <h2 className="text-[20px] font-semibold mb-4">
-              이런 사람 어때요?
-            </h2>
+            <h2 className="text-[20px] font-semibold mb-4">이런 사람 어때요?</h2>
             <Swiper
               className="pl-4"
               spaceBetween={16}
-              breakpoints={{
-                0: { slidesPerView: 2 },
-                480: { slidesPerView: 3 },
-              }}
+              breakpoints={{ 0: { slidesPerView: 2 }, 480: { slidesPerView: 3 } }}
             >
               {[4, 5, 6].map(i => (
                 <SwiperSlide key={i}>
