@@ -111,16 +111,19 @@ export default function ExplorePage() {
   ];
 
   const filteredProfiles = profiles
-    .filter(
-      (p) =>
-        (selectedCategory === '' || selectedCategory === '전체' || p.tags.includes(selectedCategory)) &&
-        (!selectedDepartment || p.department.includes(selectedDepartment)) &&
-        (!selectedMajor || p.department.includes(selectedMajor)) &&
-        (!selectedYear || p.department.includes(selectedYear))
+    .filter((p) =>
+      // '전체'나 빈 값일 땐 필터 무시, 아니면 tags 포함 여부 검사
+      (selectedCategory === '' || selectedCategory === '전체' || p.tags.includes(selectedCategory)) &&
+      (!selectedDepartment || p.department.includes(selectedDepartment)) &&
+      (!selectedMajor || p.department.includes(selectedMajor)) &&
+      (!selectedYear || p.department.includes(selectedYear))
     )
     .sort((a, b) =>
-      sortOrder === '추천순' ? a.name.localeCompare(b.name) : b.id.localeCompare(a.id)
+      sortOrder === '추천순'
+        ? a.name.localeCompare(b.name)
+        : b.id.localeCompare(a.id)
     );
+
 
   return (
     <div className="w-full min-h-screen bg-white font-[pretendard] flex flex-col items-center pb-28">
