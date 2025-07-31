@@ -8,7 +8,7 @@ import type {
 } from '../types/chat';
 
 // 채팅방 리스트 조회
-export const getChatList = async (userId: string): Promise<ResponseChatRoomListDto> => {
+export const getChatList = async (userId: number): Promise<ResponseChatRoomListDto> => {
   const { data } = await axios.get('/api/chatrooms', {
     params: userId,
   });

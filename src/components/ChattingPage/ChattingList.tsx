@@ -6,7 +6,7 @@ interface ChattingListProps {
   image?: string;
   name: string;
   lastMessage?: string;
-  time: string;
+  time?: string;
 }
 
 const ChattingList = ({ id, image, name, lastMessage, time }: ChattingListProps) => {
