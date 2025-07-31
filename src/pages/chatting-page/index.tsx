@@ -6,12 +6,14 @@ const mockData = [
   {
     roomId: 1,
     friendName: '유엠씨',
+    department: '컴퓨터공학과',
     lastMessage: '12반에 학관에서 봬요!',
     lastMessageSentAt: '2025-07-30T09:14:57.183Z',
   },
   {
     roomId: 2,
     friendName: '챗터',
+    department: '컴퓨터공학과',
     lastMessage: '12반에 학관에서 봬요!',
     lastMessageSentAt: '2025-07-30T09:14:57.183Z',
   },
@@ -54,6 +56,7 @@ export default function ChattingPage() {
           return (
             <ChattingList
               name={data.friendName}
+              friendInfo={data.department}
               lastMessage={data.lastMessage}
               time={formattedTime}
               id={data.roomId}

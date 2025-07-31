@@ -3,6 +3,7 @@ import type { CommonResponse } from './common';
 export type ChatRoom = {
   roomId: number;
   friendName: string;
+  department: string;
   lastMessage: string;
   lastMessageSentAt: Date;
   unreadCount: number;

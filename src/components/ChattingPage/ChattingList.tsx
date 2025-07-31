@@ -5,17 +5,19 @@ interface ChattingListProps {
   id: number;
   image?: string;
   name: string;
+  friendInfo: string;
   lastMessage?: string;
   time?: string;
 }
 
-const ChattingList = ({ id, image, name, lastMessage, time }: ChattingListProps) => {
+const ChattingList = ({ id, image, name, friendInfo, lastMessage, time }: ChattingListProps) => {
   const navigate = useNavigate();
 
   const handleEnterRoom = () => {
     navigate(`/chatting/${id}`, {
       state: {
         name,
+        friendInfo,
       },
     });
   };
