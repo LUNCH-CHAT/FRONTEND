@@ -27,6 +27,7 @@ import { useEffect } from 'react';
 import { onMessage } from 'firebase/messaging';
 import { messaging } from './firebase/firebase';
 import GoogleLoginPage from './pages/login-page/redirect-page';
+import useFCM from './hooks/useFCM';
 
 const publicRoutes: RouteObject[] = [
   {
@@ -42,7 +43,7 @@ const publicRoutes: RouteObject[] = [
   {
     path: '/auth/login/google',
     element: <GoogleLoginPage />,
-  }
+  },
 ];
 
 const protectedRoutes: RouteObject[] = [
@@ -72,7 +73,7 @@ const queryClient = new QueryClient();
 
 function App() {
   // store된 로그인 사용자 ID 가져와서 전달
-  // useFCM(memberId);
+  useFCM();
 
   // 포그라운드 메시지 처리
   useEffect(() => {

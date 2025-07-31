@@ -1,8 +1,8 @@
-import axios from 'axios';
+import { axiosInstance } from './axios';
 
-const registerFcmToken = async (memberId: string, token: string) => {
+const registerFcmToken = async (token: string) => {
   try {
-    await axios.patch(`/api/members/${memberId}/fcm-tokens`, {
+    await axiosInstance.patch(`/api/members/fcm-token`, {
       fcmToken: token,
     });
   } catch (error) {
