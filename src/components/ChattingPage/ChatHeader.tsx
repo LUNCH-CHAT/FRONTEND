@@ -4,9 +4,10 @@ import BasicProfile from '@/assets/basic-profile.png';
 
 interface ChatHeaderProps {
   name: string;
+  friendInfo: string;
 }
 
-const ChatHeader = ({ name }: ChatHeaderProps) => {
+const ChatHeader = ({ name, friendInfo }: ChatHeaderProps) => {
   const navigate = useNavigate();
 
   const handleBack = () => {
@@ -25,7 +26,7 @@ const ChatHeader = ({ name }: ChatHeaderProps) => {
       />
       <div>
         <p className="font-[pretendard] font-normal">{name}</p>
-        <p className="font-[pretendard] font-normal text-[13px]">컴퓨터공학과</p>
+        <p className="font-[pretendard] font-normal text-[13px]">{friendInfo}</p>
       </div>
     </div>
   );

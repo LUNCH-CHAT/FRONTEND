@@ -19,7 +19,7 @@ export default function ProfileCompletePage() {
     setTimeout(() => {
       navigate(`/`);
     },3500);
-  },[step])
+  },[step,navigate])
 
   return (
     <div className={`min-h-screen flex flex-col justify-center px-[65px] text-center text-white font-[pretendard] bg-gradient-to-b from-[#FFECEB] via-[#FF9B8E] to-[#FF7C6A] 

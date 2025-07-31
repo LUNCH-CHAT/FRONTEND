@@ -54,8 +54,7 @@ export default function ChattingRoom() {
   // const { id } = useParams();
 
   const location = useLocation();
-  const { name } = location.state;
-  console.log(name);
+  const { name, friendInfo } = location.state;
 
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<
@@ -80,7 +79,7 @@ export default function ChattingRoom() {
   return (
     <>
       {/* 헤더 */}
-      <ChatHeader name={name} />
+      <ChatHeader name={name} friendInfo={friendInfo} />
       {/* 대화 내용 */}
       <ChatMessages messages={messages} />
       {/* 입력창 */}
