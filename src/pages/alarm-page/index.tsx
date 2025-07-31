@@ -6,18 +6,20 @@ const mockData = [
     id: 1,
     sender: '유엠씨',
     type: 'request',
-    time: 1720330200000,
+    time: '2025-07-30T09:14:57.183Z',
   },
   {
     id: 2,
     sender: '챗터',
     type: 'accept',
-    time: 1720416600000,
+    time: '2025-07-30T09:14:57.183Z',
   },
 ];
 
 export default function AlarmPage() {
-  const sortedData = mockData.sort((a, b) => b.time - a.time);
+  const sortedData = mockData.sort(
+    (a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()
+  );
 
   return (
     <>

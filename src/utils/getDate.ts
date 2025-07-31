@@ -1,4 +1,4 @@
-export const formatDate = (input: Date | string) => {
+export const formatDate = (input: Date | string | number) => {
   const date = new Date(input);
 
   const year = String(date.getFullYear());
@@ -10,7 +10,7 @@ export const formatDate = (input: Date | string) => {
   return { year, month, day, hours, minutes };
 };
 
-export const getDayOfWeek = (input: string | number) => {
+export const getDayOfWeek = (input: Date | string | number) => {
   const week = ['일', '월', '화', '수', '목', '금', '토'];
 
   const dayOfWeek = week[new Date(input).getDay()];
