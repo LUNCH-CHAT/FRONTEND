@@ -27,6 +27,14 @@ export default function ProfileStepPage() {
   const [timeTables, setTimeTables] = useState<TimeTableType[]>([]);
   const navigate = useNavigate();
 
+  setTimeTables([
+    {
+      dayOfWeek: "MON",
+      startTime: "09:00",
+      endTime: "10:00",
+      subjectName: ""
+    }
+  ])
   const StepImages =
     step === 0
       ? Step1
