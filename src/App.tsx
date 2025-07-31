@@ -27,7 +27,7 @@ import { useEffect } from 'react';
 import { onMessage } from 'firebase/messaging';
 import { messaging } from './firebase/firebase';
 import GoogleLoginPage from './pages/login-page/redirect-page';
-import useFCM from './hooks/useFCM';
+import useFCM from './hooks/alarm/useFCM';
 
 const publicRoutes: RouteObject[] = [
   {

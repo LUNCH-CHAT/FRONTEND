@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { requestNotificationPermission } from '../firebase/messaging';
-import registerFcmToken from '../api/fcm';
+import { requestNotificationPermission } from '../../firebase/messaging';
+import { registerFcmToken } from '../../api/alarm';
 
 const useFCM = () => {
   useEffect(() => {
