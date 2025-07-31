@@ -1,6 +1,7 @@
 import { Client, type IFrame, type IMessage } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { useEffect, useRef, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const webSocketStatus = {
   CONNECTING: 'CONNECTING',
@@ -27,6 +28,8 @@ export const useWebSocket = (roomId: string) => {
     content: '',
     createdAt: null,
   });
+
+  const queryClient = useQueryClient();
 
   // 웹소켓 연결
   const connectWebSocket = () => {
@@ -55,6 +58,8 @@ export const useWebSocket = (roomId: string) => {
             content: recievedMessage.content,
             createdAt: recievedMessage.createdAt,
           });
+
+          queryClient.invalidateQueries({ queryKey: ['chatRooms'] });
         });
       },
 
@@ -92,6 +97,8 @@ export const useWebSocket = (roomId: string) => {
           content: message,
         }),
       });
+
+      queryClient.invalidateQueries({ queryKey: ['chatRooms'] });
     }
   };
 
