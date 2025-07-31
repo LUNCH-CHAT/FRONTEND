@@ -26,6 +26,7 @@ import EditTimePage from './pages/my-page/edit-time-page';
 import { useEffect } from 'react';
 import { onMessage } from 'firebase/messaging';
 import { messaging } from './firebase/firebase';
+import GoogleLoginPage from './pages/login-page/redirect-page';
 
 const publicRoutes: RouteObject[] = [
   {
@@ -38,6 +39,10 @@ const publicRoutes: RouteObject[] = [
       { path: 'complete', element: <ProfileCompletePage /> },
     ],
   },
+  {
+    path: '/auth/login/google',
+    element: <GoogleLoginPage />,
+  }
 ];
 
 const protectedRoutes: RouteObject[] = [
