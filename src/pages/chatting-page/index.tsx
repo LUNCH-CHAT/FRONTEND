@@ -1,29 +1,45 @@
 import ChattingList from '../../components/ChattingPage/ChattingList';
+// import useGetChatRoomList from '../../hooks/chat/useGetChatRoomList';
 import { formatDate } from '../../utils/getDate';
 
 const mockData = [
   {
-    id: 1,
-    sender: '유엠씨',
+    roomId: 1,
+    friendName: '유엠씨',
     lastMessage: '12반에 학관에서 봬요!',
-    time: 1720330200000,
+    lastMessageSentAt: '2025-07-30T09:14:57.183Z',
   },
   {
-    id: 2,
-    sender: '챗터',
+    roomId: 2,
+    friendName: '챗터',
     lastMessage: '12반에 학관에서 봬요!',
-    time: 1720416600000,
+    lastMessageSentAt: '2025-07-30T09:14:57.183Z',
   },
 ];
 
 export default function ChattingPage() {
-  const sortedData = mockData.sort((a, b) => b.time - a.time);
+  // userId를 store에서 가져와서 전달
+  // const { data: chatRooms = [], isPending, isError } = useGetChatRoomList(userId);
+
+  // 최신 채팅순으로 정렬
+  const sortedChatRooms = mockData.sort(
+    (a, b) => new Date(b.lastMessageSentAt).getTime() - new Date(a.lastMessageSentAt).getTime()
+  );
+
+  // if (isPending) {
+  //   // loading spinner
+  //   return <div>Loading...</div>;
+  // }
+
+  // if (isError) {
+  //   return <div>Error</div>;
+  // }
 
   return (
     <>
       <div className="flex flex-col gap-4 select-none">
-        {sortedData?.map(data => {
-          const { hours, minutes } = formatDate(data.time);
+        {sortedChatRooms?.map(data => {
+          const { hours, minutes } = formatDate(data.lastMessageSentAt);
 
           let displayHours = Number(hours);
           let period = '오전';
@@ -37,11 +53,11 @@ export default function ChattingPage() {
 
           return (
             <ChattingList
-              name={data.sender}
+              name={data.friendName}
               lastMessage={data.lastMessage}
               time={formattedTime}
-              id={data.id}
-              key={data.id}
+              id={data.roomId}
+              key={data.roomId}
             />
           );
         })}
