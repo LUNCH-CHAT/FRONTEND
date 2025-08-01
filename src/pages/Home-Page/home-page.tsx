@@ -2,8 +2,13 @@
 
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-import type { ResponseRecommendationDto, RecommendationProfile } from '../../types/profile';
+import { axiosInstance } from '../../api/axios';
+import type {
+  ResponseRecommendationDto,
+  RecommendationProfile,
+  ResponsePopularDto,
+  PopularProfile,
+} from '../../types/profile';
 
 import HomeHeader from '../../components/Headers/HomeHeader';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -34,19 +39,31 @@ export default function HomePage() {
   };
 
   const [recommendations, setRecommendations] = useState<RecommendationProfile[]>([]);
-  const currentMemberId = 1; // 테스트용 하드코딩
+  const [popularMembers, setPopularMembers] = useState<PopularProfile[]>([]);
 
+  // “나와 ‘시간표 · 관심사’가 겹쳐요!” API 호출
   useEffect(() => {
-    axios
-      .get<ResponseRecommendationDto>('/api/members/recommendations', {
-        params: { currentMemberId },
-      })
+    axiosInstance
+      .get<ResponseRecommendationDto>('/api/members/recommendations')
       .then(res => {
         console.log('추천 API 응답:', res.data);
         setRecommendations(res.data.result ?? []);
       })
       .catch(err => {
-        console.error('추천 사용자 불러오기 실패:', err);
+        console.error('추천 사용자 불러오기 실패:', err.response?.data || err);
+      });
+  }, []);
+
+  // “이런 사람 어때요?” (인기 멤버) API 호출
+  useEffect(() => {
+    axiosInstance
+      .get<ResponsePopularDto>('/api/members/popular')
+      .then(res => {
+        console.log('인기 멤버 API 응답:', res.data);
+        setPopularMembers(res.data.result ?? []);
+      })
+      .catch(err => {
+        console.error('인기 멤버 불러오기 실패:', err.response?.data || err);
       });
   }, []);
 
@@ -145,7 +162,7 @@ export default function HomePage() {
             </Swiper>
           </section>
 
-          {/* 이런 사람 어때요? (더미 유지) */}
+          {/* 이런 사람 어때요? */}
           <section className="pl-5 pb-6 mt-10">
             <h2 className="text-[20px] font-semibold mb-4">이런 사람 어때요?</h2>
             <Swiper
@@ -153,14 +170,14 @@ export default function HomePage() {
               spaceBetween={16}
               breakpoints={{ 0: { slidesPerView: 2 }, 480: { slidesPerView: 3 } }}
             >
-              {[4, 5, 6].map(i => (
-                <SwiperSlide key={i}>
+              {popularMembers.map(profile => (
+                <SwiperSlide key={profile.memberId}>
                   <ProfileCard
-                    id={String(i)}
-                    name={`테스트${i}`}
-                    department="테스트 학과"
-                    tags={['테스트']}
-                    image="/images/profile.png"
+                    id={String(profile.memberId)}
+                    name={profile.memberName}
+                    department={`${profile.department} ${profile.studentNo}`}
+                    tags={profile.userInterests}
+                    image={profile.profileImageUrl ?? '/images/profile.png'}
                   />
                 </SwiperSlide>
               ))}

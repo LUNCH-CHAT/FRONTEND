@@ -32,3 +32,23 @@ export interface ResponseRecommendationDto {
   message: string;
   result: RecommendationProfile[];
 }
+
+
+/** 인기 멤버 단일 프로필 */
+export interface PopularProfile {
+  memberId: number;
+  memberName: string;
+  profileImageUrl: string;
+  studentNo: string;
+  department: string;
+  userInterests: string[];
+  // userKeywords가 필요없으면 빼셔도 됩니다.
+}
+
+/** 인기 멤버 전체 응답 */
+export interface ResponsePopularDto {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: PopularProfile[];
+}
