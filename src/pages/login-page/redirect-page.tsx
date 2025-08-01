@@ -17,7 +17,7 @@ export default function GoogleLoginPage() {
 
       try {
         const res = await getLogin(code);
-        
+        console.log(" 로그인 응답:", res.data);  //콘솔 로그 확인하려고 추가함
         setTimeout(() => {
           if (res.data.result === "isNewUser") navigate(`/onboarding/profile`);
           else navigate(`/onboarding/complete`);
