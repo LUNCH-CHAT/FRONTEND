@@ -1,42 +1,52 @@
+import { useEffect } from 'react';
 import AlarmCard from '../../components/AlarmPage/AlarmCard';
+import useGetInfiniteAlarmList from '../../hooks/alarm/useGetInfiniteAlarmList';
 import { formatDate } from '../../utils/getDate';
-
-const mockData = [
-  {
-    id: 1,
-    sender: '유엠씨',
-    type: 'request',
-    time: '2025-07-30T09:14:57.183Z',
-  },
-  {
-    id: 2,
-    sender: '챗터',
-    type: 'accept',
-    time: '2025-07-30T09:14:57.183Z',
-  },
-];
+import { useInView } from 'react-intersection-observer';
 
 export default function AlarmPage() {
-  const sortedData = mockData.sort(
-    (a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()
-  );
+  const { data, isFetching, hasNextPage, isPending, isError, fetchNextPage } =
+    useGetInfiniteAlarmList();
+
+  const { ref, inView } = useInView({
+    threshold: 0,
+  });
+
+  useEffect(() => {
+    if (inView && !isFetching && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, isFetching, hasNextPage, fetchNextPage]);
+
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Erorr</div>;
+  }
 
   return (
     <>
-      {/* <BackHeader title="알림" /> */}
-      {sortedData?.map(data => {
-        const { month, day, hours, minutes } = formatDate(data.time);
+      {data?.pages.map(page => {
+        const notifications = page.result.notifications;
 
-        return (
-          <div key={data.id}>
-            <AlarmCard
-              sender={data.sender}
-              type={data.type === 'request' ? '요청' : '수락'}
-              time={`${month}/${day} ${hours}:${minutes}`}
-            />
-          </div>
-        );
+        notifications.map(noti => {
+          const { month, day, hours, minutes } = formatDate(noti.createdAt);
+
+          return (
+            <div key={noti.id}>
+              <AlarmCard
+                sender={noti.senderMembername}
+                image={noti.senderProfileImageUrl}
+                content={noti.content}
+                time={`${month}/${day} ${hours}:${minutes}`}
+              />
+            </div>
+          );
+        });
       })}
+      <div ref={ref}></div>
     </>
   );
 }
