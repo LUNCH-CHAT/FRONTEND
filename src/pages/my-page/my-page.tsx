@@ -4,12 +4,27 @@ import RightArrow from '@/assets/icons/arrow-right.svg';
 import ReceivedRequest from '@/assets/icons/received-request.svg';
 import SentRequest from '@/assets/icons/sent-request.svg';
 import TagSelect from '@/assets/icons/tag-select.svg';
+import { useEffect, useState } from 'react';
+import { getMyInfo } from '../../api/my';
+import type { MyInfo } from '../../types/user';
 
 export default function MyPage() {
   const navigate = useNavigate();
+  const [myInfo, setMyInfo] = useState<MyInfo>();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await getMyInfo();
+        setMyInfo(data.result);
+      } catch (error) {
+        console.log('실패');
+      }
+    })();
+  },[]);
 
   return (
-    <div className="px-[20px]">
+    <div className="max-w-[480px] px-[20px]">
       <div className="flex gap-[16px]">
         <img
           src={SampleProfile}
@@ -18,7 +33,7 @@ export default function MyPage() {
         />
         <div className="w-full">
           <div className="flex justify-between items-center w-full mb-[4px]">
-            <p className="text-black text-[16px] font-[pretendard] font-semibold">유엠씨</p>
+            <p className="text-black text-[16px] font-[pretendard] font-semibold">{myInfo?.name}</p>
             <button
               type="button"
               onClick={() => navigate(`/my/profile`)}
@@ -29,18 +44,24 @@ export default function MyPage() {
             </button>
           </div>
           <p className="text-black text-[13px] font-[pretendard] font-regular mb-[6px]">
-            21학번, 컴퓨터공학과
+            {myInfo?.studentId}학번, {myInfo?.department}
           </p>
           <p className="text-[#7D7D7D] text-[13px] font-[pretendard] font-regular mb-[8px]">
-            프로창업러 | 교환 준비생 | 취미 요가
+            {myInfo?.keywords.map((word, idx) => (
+              <span key={idx}>
+                {word}
+                {idx !== myInfo.keywords.length - 1 && ' | '}
+              </span>
+            ))}
           </p>
-          <div className="flex gap-[6px]">
-            <p className="inline-block px-[9px] py-[6px] border border-[#FF7C6A] rounded-[15px] text-black text-[13px] font-[pretendard] font-light leading-[11px]">
-              창업
-            </p>
-            <p className="inline-block px-[9px] py-[6px] border border-[#FF7C6A] rounded-[15px] text-black text-[13px] font-[pretendard] font-light leading-[11px]">
-              교환학생
-            </p>
+          <div className="flex gap-[6px] flex-wrap">
+            {myInfo?.tags.map((tag,idx)=>(
+              <p 
+                key={idx}
+                className="inline-block px-[9px] py-[6px] border border-[#FF7C6A] rounded-[15px] text-black text-[13px] font-[pretendard] font-light leading-[11px]">
+                {tag}
+              </p>
+            ))}
           </div>
         </div>
       </div>
@@ -49,7 +70,7 @@ export default function MyPage() {
         <div className="flex w-[80%] justify-center items-center my-3">
           <div className="w-[60px] flex flex-col items-center">
             <img src={ReceivedRequest} alt="받은 요청 이미지" className="size-[32px] mb-[6px]" />
-            <p className="text-black text-[13px] font-[pretendard] font-medium mb-[2px]">3건</p>
+            <p className="text-black text-[13px] font-[pretendard] font-medium mb-[2px]">{myInfo?.received}건</p>
             <p className="text-[#A0A0A0] text-[13px] font-[pretendard] font-regular">받은 요청</p>
           </div>
           <div className="w-full flex flex-1 justify-center items-center ">
@@ -57,16 +78,16 @@ export default function MyPage() {
           </div>
           <div className="w-[60px] flex flex-col items-center">
             <img src={SentRequest} alt="보낸 요청 이미지" className="size-[32px] mb-[6px]" />
-            <p className="text-black text-[13px] font-[pretendard] font-medium mb-[2px]">3건</p>
-            <p className="text-[#A0A0A0] text-[13px] font-[pretendard] font-regular">받은 요청</p>
+            <p className="text-black text-[13px] font-[pretendard] font-medium mb-[2px]">{myInfo?.requested}건</p>
+            <p className="text-[#A0A0A0] text-[13px] font-[pretendard] font-regular">보낸 요청</p>
           </div>
           <div className="w-full flex flex-1 justify-center items-center ">
             <div className="w-[1px] h-[45px] border border-[#D4D4D4]" />
           </div>
           <div className="w-[60px] flex flex-col items-center">
             <img src={TagSelect} alt="매칭 완료 이미지" className="size-[32px] mb-[6px]" />
-            <p className="text-black text-[13px] font-[pretendard] font-medium mb-[2px]">3건</p>
-            <p className="text-[#A0A0A0] text-[13px] font-[pretendard] font-regular">받은 요청</p>
+            <p className="text-black text-[13px] font-[pretendard] font-medium mb-[2px]">{myInfo?.completed}건</p>
+            <p className="text-[#A0A0A0] text-[13px] font-[pretendard] font-regular">매칭 완료</p>
           </div>
         </div>
       </div>
