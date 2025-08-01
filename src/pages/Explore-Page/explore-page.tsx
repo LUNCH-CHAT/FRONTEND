@@ -1,5 +1,10 @@
+// src/pages/Explore-Page/explore-page.tsx
+
 import axios from 'axios';
-import type { ResponseCollegeListDto, ResponseDepartmentListDto } from '../../types/college';
+import type {
+  ResponseCollegeListDto,
+  ResponseDepartmentListDto,
+} from '../../types/college';
 import type { Profile } from '../../types/profile';
 import { useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -22,6 +27,42 @@ import LanguageIcon from '@/assets/icons/forienlanguage.svg?react';
 import HobbyIcon from '@/assets/icons/extreaactivities.svg?react';
 import SchoolIcon from '@/assets/icons/campus.svg?react';
 
+// 실제 API 응답 구조에 맞춘 타입 정의
+export type ResponseMembersFiltersDto = {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: {
+    memberId: number;
+    memberName: string;
+    profileImageUrl: string;
+    studentNo: string;
+    department: string;
+    userInterests: string[];
+    userKeywords: { id: number; type: string; title: string; description: string }[];
+  }[];
+};
+
+const interestMap: Record<string, string> = {
+  전체: '',
+  교환학생: 'EXCHANGE_STUDENT',
+  '취업/진로': 'CAREER',
+  고시준비: 'EXAM_PREPARATION',
+  창업: 'STARTUP',
+  학점관리: 'GRADE_MANAGEMENT',
+  '외국어 공부': 'FOREIGN_LANGUAGE',
+  '취미/여가': 'HOBBY',
+  학교생활: 'SCHOOL_LIFE',
+};
+
+const reverseInterestMap = Object.entries(interestMap).reduce(
+  (acc, [label, key]) => {
+    if (key) acc[key] = label;
+    return acc;
+  },
+  {} as Record<string, string>
+);
+
 export default function ExplorePage() {
   const [searchParams] = useSearchParams();
   const { setHideNav } = useNav();
@@ -29,6 +70,7 @@ export default function ExplorePage() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [showDeptModal, setShowDeptModal] = useState(false);
   const [showYearModal, setShowYearModal] = useState(false);
+
   const [selectedDepartment, setSelectedDepartment] = useState('');
   const [selectedMajor, setSelectedMajor] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
@@ -36,58 +78,81 @@ export default function ExplorePage() {
 
   const [colleges, setColleges] = useState<{ id: number; name: string }[]>([]);
   const [majors, setMajors] = useState<string[]>([]);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
 
+  // 1) 단과대 리스트
   useEffect(() => {
     axios
       .get<ResponseCollegeListDto>('/api/colleges')
-      .then((res) => {
-        const collegeList = res.data?.result ?? [];
-        setColleges(collegeList);
-      })
-      .catch((err) => {
-        console.error('단과대 불러오기 실패:', err);
-        setColleges([]);
-      });
+      .then((res) => setColleges(res.data.result ?? []))
+      .catch(() => setColleges([]));
   }, []);
 
-  const collegeId =
-    Array.isArray(colleges) && selectedDepartment
-      ? colleges.find((c) => c.name === selectedDepartment)?.id
-      : undefined;
-
+  // 2) 학과 리스트
+  const collegeId = colleges.find((c) => c.name === selectedDepartment)?.id;
   useEffect(() => {
-    if (!collegeId || !selectedDepartment) {
+    if (!collegeId) {
       setMajors([]);
       return;
     }
-
     axios
       .get<ResponseDepartmentListDto>(`/api/colleges/${collegeId}/departments`)
-      .then((res) => {
-        const departmentList = res.data?.result ?? [];
-        setMajors(departmentList.map((d) => d.name));
-      })
-      .catch((err) => {
-        console.error('학과 불러오기 실패:', err);
-        setMajors([]);
-      });
-  }, [collegeId, selectedDepartment]);
+      .then((res) => setMajors(res.data.result.map((d) => d.name)))
+      .catch(() => setMajors([]));
+  }, [collegeId]);
 
+  // 3) URL 카테고리 파라미터
   useEffect(() => {
     const param = searchParams.get('category') || '';
     setSelectedCategory(param);
   }, [searchParams]);
 
+  // 4) 모달 오픈 시 스크롤 락 & 네비 숨김
   useEffect(() => {
     document.body.style.overflow = showDeptModal || showYearModal ? 'hidden' : 'auto';
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [showDeptModal, showYearModal]);
-
-  useEffect(() => {
     setHideNav(showDeptModal || showYearModal);
   }, [showDeptModal, showYearModal, setHideNav]);
+
+  // 5) 필터/정렬 변경 시 프로필 조회 (params 로 각 필드 분리)
+  useEffect(() => {
+    const params: Record<string, any> = {
+      size: 10,
+      page: 0,
+      sort: sortOrder === '추천순' ? 'recommend' : 'newest',
+      ...(selectedCategory && selectedCategory !== '전체' && {
+        interest: interestMap[selectedCategory],
+      }),
+      ...(selectedDepartment && { college: selectedDepartment }),
+      ...(selectedMajor     && { department: selectedMajor }),
+      ...(selectedYear      && { studentNo: selectedYear }),
+    };
+
+    axios
+      .get<ResponseMembersFiltersDto>('/api/members/filters', {
+        params,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      })
+      .then((res) => {
+        if (!res.data.isSuccess) {
+          setProfiles([]);
+          return;
+        }
+        const mapped = res.data.result.map((m) => ({
+          id: m.memberId.toString(),
+          name: m.memberName,
+          image: m.profileImageUrl,
+          department: `${m.department} ${m.studentNo}`,
+          tags: m.userInterests.map((i) => reverseInterestMap[i] || i),
+        }));
+        setProfiles(mapped);
+      })
+      .catch((err) => {
+        console.error('프로필 조회 실패', err);
+        setProfiles([]);
+      });
+  }, [selectedCategory, sortOrder, selectedDepartment, selectedMajor, selectedYear]);
 
   const categories = [
     { label: '전체', icon: <AllIcon /> },
@@ -101,30 +166,6 @@ export default function ExplorePage() {
     { label: '학교생활', icon: <SchoolIcon /> },
   ];
 
-  const profiles: Profile[] = [
-    { id: '1', name: '쑤기', department: '컴퓨터공학과 23학번', tags: ['학점관리'], image: '/images/profile.png' },
-    { id: '2', name: '소피아', department: '국어국문학과 22학번', tags: ['창업', '취미/여가'], image: '/images/profile.png' },
-    { id: '3', name: '제임스', department: '전자공학과 21학번', tags: ['교환학생', '외국어 공부'], image: '/images/profile.png' },
-    { id: '4', name: '마피아', department: '국어국문학과 22학번', tags: ['취업/진로', '취미/여가'], image: '/images/profile.png' },
-    { id: '5', name: '쑥', department: '전자공학과 21학번', tags: ['고시', '외국어 공부'], image: '/images/profile.png' },
-    { id: '6', name: '바이크', department: '전자공학과 21학번', tags: ['학교생활', '외국어 공부'], image: '/images/profile.png' },
-  ];
-
-  const filteredProfiles = profiles
-    .filter((p) =>
-      // '전체'나 빈 값일 땐 필터 무시, 아니면 tags 포함 여부 검사
-      (selectedCategory === '' || selectedCategory === '전체' || p.tags.includes(selectedCategory)) &&
-      (!selectedDepartment || p.department.includes(selectedDepartment)) &&
-      (!selectedMajor || p.department.includes(selectedMajor)) &&
-      (!selectedYear || p.department.includes(selectedYear))
-    )
-    .sort((a, b) =>
-      sortOrder === '추천순'
-        ? a.name.localeCompare(b.name)
-        : b.id.localeCompare(a.id)
-    );
-
-
   return (
     <div className="w-full min-h-screen bg-white font-[pretendard] flex flex-col items-center pb-28">
       <div className="w-full max-w-[700px]">
@@ -133,21 +174,18 @@ export default function ExplorePage() {
           selectedCategory={selectedCategory}
           onSelect={setSelectedCategory}
         />
-
         <div className="mb-[17px] flex gap-2 flex-wrap justify-start px-4 mt-4 mb-4">
           <SortDropdown
             selected={sortOrder}
             options={['추천순', '최신순']}
             onSelect={(o) => setSortOrder(o as '추천순' | '최신순')}
           />
-
           <FilterButton
             label="학과"
             onClick={() => setShowDeptModal(true)}
             selected={showDeptModal || !!selectedDepartment || !!selectedMajor}
             variant="pill"
           />
-
           <FilterButton
             label="학번"
             onClick={() => setShowYearModal(true)}
@@ -155,9 +193,8 @@ export default function ExplorePage() {
             variant="pill"
           />
         </div>
-
         <div className="px-5 grid grid-cols-2 xs:grid-cols-3 gap-4">
-          {filteredProfiles.map((p) => (
+          {profiles.map((p) => (
             <ProfileCard key={p.id} {...p} />
           ))}
         </div>
