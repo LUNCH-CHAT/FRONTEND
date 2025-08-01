@@ -4,21 +4,6 @@ import useGetInfiniteAlarmList from '../../hooks/alarm/useGetInfiniteAlarmList';
 import { formatDate } from '../../utils/getDate';
 import { useInView } from 'react-intersection-observer';
 
-const mockData = [
-  {
-    id: 1,
-    sender: '유엠씨',
-    type: 'request',
-    time: '2025-07-30T09:14:57.183Z',
-  },
-  {
-    id: 2,
-    sender: '챗터',
-    type: 'accept',
-    time: '2025-07-30T09:14:57.183Z',
-  },
-];
-
 export default function AlarmPage() {
   const { data, isFetching, hasNextPage, isPending, isError, fetchNextPage } =
     useGetInfiniteAlarmList();
