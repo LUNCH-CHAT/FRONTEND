@@ -4,6 +4,3 @@ export type CommonResponse<T> = {
   message: string;
   result: T;
 };
-
-// 알람 응답
-export type ResponseAlarmDto = CommonResponse<string>;
