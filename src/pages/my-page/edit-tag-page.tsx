@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-//import TagSelectList from "../../components/TagSelect/TagSelectList";
+import TagSelectList from "../../components/TagSelect/TagSelectList";
 
 export default function EditTagPage() {
     const navigate = useNavigate();
-
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    
     return(
         <>
             <div className="px-[20px]">
@@ -13,7 +15,7 @@ export default function EditTagPage() {
                 <p className="text-[#FF7C6A] text-[13px] font-[pretendard] font-medium mb-[40px]">
                     최대 3개까지 선택 가능합니다.
                 </p>
-                {/*<TagSelectList />*/}
+                <TagSelectList selected={selectedTags} onChange={setSelectedTags}/>
             </div>
             <div className="fixed w-full max-w-[480px] bottom-0 px-5 pb-4">
                 <button

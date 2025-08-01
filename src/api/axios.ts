@@ -19,8 +19,6 @@ axiosInstance.interceptors.request.use(
   config => {
     const accessToken = localStorage.getItem('accessToken'); //localStorage에서 accessToken을 가져온다.
 
-    console.log('accessToken in interceptor', accessToken);
-
     //accessToken이 존재하면 Authorization 헤더에 Bearer 토큰 형식으로 추가한다.
     if (accessToken) {
       config.headers = config.headers || {};

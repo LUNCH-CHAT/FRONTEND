@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import type { TimeTable as TimeTableType} from '../types/user';
 
 type Day = 'MON' | 'TUE' | 'WED' | 'THU' | 'FRI';
 
@@ -9,7 +10,7 @@ interface TimeSlot {
 
 interface TimeTableProps {
   isEditable?: boolean;
-  // onChange?: (slots: TimeSlot[]) => void;
+  onChange?: (slots: TimeTableType[]) => void;
 }
 
 const days: Day[] = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
@@ -27,17 +28,31 @@ const times = [
   '19:00~20:00',
 ];
 
-const TimeTable = ({ isEditable = false }: TimeTableProps) => {
+const TimeTable = ({ isEditable = false, onChange }: TimeTableProps) => {
   const [selectedSlots, setselectedSlots] = useState<TimeSlot[]>([]);
   // 포인터가 눌린 상태인지 추적 (드래그 선택에 사용)
   const isPointerDownRef = useRef(false);
   // 이미 선택된 셀의 key (중복 선택 방지용)
   const touchedSlotsRef = useRef<Set<string>>(new Set());
 
+  //시간 쪼개서 저장
+  const changeSlotType = (slots:TimeSlot[]) => {
+    return slots.map(slot => {
+      const [startTime, endTime] = slot.time.split('~');
+      return {
+        dayOfWeek: slot.day,
+        startTime,
+        endTime,
+        subjectName: '',
+      }
+    })
+  }
+
   // selectedSlots가 변경될 때마다 상위 컴포넌트로 값을 전달
-  // useEffect(() => {
-  //   onChange?.(selectedSlots);
-  // }, [selectedSlots, onChange]);
+  useEffect(() => {
+    const data = changeSlotType(selectedSlots);
+    onChange?.(data);
+  }, [selectedSlots, onChange]);
 
   // 시간 슬롯 토글 함수 (선택/해제)
   const toggleSlot = (day: Day, time: string) => {
@@ -157,14 +172,14 @@ const TimeTable = ({ isEditable = false }: TimeTableProps) => {
         ))}
       </div>
 
-      {/* <div className="mt-6">
+      <div className="mt-6">
         <h2 className="font-bold mb-2">선택된 시간</h2>
         <ul className="text-sm list-disc list-inside">
           {selectedSlots.map((slot, idx) => (
             <li key={idx}>{`${slot.day} ${slot.time}`}</li>
           ))}
         </ul>
-      </div> */}
+      </div>
     </div>
   );
 };
