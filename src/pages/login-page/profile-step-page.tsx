@@ -27,18 +27,6 @@ export default function ProfileStepPage() {
   const [timeTables, setTimeTables] = useState<TimeTableType[]>([]);
   const navigate = useNavigate();
 
-  // 여기 수정함-> 무한 렌더 방지를 위해 useEffect로 이동
-  useEffect(() => {
-    setTimeTables([
-      {
-        dayOfWeek: "MON",
-        startTime: "09:00",
-        endTime: "10:00",
-        subjectName: ""
-      }
-    ]);
-  }, []);
-
   const StepImages =
     step === 0
       ? Step1
@@ -94,7 +82,6 @@ export default function ProfileStepPage() {
         interests: selectedTags,
         timeTables: timeTables
       };
-      console.log(body);
       (async () => {
         try {
           await patchSignUp(body);
@@ -121,6 +108,7 @@ export default function ProfileStepPage() {
           </div>
           <img src={StepImages} alt={`스탭 ${step + 1} 이미지`} />
         </div>
+
         {step === 0 && (
           <div className="px-[22px] ">
             <p className="text-black text-[22px] font-[pretendard] font-semibold mt-[57px] mb-[25px] flex items-center">
@@ -142,6 +130,7 @@ export default function ProfileStepPage() {
             />
           </div>
         )}
+
         {step === 1 && (
           <div className="px-[22px]">
             <p className="text-black text-[22px] font-[pretendard] font-semibold mt-[57px] mb-[25px] flex items-center">
@@ -155,6 +144,7 @@ export default function ProfileStepPage() {
             />
           </div>
         )}
+
         {step === 2 && (
           <div className="px-[22px]">
             <p className="text-black text-[22px] font-[pretendard] font-semibold mt-[57px] mb-[25px] flex items-center">
@@ -216,6 +206,7 @@ export default function ProfileStepPage() {
             </div>
           </div>
         )}
+
         {step === 3 && (
           <div className="px-[22px]">
             <p className="text-black text-[22px] font-[pretendard] font-semibold mt-[57px] mb-[6px]">
@@ -230,15 +221,17 @@ export default function ProfileStepPage() {
             </div>
           </div>
         )}
+
         {step === 4 && (
           <div className="flex flex-col items-center px-[20px]">
             <p className="text-black text-[22px] font-[pretendard] font-semibold mt-[50px] mb-[10px] text-center">
               <span className="text-[#FF7C6A] font-bold">런치챗이 가능한 시간대</span>를<br />
               선택해주세요
             </p>
-            <TimeTable isEditable={true} />
+            <TimeTable isEditable={true} onChange={setTimeTables}/>
           </div>
         )}
+
         <div className="fixed max-w-[480px] bottom-0 px-5 w-full pb-4">
           <button
             type="button"
