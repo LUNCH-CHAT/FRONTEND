@@ -11,7 +11,7 @@ import Step3 from '@/assets/icons/step3.svg';
 import Step4 from '@/assets/icons/step4.svg';
 import Step5 from '@/assets/icons/step5.svg';
 import type { TimeTable as TimeTableType } from '../../types/user';
-import { getColleges, getDepartments, patchSignUp } from '../../api/login-page/login';
+import { getColleges, getDepartments, patchSignUp } from '../../api/login';
 import { useNavigate } from 'react-router-dom';
 
 export default function ProfileStepPage() {

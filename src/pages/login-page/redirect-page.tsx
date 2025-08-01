@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getLogin } from "../../api/login-page/login";
+import { getLogin } from "../../api/login";
 
 export default function GoogleLoginPage() {
   const navigate = useNavigate();
