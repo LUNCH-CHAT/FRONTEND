@@ -4,6 +4,7 @@ import { registerFcmToken } from '../../api/alarm';
 
 const useFCM = () => {
   const initialized = useRef(false);
+  const previousToken = useRef<string | null>(null);
 
   useEffect(() => {
     if (initialized.current) return;
@@ -13,17 +14,30 @@ const useFCM = () => {
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) return;
 
-    // 알림 권한 요청 및 토큰 발급
-    requestNotificationPermission()
-      .then(token => {
-        if (!token) return;
+    const updateToken = () => {
+      // 알림 권한 요청 및 토큰 발급
+      requestNotificationPermission()
+        .then(token => {
+          if (!token) return;
 
-        // 서버에 토큰 등록
-        return registerFcmToken(token);
-      })
-      .catch(e => {
-        console.error(e);
-      });
+          if (token !== previousToken.current) {
+            registerFcmToken(token);
+            previousToken.current = token;
+          }
+        })
+        .catch(e => {
+          console.error(e);
+        });
+    };
+
+    updateToken();
+
+    // 일정 시간 간격으로 이전 토큰과 비교
+    const interval = setInterval(() => {
+      updateToken();
+    }, 1000 * 60 * 60); // 1시간 간격
+
+    return () => clearInterval(interval);
   }, []);
 };
 
