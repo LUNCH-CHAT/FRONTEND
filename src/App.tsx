@@ -22,6 +22,7 @@ import MyPage from './pages/my-page/my-page';
 import EditTagPage from './pages/my-page/edit-tag-page';
 import EditKeywordPage from './pages/my-page/edit-keyword-page';
 import EditTimePage from './pages/my-page/edit-time-page';
+// import MyMatchesPage from './pages/my-page/my-matches-page'; 
 
 import { useEffect } from 'react';
 import { onMessage } from 'firebase/messaging';
@@ -63,6 +64,7 @@ const protectedRoutes: RouteObject[] = [
       { path: 'my/edit-tag', element: <EditTagPage /> },
       { path: 'my/edit-keyword', element: <EditKeywordPage /> },
       { path: 'my/edit-time', element: <EditTimePage /> },
+      // { path: 'my/matches', element: <MyMatchesPage /> },  
     ],
   },
 ];
