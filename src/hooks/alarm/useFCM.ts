@@ -1,9 +1,14 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { requestNotificationPermission } from '../../firebase/messaging';
 import { registerFcmToken } from '../../api/alarm';
 
 const useFCM = () => {
+  const initialized = useRef(false);
+
   useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
+
     // 비로그인 상태일 경우 리턴
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) return;

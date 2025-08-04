@@ -72,7 +72,6 @@ const router = createBrowserRouter([...publicRoutes, ...protectedRoutes]);
 const queryClient = new QueryClient();
 
 function App() {
-  // store된 로그인 사용자 ID 가져와서 전달
   useFCM();
 
   // 포그라운드 메시지 처리
