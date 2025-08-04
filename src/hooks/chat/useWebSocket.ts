@@ -18,7 +18,7 @@ export interface MessageType {
   createdAt: Date | null;
 }
 
-export const useWebSocket = (roomId: string) => {
+export const useWebSocket = (roomId: number) => {
   const [status, setStatus] = useState<WebSocketStatus>('CONNECTING');
   // stomp 연결 후 생성한 client 관리
   const wsClientRef = useRef<Client | null>(null);
@@ -43,6 +43,10 @@ export const useWebSocket = (roomId: string) => {
     // stomp 클라이언트 객체 생성
     const client = new Client({
       webSocketFactory: () => new SockJS(import.meta.env.VITE_WS_URL),
+      // 헤더에 토큰 전달
+      connectHeaders: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
       reconnectDelay: 5000, // 자동 재연결 시도 간격
 
       // 웹소켓 연결 성공 시
@@ -87,13 +91,12 @@ export const useWebSocket = (roomId: string) => {
   };
 
   // 메시지 전송
-  const sendMessage = (userId: number, message: string) => {
+  const sendMessage = (message: string) => {
     const client = wsClientRef.current;
     if (client && client.connected) {
       client.publish({
         destination: `/pub/chat/${roomId}`,
         body: JSON.stringify({
-          senderId: userId,
           content: message,
         }),
       });

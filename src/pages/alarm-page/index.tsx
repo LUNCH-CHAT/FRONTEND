@@ -28,7 +28,7 @@ export default function AlarmPage() {
 
   return (
     <>
-      {data?.pages.map(page => {
+      {data?.pages.flatMap(page => {
         const notifications = page.result.notifications;
 
         notifications.map(noti => {
