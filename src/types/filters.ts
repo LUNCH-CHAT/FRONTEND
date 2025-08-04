@@ -21,18 +21,11 @@ export interface MemberFilterDto {
 
 /** /api/members/filters 전체 응답 */
 export interface ResponseMembersFiltersDto {
-  isSuccess: boolean
-  code: string
-  message: string
-  result: {
-    data: MemberFilterDto[]
-    meta: {
-      currentPage: number
-      pageSize: number
-      totalItems: number
-      totalPages: number
-      hasNext: boolean
-    }
-  }
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  // 서버가 내려주는 result가 바로 MemberFilterDto[] 배열이기 때문에
+  // meta 없이 배열로만 정의합니다.
+  result: MemberFilterDto[];
 }
 

@@ -9,7 +9,26 @@ interface ProfileCardProps {
   icon?: React.ReactNode;
 }
 
-export default function ProfileCard({ id, name, department, tags, image, icon }: ProfileCardProps) {
+// 백엔드 interestType → 화면에 보여줄 한글 매핑
+const INTEREST_TYPE_LABELS: Record<string, string> = {
+  EXCHANGE_STUDENT:       '교환학생',
+  EMPLOYMENT_CAREER:      '취업/진로',
+  EXAM_PREPARATION:       '고시준비',
+  STARTUP:                '창업',
+  FOREIGN_LANGUAGE_STUDY: '외국어 공부',
+  HOBBY_LEISURE:          '취미/여가',
+  SCHOOL_LIFE:            '학교생활',
+  ETC:                    '기타',
+};
+
+export default function ProfileCard({
+  id,
+  name,
+  department,
+  tags,
+  image,
+  icon,
+}: ProfileCardProps) {
   const navigate = useNavigate();
   const handleClick = () => id && navigate(`/profile/${id}`);
 
@@ -34,18 +53,20 @@ export default function ProfileCard({ id, name, department, tags, image, icon }:
       <p className="flex text-xs leading-4 mb-2 font-[pretendard]">
         {tags.map((tag, i) => (
           <span key={tag} className="flex items-center">
-            <span className="text-[#7D7D7D] font-normal">{tag}</span>
+            <span className="text-[#7D7D7D] font-normal">
+              {INTEREST_TYPE_LABELS[tag] ?? tag}
+            </span>
             {i < tags.length - 1 && <span className="text-[#D4D4D4] mx-[4px]">|</span>}
           </span>
         ))}
       </p>
       <div className="flex flex-wrap gap-1 font-[pretendard]">
-        {tags.map((tag, i) => (
+        {tags.map((tag) => (
           <span
-            key={i}
+            key={tag}
             className="text-[10px] px-2 py-0.5 border border-[#FF5A5A] text-black rounded-full"
           >
-            {tag}
+            {INTEREST_TYPE_LABELS[tag] ?? tag}
           </span>
         ))}
       </div>
