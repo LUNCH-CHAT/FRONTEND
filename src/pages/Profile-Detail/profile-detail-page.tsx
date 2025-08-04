@@ -5,7 +5,7 @@ import TimeTable from '../../components/TimeTable';
 import profileBg from '@/assets/images/profile-bg.png';
 import sampleProfile from '@/assets/images/sample-profile.png';
 import Pencil from '@/assets/icons/pencil.svg';
-import { axiosInstance } from '../../api/axios';
+import { getMatchingList, requestMatch } from '../../api/match';
 
 const mockData = [
   {
@@ -37,8 +37,22 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
   const toMemberId = Number(id);
   const navigate = useNavigate();
   const timetableRef = useRef<HTMLDivElement>(null);
+
   const [activeTab, setActiveTab] = useState<'소개' | '커피챗 가능 시간'>('소개');
-  const [loading, setLoading] = useState(false);
+  const [hasRequested, setHasRequested] = useState(false);
+
+  // 1) 이미 매칭 요청이 있는지 조회
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await getMatchingList({ status: 'REQUESTED', page: 0 });
+        const exists = res.result.matchList.some(m => m.matchedUser.id === toMemberId);
+        setHasRequested(exists);
+      } catch {
+        // 조회 실패 시 무시
+      }
+    })();
+  }, [toMemberId]);
 
   // 탭 전환 시 스크롤
   useEffect(() => {
@@ -48,25 +62,19 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
     }
   }, [activeTab]);
 
-  // 런치챗 요청 핸들러
+  // 런치챗 요청 핸들러 (낙관적 업데이트 + 1초 뒤 UI 전환)
   const handleSendLunchChat = async () => {
-    if (!toMemberId) {
-      alert('유효하지 않은 멤버입니다.');
-      return;
-    }
-    setLoading(true);
+    if (!toMemberId || hasRequested) return;
+    // 1) 보내기 직후 UI에선 곧 "수락 대기중" 상태로 보이도록
+    setTimeout(() => setHasRequested(true), 1000);
+
     try {
-      const { data } = await axiosInstance.post('/api/matches', { toMemberId });
-      if (data.isSuccess) {
-        navigate('/my/matches');
-      } else {
-        alert(`요청 실패: ${data.message}`);
-      }
-    } catch (err) {
-      console.error(err);
+      await requestMatch(toMemberId);
+      // 성공 시 추가 작업 없음 (UI는 이미 바뀜)
+    } catch {
+      // 실패 시 롤백
+      setHasRequested(false);
       alert('요청 중 오류가 발생했습니다.');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -84,11 +92,17 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
           <div className="mt-3">
             <h2 className="text-[22px] font-bold leading-[28px] text-black">유엠씨</h2>
             <p className="text-[16px]">21학번, 컴퓨터공학과</p>
-            <p className="text-[13px] text-gray-500">프로창업러 | 교환준비생 | 취미 요가</p>
+            <p className="text-[13px] text-gray-500">
+              프로창업러 | 교환준비생 | 취미 요가
+            </p>
             <div className="flex justify-between items-end">
               <div className="flex gap-2 mt-2 text-xs">
-                <span className="px-[9px] py-[6px] rounded-full border border-[#FF706A]">창업</span>
-                <span className="px-[9px] py-[6px] rounded-full border border-[#FF706A]">교환학생</span>
+                <span className="px-[9px] py-[6px] rounded-full border border-[#FF706A]">
+                  창업
+                </span>
+                <span className="px-[9px] py-[6px] rounded-full border border-[#FF706A]">
+                  교환학생
+                </span>
               </div>
               {my && (
                 <button
@@ -143,12 +157,12 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
             )}
           </div>
           <p className="text-sm mb-4 font-medium">세 가지 “키워드”로 나를 소개할게요!</p>
-          {mockData.map(({ id, question, keyword, text }) => (
+          {mockData.map(item => (
             <KeywordCard
-              key={id}
-              question={question}
-              keyword={keyword}
-              text={text}
+              key={item.id}
+              question={item.question}
+              keyword={item.keyword}
+              text={item.text}
             />
           ))}
         </section>
@@ -186,12 +200,12 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
         ) : (
           <button
             onClick={handleSendLunchChat}
-            disabled={loading}
+            disabled={hasRequested}
             className={`w-full h-[48px] rounded-[10px] text-white font-semibold ${
-              loading ? 'bg-gray-300' : 'bg-[#FF7C6A]'
+              hasRequested ? 'bg-gray-300' : 'bg-[#FF7C6A]'
             }`}
           >
-            {loading ? '전송 중…' : '런치챗 보내기'}
+            {hasRequested ? '수락 대기중' : '런치챗 보내기'}
           </button>
         )}
       </div>
