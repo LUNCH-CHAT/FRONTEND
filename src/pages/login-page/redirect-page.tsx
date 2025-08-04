@@ -1,11 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getLogin } from "../../api/login-page/login";
+import { getLogin } from "../../api/login";
 
 export default function GoogleLoginPage() {
   const navigate = useNavigate();
+  const firstRef = useRef(false);
 
   useEffect(() => {
+    if (firstRef.current) return; //strictMode 방지
+    firstRef.current = true; 
+
     (async () => {
       const params = new URLSearchParams(window.location.search);
       const code = params.get("code");

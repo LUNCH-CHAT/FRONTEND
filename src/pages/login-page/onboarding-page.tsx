@@ -25,7 +25,7 @@ export default function OnboardingPage() {
     window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&access_type=offline`;
   }
   return(
-    <div className="bg-[url(/images/onbording.png)] h-screen bg-top flex justify-center items-center">
+    <div className="bg-[#FFE9E7] h-screen bg-top flex justify-center items-center">
       <div className="text-center flex flex-col items-center justify-center">
         {step >= 0 && (
           <img src={Logo} alt="로고 이미지" className="w-[194px] h-15 animate-fade-up"/>

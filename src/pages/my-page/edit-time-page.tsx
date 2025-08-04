@@ -22,7 +22,7 @@ export default function EditTimePage() {
                     }}
                     className="w-full h-[48px] bg-[#FF7C6A] rounded-[10px] text-center text-white font-[pretendard] font-semibold cursor-pointer"
                 >
-                    다음
+                    수정 완료
                 </button>
             </div>
         </>

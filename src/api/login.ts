@@ -1,7 +1,7 @@
 import axios from "axios";
-import type { ResponseSigninDto, SignupInfo } from "../../types/auth";
-import type { ResponseCollegeListDto, ResponseDepartmentListDto } from "../../types/college";
-import { axiosInstance } from "../axios";
+import type { ResponseSigninDto, SignupInfo } from "../types/auth";
+import type { ResponseCollegeListDto, ResponseDepartmentListDto } from "../types/college";
+import { axiosInstance } from "./axios";
 
 export const getLogin = async (code: string) => {
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/auth/login/google`,{
