@@ -12,7 +12,14 @@ export type MatchList = {
 };
 
 // 매칭 목록 조회 응답
-export type ResponseMatchListDto = CommonResponse<MatchList[]>;
+export type ResponseMatchListDto = CommonResponse<{
+  matchList: MatchList[];
+  listSize: number;
+  totalPage: number;
+  totalElements: number;
+  isFirst: boolean;
+  hasNext: boolean;
+}>;
 
 // 매칭 요청 응답
 export type ResponseMatchRequestDto = CommonResponse<{
