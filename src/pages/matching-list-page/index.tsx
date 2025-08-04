@@ -79,7 +79,7 @@ export default function MatchingListPage() {
                 id={String(matchUser.id)}
                 name={matchUser.memberName}
                 department={matchUser.department}
-                tags={matchUser.userKeywords}
+                tags={matchUser.userInterests}
                 image={matchUser.profileImageUrl}
               />
             );
