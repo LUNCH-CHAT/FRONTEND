@@ -4,7 +4,7 @@ interface ProfileCardProps {
   id?: string;
   name: string;
   department: string;
-  tags: { id: number; interestName: string }[];
+  tags: string[];
   image?: string;
   icon?: React.ReactNode;
 }
@@ -32,10 +32,10 @@ export default function ProfileCard({ id, name, department, tags, image, icon }:
         {department}
       </p>
       <p className="flex text-xs leading-4 mb-2 font-[pretendard]">
-        {tags.map(tag => (
-          <span key={tag.id} className="flex items-center">
-            <span className="text-[#7D7D7D] font-normal">{tag.interestName}</span>
-            {tag.id < tags.length - 1 && <span className="text-[#D4D4D4] mx-[4px]">|</span>}
+        {tags.map((tag, i) => (
+          <span key={tag} className="flex items-center">
+            <span className="text-[#7D7D7D] font-normal">{tag}</span>
+            {i < tags.length - 1 && <span className="text-[#D4D4D4] mx-[4px]">|</span>}
           </span>
         ))}
       </p>
@@ -45,7 +45,7 @@ export default function ProfileCard({ id, name, department, tags, image, icon }:
             key={i}
             className="text-[10px] px-2 py-0.5 border border-[#FF5A5A] text-black rounded-full"
           >
-            {tag.interestName}
+            {tag}
           </span>
         ))}
       </div>
