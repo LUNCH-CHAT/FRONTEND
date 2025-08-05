@@ -2,6 +2,7 @@ import { Client, type IFrame, type IMessage } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { useEffect, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import type { ChatMessage } from '../../types/chat';
 
 export const webSocketStatus = {
   CONNECTING: 'CONNECTING',
@@ -12,22 +13,12 @@ export const webSocketStatus = {
 
 export type WebSocketStatus = (typeof webSocketStatus)[keyof typeof webSocketStatus];
 
-export interface MessageType {
-  senderId: number;
-  content: string;
-  createdAt: Date | null;
-}
-
 export const useWebSocket = (roomId: number) => {
   const [status, setStatus] = useState<WebSocketStatus>('CONNECTING');
   // stomp 연결 후 생성한 client 관리
   const wsClientRef = useRef<Client | null>(null);
   // 수신 채팅 관리
-  const [message, setMessage] = useState<MessageType>({
-    senderId: 0,
-    content: '',
-    createdAt: null,
-  });
+  const [lastMessages, setLastMessages] = useState<ChatMessage[]>([]);
 
   const queryClient = useQueryClient();
 
@@ -57,11 +48,16 @@ export const useWebSocket = (roomId: number) => {
         // 채팅방 구독 및 메시지 수신
         client.subscribe(`/sub/rooms/${roomId}`, (message: IMessage) => {
           const recievedMessage = JSON.parse(message.body);
-          setMessage({
-            senderId: recievedMessage.senderId,
-            content: recievedMessage.content,
-            createdAt: recievedMessage.createdAt,
-          });
+          setLastMessages(prev => [
+            ...prev,
+            {
+              id: recievedMessage.id,
+              roomId: recievedMessage.roomId,
+              senderId: recievedMessage.senderId,
+              content: recievedMessage.content,
+              createdAt: recievedMessage.createdAt,
+            },
+          ]);
 
           queryClient.invalidateQueries({ queryKey: ['chatRooms'] });
         });
@@ -91,7 +87,7 @@ export const useWebSocket = (roomId: number) => {
   };
 
   // 메시지 전송
-  const sendMessage = (message: string) => {
+  const sendMessage = (roomId: number, message: string) => {
     const client = wsClientRef.current;
     if (client && client.connected) {
       client.publish({
@@ -102,6 +98,16 @@ export const useWebSocket = (roomId: number) => {
       });
 
       queryClient.invalidateQueries({ queryKey: ['chatRooms'] });
+      setLastMessages(prev => [
+        ...prev,
+        {
+          id: Date.now(),
+          roomId,
+          senderId: undefined,
+          content: message,
+          createdAt: new Date(),
+        },
+      ]);
     }
   };
 
@@ -122,8 +128,13 @@ export const useWebSocket = (roomId: number) => {
     return () => {
       disconnectWebSocket();
     };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomId]); // roomId가 변경될 때마다 재연결
 
-  return { status, message, sendMessage };
+  useEffect(() => {
+    setLastMessages([]); // 소켓 연결 직후 초기화
+  }, [roomId]);
+
+  return { status, lastMessages, sendMessage };
 };

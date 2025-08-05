@@ -8,9 +8,18 @@ import type {
 } from '../types/chat';
 
 // 채팅방 리스트 조회
-export const getChatList = async (userId: number): Promise<ResponseChatRoomListDto> => {
+export const getChatList = async ({
+  size,
+  cursor,
+}: {
+  size: number;
+  cursor: string | undefined;
+}): Promise<ResponseChatRoomListDto> => {
   const { data } = await axiosInstance.get('/api/chatrooms', {
-    params: userId,
+    params: {
+      size,
+      cursor,
+    },
   });
 
   return data;
@@ -37,7 +46,7 @@ export const deleteChatRoom = async ({
   roomId: number;
   userId: number;
 }): Promise<ResponseDeleteChatRoomDto> => {
-  const { data } = await axiosInstance.patch(`/api/chatrooms/{roomId}`, {
+  const { data } = await axiosInstance.patch(`/api/chatrooms/${roomId}`, {
     params: { roomId, userId },
   });
 
@@ -47,13 +56,15 @@ export const deleteChatRoom = async ({
 // 채팅방 내 메시지 조회
 export const getChatMessages = async ({
   roomId,
-  userId,
+  size,
+  cursor,
 }: {
   roomId: number;
-  userId: number;
+  size: number;
+  cursor: string | undefined;
 }): Promise<ResponseChatMessageDto> => {
-  const { data } = await axiosInstance.get(`/api/chatrooms/{roomId}/messages`, {
-    params: { roomId, userId },
+  const { data } = await axiosInstance.get(`/api/chatrooms/${roomId}/messages`, {
+    params: { roomId, size, cursor },
   });
 
   return data;
