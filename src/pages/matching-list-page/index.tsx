@@ -8,16 +8,23 @@ type SelectedTab = 'ACCEPTED' | 'REQUESTED' | 'RECEIVED' | 'NONE';
 
 export default function MatchingListPage() {
   const location = useLocation();
-  const selectTab = location.state?.selectTab;
+  // selectTab 단언
+  const selectTab = location.state?.selectTab as SelectedTab | undefined;
 
-  const [selectedTab, setSelectedTab] = useState<SelectedTab>(selectTab ? selectTab : 'RECEIVED');
+  const [selectedTab, setSelectedTab] = useState<SelectedTab>(
+    selectTab ?? 'RECEIVED'
+  );
 
-  const { data, isFetching, hasNextPage, isPending, isError, fetchNextPage } =
-    useGetInfiniteMatchingList(selectedTab);
+  const {
+    data,
+    isFetching,
+    hasNextPage,
+    isLoading,    
+    isError,
+    fetchNextPage,
+  } = useGetInfiniteMatchingList(selectedTab);
 
-  const { ref, inView } = useInView({
-    threshold: 0,
-  });
+  const { ref, inView } = useInView({ threshold: 0 });
 
   useEffect(() => {
     if (inView && !isFetching && hasNextPage) {
@@ -25,20 +32,23 @@ export default function MatchingListPage() {
     }
   }, [inView, isFetching, hasNextPage, fetchNextPage]);
 
-  if (isPending) {
-    // loading spinner
+  //  로딩/에러 체크
+  if (isLoading) {
     return <div>Loading...</div>;
   }
-
   if (isError) {
     return <div>Error</div>;
+  }
+  //  data 존재 가드
+  if (!data) {
+    return null;
   }
 
   return (
     <>
-      <div className="max-w-[480px] w-full fixed top-[4rem] z-100 flex justify-between px-2 bg-[#ffffff] text-center font-[pretendard] font-normal text-[#7D7D7D]">
+      {/* 탭 */}
+      <div className="max-w-[480px] w-full fixed top-[4rem] z-100 flex justify-between px-2 bg-white text-center font-[pretendard] text-[#7D7D7D]">
         <button
-          type="button"
           className={`w-1/3 pb-1 ${
             selectedTab === 'RECEIVED' && 'text-[#FF7C6A] font-bold border-[#FF7C6A] border-b-2'
           }`}
@@ -47,7 +57,6 @@ export default function MatchingListPage() {
           받은요청
         </button>
         <button
-          type="button"
           className={`w-1/3 pb-1 ${
             selectedTab === 'REQUESTED' && 'text-[#FF7C6A] font-bold border-[#FF7C6A] border-b-2'
           }`}
@@ -56,7 +65,6 @@ export default function MatchingListPage() {
           보낸요청
         </button>
         <button
-          type="button"
           className={`w-1/3 pb-1 ${
             selectedTab === 'ACCEPTED' && 'text-[#FF7C6A] font-bold border-[#FF7C6A] border-b-2'
           }`}
@@ -66,27 +74,27 @@ export default function MatchingListPage() {
         </button>
       </div>
 
+      {/* 카드 그리드 */}
       <div className="mt-[27px] pt-7 px-5 grid grid-cols-2 xs:grid-cols-3 gap-3 justify-items-center gap-y-4">
-        {data.pages.flatMap(page => {
-          const matchList = page.result.matchList;
-
-          return matchList.map(match => {
-            const matchUser = match.matchedUser;
-
+        {data.pages.flatMap(page =>
+          page.result.matchList.map(match => {
+            const u = match.matchedUser;
             return (
               <ProfileCard
                 key={String(match.id)}
-                id={String(matchUser.id)}
-                name={matchUser.memberName}
-                department={matchUser.department}
-                tags={matchUser.userInterests.map(interest => interest.interestName)}
-                image={matchUser.profileImageUrl}
+                id={String(u.id)}
+                name={u.memberName}
+                department={u.department}
+                tags={u.userInterests.map(i => i.interestName)}
+                image={u.profileImageUrl}
               />
             );
-          });
-        })}
+          })
+        )}
       </div>
-      <div ref={ref}></div>
+
+      {/* 무한 스크롤 트리거 */}
+      <div ref={ref} />
     </>
   );
 }
