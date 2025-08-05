@@ -1,5 +1,5 @@
 // src/types/profile.ts
-
+import type { CommonResponse } from './common';
 export interface Profile {
   id: string;
   name: string;
@@ -52,3 +52,40 @@ export interface ResponsePopularDto {
   message: string;
   result: PopularProfile[];
 }
+
+// 프로필 상세 조회용 타입 추가함
+export interface UserKeywordDto {
+  id: number;
+  type: string;
+  title: string;
+  description: string;
+}
+
+export type DayOfWeek = 'MON' | 'TUE' | 'WED' | 'THU' | 'FRI' | 'SAT' | 'SUN';
+
+export interface TimeTableDto {
+  dayOfWeek: DayOfWeek;
+  startTime: string;
+  endTime: string;
+  subjectName: string;
+}
+
+export interface ProfileDetail {
+  id: number;
+  memberName: string;
+  email: string;
+  studentNo: string;
+  university: string;
+  college: string;
+  department: string;
+  profileImageUrl: string;
+  userKeywords: UserKeywordDto[];
+  userInterests: string[];
+  timeTables: TimeTableDto[];
+  createdAt: string;
+  updatedAt: string;
+  matchStatus: string;
+}
+
+export type ResponseProfileDetailDto = CommonResponse<ProfileDetail>;
+

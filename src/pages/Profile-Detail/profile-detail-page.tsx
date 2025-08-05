@@ -1,3 +1,5 @@
+// src/pages/Profile-Detail/profile-detail-page.tsx
+
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import KeywordCard from '../../components/KeywordCard';
@@ -5,28 +7,10 @@ import TimeTable from '../../components/TimeTable';
 import profileBg from '@/assets/images/profile-bg.png';
 import sampleProfile from '@/assets/images/sample-profile.png';
 import Pencil from '@/assets/icons/pencil.svg';
+import { INTEREST_TYPE_LABELS } from '../../components/ProfileCard';  
 import { getMatchingList, requestMatch } from '../../api/match';
-
-const mockData = [
-  {
-    id: 1,
-    question: '지금 나를 표현한 키워드는?',
-    keyword: '프로창업러',
-    text: '프로창업러, 쇼핑몰 운영 경험과 IT 개발에 관심이 많아요! 실행력이 강하고, 새로운 기획을 빠르게 현실로 만들어가는 걸 좋아합니다.',
-  },
-  {
-    id: 2,
-    question: '요즘 나의 목표 키워드는?',
-    keyword: '교환 준비',
-    text: '북경대 교환학생 준비중인 도전형 대학생입니다! 해외 경험을 쌓고 싶어, 매일 꾸준히 중국어와 학점 관리에 힘쓰고 있어요.',
-  },
-  {
-    id: 3,
-    question: '요즘 나의 최대 관심사 키워드는?',
-    keyword: '취미 요가',
-    text: '요즘 취미로 요가를 배우고 있어요! 힘들지만 보람되는 취미 같아요! 혹시 요가 배우시는 분 있나요?',
-  },
-];
+import { getProfileDetail } from '../../api/profile';
+import type { ProfileDetail } from '../../types/profile';
 
 interface ProfileDetailPageProps {
   my?: boolean;
@@ -38,6 +22,7 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
   const navigate = useNavigate();
   const timetableRef = useRef<HTMLDivElement>(null);
 
+  const [profile, setProfile] = useState<ProfileDetail | null>(null);
   const [activeTab, setActiveTab] = useState<'소개' | '커피챗 가능 시간'>('소개');
   const [hasRequested, setHasRequested] = useState(false);
 
@@ -54,6 +39,16 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
     })();
   }, [toMemberId]);
 
+  // 2) 프로필 상세 조회
+  useEffect(() => {
+    if (!toMemberId) return;
+    getProfileDetail(toMemberId)
+      .then(res => {
+        if (res.data.isSuccess) setProfile(res.data.result);
+      })
+      .catch(err => console.error('프로필 조회 실패', err));
+  }, [toMemberId]);
+
   // 탭 전환 시 스크롤
   useEffect(() => {
     if (activeTab === '커피챗 가능 시간' && timetableRef.current) {
@@ -62,17 +57,13 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
     }
   }, [activeTab]);
 
-  // 런치챗 요청 핸들러 (낙관적 업데이트 + 1초 뒤 UI 전환)
+  // 런치챗 요청 핸들러
   const handleSendLunchChat = async () => {
     if (!toMemberId || hasRequested) return;
-    // 1) 보내기 직후 UI에선 곧 "수락 대기중" 상태로 보이도록
     setTimeout(() => setHasRequested(true), 1000);
-
     try {
       await requestMatch(toMemberId);
-      // 성공 시 추가 작업 없음 (UI는 이미 바뀜)
     } catch {
-      // 실패 시 롤백
       setHasRequested(false);
       alert('요청 중 오류가 발생했습니다.');
     }
@@ -80,29 +71,34 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
 
   return (
     <div className="min-h-screen flex flex-col bg-white font-[pretendard]">
-      {/* 헤더 */}
       <header className="relative">
         <img src={profileBg} alt="프로필 배경" className="w-full h-40 object-cover" />
         <div className="absolute top-16 w-full flex flex-col px-4">
           <img
-            src={sampleProfile}
+            src={profile?.profileImageUrl ?? sampleProfile}
             alt="프로필"
             className="w-[140px] h-[140px] rounded-full border-4 border-white object-cover"
           />
           <div className="mt-3">
-            <h2 className="text-[22px] font-bold leading-[28px] text-black">유엠씨</h2>
-            <p className="text-[16px]">21학번, 컴퓨터공학과</p>
+            <h2 className="text-[22px] font-bold leading-[28px] text-black">
+              {profile?.memberName ?? '—'}
+            </h2>
+            <p className="text-[16px]">
+              {profile ? `${profile.studentNo}학번, ${profile.department}` : ''}
+            </p>
             <p className="text-[13px] text-gray-500">
-              프로창업러 | 교환준비생 | 취미 요가
+              {profile?.userKeywords.map(k => k.title).join(' | ')}
             </p>
             <div className="flex justify-between items-end">
               <div className="flex gap-2 mt-2 text-xs">
-                <span className="px-[9px] py-[6px] rounded-full border border-[#FF706A]">
-                  창업
-                </span>
-                <span className="px-[9px] py-[6px] rounded-full border border-[#FF706A]">
-                  교환학생
-                </span>
+                {profile?.userInterests.map((i, idx) => (
+                  <span
+                    key={idx}
+                    className="px-[9px] py-[6px] rounded-full border border-[#FF706A]"
+                  >
+                    {INTEREST_TYPE_LABELS[i] ?? i}
+                  </span>
+                ))}
               </div>
               {my && (
                 <button
@@ -119,10 +115,8 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
         </div>
       </header>
 
-      {/* 구분선 */}
       <div className="mt-[180px] border-t border-[#F4F4F4]" />
 
-      {/* 탭 */}
       <div className="flex border-b border-[#D4D4D4] px-5 gap-6">
         {(['소개', '커피챗 가능 시간'] as const).map(tab => (
           <button
@@ -157,14 +151,17 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
             )}
           </div>
           <p className="text-sm mb-4 font-medium">세 가지 “키워드”로 나를 소개할게요!</p>
-          {mockData.map(item => (
-            <KeywordCard
-              key={item.id}
-              question={item.question}
-              keyword={item.keyword}
-              text={item.text}
-            />
-          ))}
+          {profile
+            ? profile.userKeywords.map(item => (
+                <KeywordCard
+                  key={item.id}
+                  question={item.title}
+                  keyword={item.title}
+                  text={item.description}
+                />
+              ))
+            : <p>로딩 중…</p>
+          }
         </section>
 
         <div className="border-t border-[#F4F4F4]" />
@@ -184,7 +181,7 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
               </button>
             )}
           </div>
-          <TimeTable />
+          <TimeTable initialSlots={profile?.timeTables ?? []} />
         </section>
       </main>
 
