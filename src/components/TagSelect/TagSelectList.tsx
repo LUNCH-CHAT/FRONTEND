@@ -41,7 +41,7 @@ export default function TagSelectList({selected, onChange}: TagSelectListProps) 
         <div className="w-full flex justify-center items-center">
             <div className="w-full grid grid-cols-3 gap-[22px]">
                 {tags.map(tag=>(
-                    <div className='flex justify-center items-center'>
+                    <div key={tag.id} className='flex justify-center items-center'>
                     <TagSelectCard
                         title={tag.text}
                         icon={tag.icon}
