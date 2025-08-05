@@ -1,7 +1,7 @@
 import { useInfiniteQuery, type QueryFunctionContext } from '@tanstack/react-query';
 import { getAlarmList } from '../../api/alarm';
 
-function useGetInfiniteAlarmList() {
+function useGetAlarmList() {
   return useInfiniteQuery({
     queryKey: ['notifications'],
     queryFn: ({ pageParam }: QueryFunctionContext<string[], number | undefined>) =>
@@ -16,4 +16,4 @@ function useGetInfiniteAlarmList() {
   });
 }
 
-export default useGetInfiniteAlarmList;
+export default useGetAlarmList;

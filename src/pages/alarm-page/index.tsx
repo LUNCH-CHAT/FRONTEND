@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 import AlarmCard from '../../components/AlarmPage/AlarmCard';
-import useGetInfiniteAlarmList from '../../hooks/alarm/useGetInfiniteAlarmList';
+import useGetAlarmList from '../../hooks/alarm/useGetAlarmList';
 import { formatDate } from '../../utils/getDate';
 import { useInView } from 'react-intersection-observer';
 
 export default function AlarmPage() {
-  const { data, isFetching, hasNextPage, isPending, isError, fetchNextPage } =
-    useGetInfiniteAlarmList();
+  const { data, isFetching, hasNextPage, isPending, isError, fetchNextPage } = useGetAlarmList();
 
   const { ref, inView } = useInView({
     threshold: 0,
@@ -31,7 +30,7 @@ export default function AlarmPage() {
       {data?.pages.flatMap(page => {
         const notifications = page.result.notifications;
 
-        notifications.map(noti => {
+        return notifications.map(noti => {
           const { month, day, hours, minutes } = formatDate(noti.createdAt);
 
           return (
