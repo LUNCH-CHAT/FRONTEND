@@ -2,13 +2,13 @@ importScripts('https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js'
 importScripts('https://www.gstatic.com/firebasejs/12.0.0/firebase-messaging-compat.js');
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAH9wgBIIHUh4MCVZKSP5w5YoqQ0mqXqSE',
-  authDomain: 'lunchchat-2025.firebaseapp.com',
-  projectId: 'lunchchat-2025',
-  storageBucket: 'lunchchat-2025.firebasestorage.app',
-  messagingSenderId: '65654899967',
-  appId: '1:65654899967:web:ca1dccb4d198170762f8ca',
-  measurementId: 'G-BYG678DNS1',
+  apiKey: 'AIzaSyDkXTADaJ1MyRBdChF_Yq-_ihfzg-JDxTU',
+  authDomain: 'lunchchat-cbcb9.firebaseapp.com',
+  projectId: 'lunchchat-cbcb9',
+  storageBucket: 'lunchchat-cbcb9.firebasestorage.app',
+  messagingSenderId: '328766583436',
+  appId: '1:328766583436:web:bd27072e6dc0b02a9741a9',
+  measurementId: 'G-BMTC632BWB',
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -21,7 +21,7 @@ messaging.onBackgroundMessage(function (payload) {
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
-    icon: '/src/assets/logo.svg',
+    icon: '/assets/favicon.svg',
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
