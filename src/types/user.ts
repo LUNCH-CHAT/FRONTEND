@@ -91,3 +91,7 @@ export type MyKeywords = {
 export type MyTags = {
   "interestIds": number[];
 }
+
+export type MyTimeTables = {
+  "timeTableList": TimeTable[];
+}

@@ -1,5 +1,5 @@
 import type { CommonResponse } from "../types/common";
-import type { MyKeywords, MyTags, ResponseMyDetailDto, ResponseMyInfoDto } from "../types/user";
+import type { MyKeywords, MyTags, MyTimeTables, ResponseMyDetailDto, ResponseMyInfoDto } from "../types/user";
 import { axiosInstance } from "./axios";
 
 export const getMyInfo = async (): Promise <ResponseMyInfoDto> => {
@@ -26,6 +26,13 @@ export const patchKeywords = async (body: MyKeywords): Promise <CommonResponse<s
 
 export const patchTags = async (body: MyTags): Promise <CommonResponse<string>> => {
     const { data } = await axiosInstance.patch('/api/members/me/tags',
+        body
+    );
+    return data;
+}
+
+export const patchTimeTables = async (body: MyTimeTables): Promise <CommonResponse<string>> => {
+    const { data } = await axiosInstance.patch('/api/timetables',
         body
     );
     return data;
