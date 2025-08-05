@@ -11,6 +11,16 @@ import type { MyInfo } from '../../types/user';
 export default function MyPage() {
   const navigate = useNavigate();
   const [myInfo, setMyInfo] = useState<MyInfo>();
+  const INTEREST_TYPE_LABELS: Record<string, string> = {
+    EXCHANGE_STUDENT:       '교환학생',
+    EMPLOYMENT_CAREER:      '취업/진로',
+    EXAM_PREPARATION:       '고시준비',
+    STARTUP:                '창업',
+    FOREIGN_LANGUAGE_STUDY: '외국어 공부',
+    HOBBY_LEISURE:          '취미/여가',
+    SCHOOL_LIFE:            '학교생활',
+    ETC:                    '기타',
+  };
 
   useEffect(() => {
     (async () => {
@@ -59,7 +69,7 @@ export default function MyPage() {
               <p 
                 key={idx}
                 className="inline-block px-[9px] py-[6px] border border-[#FF7C6A] rounded-[15px] text-black text-[13px] font-[pretendard] font-light leading-[11px]">
-                {tag}
+                {INTEREST_TYPE_LABELS[tag]}
               </p>
             ))}
           </div>

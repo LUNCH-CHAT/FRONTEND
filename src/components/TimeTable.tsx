@@ -172,14 +172,14 @@ const TimeTable = ({ isEditable = false, onChange }: TimeTableProps) => {
         ))}
       </div>
 
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <h2 className="font-bold mb-2">선택된 시간</h2>
         <ul className="text-sm list-disc list-inside">
           {selectedSlots.map((slot, idx) => (
             <li key={idx}>{`${slot.day} ${slot.time}`}</li>
           ))}
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 };

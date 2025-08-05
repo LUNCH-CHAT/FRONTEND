@@ -84,11 +84,20 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
       <header className="relative">
         <img src={profileBg} alt="프로필 배경" className="w-full h-40 object-cover" />
         <div className="absolute top-16 w-full flex flex-col px-4">
-          <img
-            src={sampleProfile}
-            alt="프로필"
-            className="w-[140px] h-[140px] rounded-full border-4 border-white object-cover"
-          />
+          <div className="w-[140px] h-[140px] relative">
+            <img
+              src={sampleProfile}
+              alt="프로필"
+              className="rounded-full object-cover"
+            />
+            {my && (
+              <button className="absolute bottom-0 right-0 w-10 h-10 flex items-center justify-center bg-white rounded-full cursor-pointer">
+                <div className="border border-[#A0A0A0] rounded-full w-9 h-9 flex items-center justify-center">
+                  <img src={Pencil} alt="수정" className="w-5 h-5"/>
+                </div>
+              </button>
+            )}
+          </div>
           <div className="mt-3">
             <h2 className="text-[22px] font-bold leading-[28px] text-black">유엠씨</h2>
             <p className="text-[16px]">21학번, 컴퓨터공학과</p>
