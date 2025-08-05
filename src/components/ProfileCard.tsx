@@ -10,7 +10,7 @@ interface ProfileCardProps {
 }
 
 // 백엔드 interestType → 화면에 보여줄 한글 매핑
-const INTEREST_TYPE_LABELS: Record<string, string> = {
+export const INTEREST_TYPE_LABELS: Record<string, string> = {
   EXCHANGE_STUDENT:       '교환학생',
   EMPLOYMENT_CAREER:      '취업/진로',
   EXAM_PREPARATION:       '고시준비',
