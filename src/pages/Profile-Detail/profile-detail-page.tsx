@@ -7,7 +7,7 @@ import TimeTable from '../../components/TimeTable';
 import profileBg from '@/assets/images/profile-bg.png';
 import sampleProfile from '@/assets/images/sample-profile.png';
 import Pencil from '@/assets/icons/pencil.svg';
-import { INTEREST_TYPE_LABELS } from '../../components/ProfileCard';  
+import { INTEREST_TYPE_LABELS } from '../../components/ProfileCard';
 import { getMatchingList, requestMatch } from '../../api/match';
 import { getProfileDetail } from '../../api/profile';
 import type { ProfileDetail } from '../../types/profile';
@@ -31,7 +31,7 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
     (async () => {
       try {
         const res = await getMatchingList({ status: 'REQUESTED', page: 0 });
-        const exists = res.result.matchList.some(m => m.matchedUser.id === toMemberId);
+        const exists = res.result.data.some(m => m.matchedUser.id === toMemberId);
         setHasRequested(exists);
       } catch {
         // 조회 실패 시 무시
@@ -122,9 +122,7 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
           <button
             key={tab}
             className={`p-2 text-[16px] cursor-pointer ${
-              activeTab === tab
-                ? 'border-b-2 border-black text-black'
-                : 'text-gray-400'
+              activeTab === tab ? 'border-b-2 border-black text-black' : 'text-gray-400'
             }`}
             onClick={() => setActiveTab(tab)}
           >
@@ -151,17 +149,18 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
             )}
           </div>
           <p className="text-sm mb-4 font-medium">세 가지 “키워드”로 나를 소개할게요!</p>
-          {profile
-            ? profile.userKeywords.map(item => (
-                <KeywordCard
-                  key={item.id}
-                  question={item.title}
-                  keyword={item.title}
-                  text={item.description}
-                />
-              ))
-            : <p>로딩 중…</p>
-          }
+          {profile ? (
+            profile.userKeywords.map(item => (
+              <KeywordCard
+                key={item.id}
+                question={item.title}
+                keyword={item.title}
+                text={item.description}
+              />
+            ))
+          ) : (
+            <p>로딩 중…</p>
+          )}
         </section>
 
         <div className="border-t border-[#F4F4F4]" />

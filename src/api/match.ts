@@ -5,21 +5,21 @@ import { axiosInstance } from './axios';
 export const getMatchingList = async ({
   status,
   page,
+  size,
 }: {
   status: string;
-  page: number;
+  page?: number;
+  size?: number;
 }): Promise<ResponseMatchListDto> => {
   const { data } = await axiosInstance.get(`/api/matches`, {
-    params: { status, page },
+    params: { status, page, size },
   });
 
   return data;
 };
 
 // 매칭 요청 생성
-export const requestMatch = async (
-  toMemberId: number
-): Promise<ResponseMatchRequestDto> => {
+export const requestMatch = async (toMemberId: number): Promise<ResponseMatchRequestDto> => {
   const { data } = await axiosInstance.post('/api/matches', { toMemberId });
   return data;
 };

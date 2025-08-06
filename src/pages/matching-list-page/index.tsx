@@ -68,9 +68,9 @@ export default function MatchingListPage() {
 
       <div className="mt-[27px] pt-7 px-5 grid grid-cols-2 xs:grid-cols-3 gap-3 justify-items-center gap-y-4">
         {data.pages.flatMap(page => {
-          const matchList = page.result.matchList;
+          const matchUsers = page.result.data;
 
-          return matchList.map(match => {
+          return matchUsers.map(match => {
             const matchUser = match.matchedUser;
 
             return (

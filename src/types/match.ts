@@ -13,12 +13,14 @@ export type MatchList = {
 
 // 매칭 목록 조회 응답
 export type ResponseMatchListDto = CommonResponse<{
-  matchList: MatchList[];
-  listSize: number;
-  totalPage: number;
-  totalElements: number;
-  isFirst: boolean;
-  hasNext: boolean;
+  data: MatchList[];
+  meta: {
+    currentPage: number;
+    pageSize: number;
+    totalItems: number;
+    totalPages: number;
+    hasNext: boolean;
+  };
 }>;
 
 // 매칭 요청 응답
@@ -29,4 +31,4 @@ export type ResponseMatchRequestDto = CommonResponse<{
 }>;
 
 // 매칭 수락 응답
-export type ResponseMatchAcceptDto = CommonResponse<unknown>;
+export type ResponseMatchAcceptDto = CommonResponse<string>;
