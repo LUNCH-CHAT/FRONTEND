@@ -8,11 +8,13 @@ import svgr from 'vite-plugin-svgr';
 import path from 'path';
 
 export default defineConfig(({ mode }) => {
-
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
     plugins: [react(), tailwindcss(), svgr()],
+    define: {
+      global: 'window',
+    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, 'src'),

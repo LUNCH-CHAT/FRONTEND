@@ -22,15 +22,14 @@ const AlarmCard = ({ image, sender, content, time }: AlarmCardProps) => {
   return (
     <div className="flex gap-3 m-4 cursor-pointer" onClick={handleNavigate}>
       <img
-        src={image ? image : BasicProfile}
+        src={image ? import.meta.env.VITE_API_URL + image : BasicProfile}
+        // onError={() => console.log('이미지 로드 실패:', import.meta.env.VITE_API_URL + image)}
         alt={`${sender}님의 프로필`}
         className="w-[35px] h-[35px] rounded-full object-cover mt-1"
       />
       <div className="select-none">
         <h2 className="font-[pretendard] font-bold text-[#FF7C6A]">런치챗 요청 알림</h2>
-        <p className="font-[pretendard] font-normal">
-          {sender}님이 {content}!
-        </p>
+        <p className="font-[pretendard] font-normal">{content}</p>
         <time className="font-[pretendard] font-normal text-[#B6B6B6]">{time}</time>
       </div>
     </div>
