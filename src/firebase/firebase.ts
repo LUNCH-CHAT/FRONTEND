@@ -7,13 +7,13 @@ import { getMessaging } from 'firebase/messaging';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'AIzaSyAH9wgBIIHUh4MCVZKSP5w5YoqQ0mqXqSE',
-  authDomain: 'lunchchat-2025.firebaseapp.com',
-  projectId: 'lunchchat-2025',
-  storageBucket: 'lunchchat-2025.firebasestorage.app',
-  messagingSenderId: '65654899967',
-  appId: '1:65654899967:web:ca1dccb4d198170762f8ca',
-  measurementId: 'G-BYG678DNS1',
+  apiKey: 'AIzaSyDkXTADaJ1MyRBdChF_Yq-_ihfzg-JDxTU',
+  authDomain: 'lunchchat-cbcb9.firebaseapp.com',
+  projectId: 'lunchchat-cbcb9',
+  storageBucket: 'lunchchat-cbcb9.firebasestorage.app',
+  messagingSenderId: '328766583436',
+  appId: '1:328766583436:web:bd27072e6dc0b02a9741a9',
+  measurementId: 'G-BMTC632BWB',
 };
 
 // Initialize Firebase

@@ -10,7 +10,14 @@ export type ChatRoom = {
 };
 
 // 채팅방 리스트 조회 응답
-export type ResponseChatRoomListDto = CommonResponse<ChatRoom[]>;
+export type ResponseChatRoomListDto = CommonResponse<{
+  data: ChatRoom[];
+  meta: {
+    pageSize: number;
+    hasNext: boolean;
+    nextCursor: string;
+  };
+}>;
 
 // 채팅방 생성 요청
 export type RequestCreateChatRoomDto = {
@@ -33,10 +40,17 @@ export type ResponseDeleteChatRoomDto = CommonResponse<string>;
 export type ChatMessage = {
   id: number;
   roomId: number;
-  senderId: number;
+  senderId: number | undefined;
   content: string;
   createdAt: Date;
 };
 
 // 채팅방 메시지 조회 응답
-export type ResponseChatMessageDto = CommonResponse<ChatMessage[]>;
+export type ResponseChatMessageDto = CommonResponse<{
+  data: ChatMessage[];
+  meta: {
+    pageSize: number;
+    hasNext: boolean;
+    nextCursor: string;
+  };
+}>;

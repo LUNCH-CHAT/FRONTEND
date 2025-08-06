@@ -22,13 +22,15 @@ import MyPage from './pages/my-page/my-page';
 import EditTagPage from './pages/my-page/edit-tag-page';
 import EditKeywordPage from './pages/my-page/edit-keyword-page';
 import EditTimePage from './pages/my-page/edit-time-page';
-// import MyMatchesPage from './pages/my-page/my-matches-page'; 
+// import MyMatchesPage from './pages/my-page/my-matches-page';
 
 import { useEffect } from 'react';
 import { onMessage } from 'firebase/messaging';
 import { messaging } from './firebase/firebase';
 import GoogleLoginPage from './pages/login-page/redirect-page';
 import useFCM from './hooks/alarm/useFCM';
+import { toast, ToastContainer } from 'react-toastify';
+import ToastNoti from './components/ToastNoti';
 
 const publicRoutes: RouteObject[] = [
   {
@@ -64,7 +66,7 @@ const protectedRoutes: RouteObject[] = [
       { path: 'my/edit-tag', element: <EditTagPage /> },
       { path: 'my/edit-keyword', element: <EditKeywordPage /> },
       { path: 'my/edit-time', element: <EditTimePage /> },
-      // { path: 'my/matches', element: <MyMatchesPage /> },  
+      // { path: 'my/matches', element: <MyMatchesPage /> },
     ],
   },
 ];
@@ -74,7 +76,6 @@ const router = createBrowserRouter([...publicRoutes, ...protectedRoutes]);
 const queryClient = new QueryClient();
 
 function App() {
-  // store된 로그인 사용자 ID 가져와서 전달
   useFCM();
 
   // 포그라운드 메시지 처리
@@ -83,8 +84,13 @@ function App() {
       const { title, body } = payload.notification ?? {};
 
       if (title && body) {
-        // toast ui
-        alert(`새 알림: ${title}\n${body}`);
+        toast(ToastNoti({ title, body }), {
+          position: 'top-right',
+          autoClose: 5000,
+          closeOnClick: true,
+          pauseOnHover: true,
+          theme: 'light',
+        });
       }
     });
 
@@ -92,10 +98,13 @@ function App() {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
-    </QueryClientProvider>
+    <>
+      <ToastContainer />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+      </QueryClientProvider>
+    </>
   );
 }
 
