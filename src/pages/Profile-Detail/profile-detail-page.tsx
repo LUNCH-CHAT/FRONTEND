@@ -11,6 +11,8 @@ import { INTEREST_TYPE_LABELS } from '../../components/ProfileCard';
 import { getMatchingList, requestMatch } from '../../api/match';
 import { getProfileDetail } from '../../api/profile';
 import type { ProfileDetail } from '../../types/profile';
+import { getMyDetail } from '../../api/my';
+import type { MyDetail } from '../../types/user';
 
 interface ProfileDetailPageProps {
   my?: boolean;
@@ -23,6 +25,7 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
   const timetableRef = useRef<HTMLDivElement>(null);
 
   const [profile, setProfile] = useState<ProfileDetail | null>(null);
+  const [myProfile, setMyProfile] = useState<MyDetail>();
   const [activeTab, setActiveTab] = useState<'소개' | '커피챗 가능 시간'>('소개');
   const [hasRequested, setHasRequested] = useState(false);
 
@@ -68,6 +71,15 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
       alert('요청 중 오류가 발생했습니다.');
     }
   };
+
+  // 내 프로필 상세 조회
+  useEffect(() => {
+    if (my)
+      {getMyDetail()
+        .then(res => {setMyProfile(res.result);})
+        .catch(err => console.error('나의 프로필 조회 실패', err));}
+  }, [my]);
+
 
   return (
     <div className="min-h-screen flex flex-col bg-white font-[pretendard]">
