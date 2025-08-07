@@ -1,4 +1,5 @@
 import type { CommonResponse } from './common';
+import type { UserKeywordDto } from './profile';
 
 export type UserKeyword = {
   id: number;
@@ -66,8 +67,8 @@ export type MyDetail = {
   studentNo: string;
   department: string;
   profileImageUrl: string;
-  userKeywords: UserKeyword[];
-  userInterests: UserInterest[];
+  userKeywords: UserKeywordDto[];
+  userInterests: string[];
   timeTables: TimeTable[];
 };
 

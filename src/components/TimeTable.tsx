@@ -37,13 +37,17 @@ const TimeTable = ({
   onChange,
   initialSlots = [],
 }: TimeTableProps) => {
+
   // initialSlots(TimeTableType[])를 TimeSlot[]로 매핑해서 초기 상태로 사용
-  const [selectedSlots, setselectedSlots] = useState<TimeSlot[]>(() =>
-    initialSlots.map(slot => ({
+  const [selectedSlots, setselectedSlots] = useState<TimeSlot[]>([]);
+  useEffect(() =>{
+    setselectedSlots(
+      initialSlots.map(slot => ({
       day: slot.dayOfWeek as Day,
-      time: `${slot.startTime}~${slot.endTime}`,
-    }))
-  );
+      time: `${slot.startTime.slice(0,5)}~${slot.endTime.slice(0,5)}`,
+      }))
+    );
+  },[initialSlots]);
 
   const isPointerDownRef = useRef(false);
   const touchedSlotsRef = useRef<Set<string>>(new Set());
