@@ -1,6 +1,5 @@
 import { axiosInstance } from './axios';
 import type {
-  RequestCreateChatRoomDto,
   ResponseChatMessageDto,
   ResponseChatRoomListDto,
   ResponseCreateChatRoomDto,
@@ -25,14 +24,10 @@ export const getChatList = async ({
   return data;
 };
 
-// 채팅방 생성
-export const createChatRoom = async ({
-  starterId,
-  friendId,
-}: RequestCreateChatRoomDto): Promise<ResponseCreateChatRoomDto> => {
+// 채팅방 생성(채팅하기)
+export const createChatRoom = async (friendId: number): Promise<ResponseCreateChatRoomDto> => {
   const { data } = await axiosInstance.post('/api/chatrooms', {
-    starterId,
-    friendId,
+    params: { friendId },
   });
 
   return data;

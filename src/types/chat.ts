@@ -19,12 +19,6 @@ export type ResponseChatRoomListDto = CommonResponse<{
   };
 }>;
 
-// 채팅방 생성 요청
-export type RequestCreateChatRoomDto = {
-  starterId: number;
-  friendId: number;
-};
-
 export type ChatRoomInfo = {
   chatRoomId: number;
   starterId: number;
