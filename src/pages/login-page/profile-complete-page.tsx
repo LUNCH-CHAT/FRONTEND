@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { requestNotificationPermission } from '../../firebase/messaging';
-import { registerFcmToken } from '../../api/alarm';
+import useFCM from '../../hooks/alarm/useFCM';
 
 export default function ProfileCompletePage() {
   const navigate = useNavigate();
   const [fadeout, setFadeOut] = useState(false);
   const [step, setStep] = useState(0);
+  const { updateToken } = useFCM();
 
   useEffect(() => {
     if (step < 3) {
@@ -22,14 +22,8 @@ export default function ProfileCompletePage() {
       navigate(`/`);
     }, 3500);
 
-    // 로그인 직후 알림 설정
-    requestNotificationPermission().then(token => {
-      if (!token) return;
-
-      // 서버에 토큰 등록
-      return registerFcmToken(token);
-    });
-  }, [step, navigate]);
+    updateToken(); //로그인 직후 토큰 등록
+  }, [step, navigate, updateToken]);
 
   return (
     <div

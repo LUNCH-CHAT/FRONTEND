@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { requestNotificationPermission } from '../../firebase/messaging';
 import { registerFcmToken } from '../../api/alarm';
 
@@ -6,39 +6,43 @@ const useFCM = () => {
   const initialized = useRef(false);
   const previousToken = useRef<string | null>(null);
 
-  useEffect(() => {
-    if (initialized.current) return;
-    initialized.current = true;
-
-    // 비로그인 상태일 경우 리턴
+  const updateToken = useCallback(() => {
+    // accessToken이 없으면 리턴
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) return;
 
-    const updateToken = () => {
-      // 알림 권한 요청 및 토큰 발급
-      requestNotificationPermission()
-        .then(token => {
-          if (!token) return;
+    // 알림 권한 요청 및 토큰 업데이트
+    requestNotificationPermission()
+      .then(token => {
+        if (!token) return;
+        console.log(token);
 
-          if (token !== previousToken.current) {
-            registerFcmToken(token);
-            previousToken.current = token;
-          }
-        })
-        .catch(e => {
-          console.error(e);
-        });
-    };
+        if (token !== previousToken.current) {
+          registerFcmToken(token);
+          previousToken.current = token;
+        }
+      })
+      .catch(e => {
+        console.error(e);
+      });
+  }, []);
+
+  useEffect(() => {
+    // 중복 호출 방지
+    if (initialized.current) return;
+    initialized.current = true;
 
     updateToken();
 
-    // 일정 시간 간격으로 이전 토큰과 비교
+    // 일정 시간 간격으로 이전 토큰 값과 비교
     const interval = setInterval(() => {
       updateToken();
     }, 1000 * 60 * 60); // 1시간 간격
 
     return () => clearInterval(interval);
-  }, []);
+  }, [updateToken]);
+
+  return { updateToken }; // 외부에서 강제 실행 가능
 };
 
 export default useFCM;
