@@ -40,14 +40,18 @@ const TimeTable = ({
 
   // initialSlots(TimeTableType[])를 TimeSlot[]로 매핑해서 초기 상태로 사용
   const [selectedSlots, setselectedSlots] = useState<TimeSlot[]>([]);
-  useEffect(() =>{
-    setselectedSlots(
-      initialSlots.map(slot => ({
-      day: slot.dayOfWeek as Day,
-      time: `${slot.startTime.slice(0,5)}~${slot.endTime.slice(0,5)}`,
-      }))
-    );
-  },[initialSlots]);
+  const firstRef = useRef(true); 
+
+  useEffect(() => {
+    if (firstRef.current && initialSlots.length > 0) { //빈 배열이 아닌 경우에, 한번만 실행되도록
+      const mapped = initialSlots.map(slot => ({
+        day: slot.dayOfWeek as Day,
+        time: `${slot.startTime.slice(0, 5)}~${slot.endTime.slice(0, 5)}`
+      }));
+      setselectedSlots(mapped);
+      firstRef.current = false;
+    }
+  }, [initialSlots]);
 
   const isPointerDownRef = useRef(false);
   const touchedSlotsRef = useRef<Set<string>>(new Set());
