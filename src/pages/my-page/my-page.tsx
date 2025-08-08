@@ -7,6 +7,7 @@ import TagSelect from '@/assets/icons/tag-select.svg';
 import { useEffect, useState } from 'react';
 import { getMyInfo } from '../../api/my';
 import type { MyInfo } from '../../types/user';
+import { INTEREST_TYPE_LABELS } from '../../components/ProfileCard';
 
 export default function MyPage() {
   const navigate = useNavigate();
@@ -47,10 +48,12 @@ export default function MyPage() {
             {myInfo?.studentId}학번, {myInfo?.department}
           </p>
           <p className="text-[#7D7D7D] text-[13px] font-[pretendard] font-regular mb-[8px]">
-            {myInfo?.keywords.map((word, idx) => (
+            {myInfo?.keywords
+              .filter((word) => word.trim() !=='')
+              .map((word, idx, arr) => (
               <span key={idx}>
                 {word}
-                {idx !== myInfo.keywords.length - 1 && ' | '}
+                {idx !== arr.length - 1 && ' | '}
               </span>
             ))}
           </p>
@@ -59,7 +62,7 @@ export default function MyPage() {
               <p 
                 key={idx}
                 className="inline-block px-[9px] py-[6px] border border-[#FF7C6A] rounded-[15px] text-black text-[13px] font-[pretendard] font-light leading-[11px]">
-                {tag}
+                {INTEREST_TYPE_LABELS[tag]}
               </p>
             ))}
           </div>

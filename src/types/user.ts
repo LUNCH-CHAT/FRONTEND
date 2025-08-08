@@ -1,4 +1,5 @@
 import type { CommonResponse } from './common';
+import type { UserKeywordDto } from './profile';
 
 export type UserKeyword = {
   id: number;
@@ -61,5 +62,37 @@ export type MyInfo = {
   tags: string[];
 };
 
+export type MyDetail = {
+  memberName: string;
+  studentNo: string;
+  department: string;
+  profileImageUrl: string;
+  userKeywords: UserKeywordDto[];
+  userInterests: string[];
+  timeTables: TimeTable[];
+};
+
 // 마이페이지 조회 응답
 export type ResponseMyInfoDto = CommonResponse<MyInfo>;
+
+// 내 프로필 상세 조회 응답
+export type ResponseMyDetailDto = CommonResponse<MyDetail>;
+
+//키워드 편집하기 
+export type MyKeyword = {
+  type: "EXPRESS" | "GOAL" | "INTEREST" ;
+  title: string;
+  description: string;
+}
+
+export type MyKeywords = {
+  "keywords": MyKeyword[];
+}
+
+export type MyTags = {
+  "interestIds": number[];
+}
+
+export type MyTimeTables = {
+  "timeTableList": TimeTable[];
+}

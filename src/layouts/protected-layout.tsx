@@ -35,7 +35,7 @@ function LayoutContent() {
   else if (isProfileDetailPage) header = <BackHeader title="프로필 상세" />;
   else if (isMyPage)       header = <HomeHeader title="마이페이지" />;
   else if (isExplorePage)  header = <HomeHeader title="둘러보기" />;
-  else if (isMyDetailPage)    header = <BackHeader title="나의 프로필" />;
+  else if (isMyDetailPage)    header = <BackHeader title="나의 프로필" myPage={true} />;
   else if (isEditTagPage
         || isEditKeywordPage
         || isEditTimePage)    header = <BackHeader />;
