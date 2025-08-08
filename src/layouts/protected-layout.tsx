@@ -37,7 +37,7 @@ function LayoutContent() {
   else if (isMonthlyMentorPage) header = <BackHeader title="이달의 커피챗 멘토님" />;
   else if (isMyPage)       header = <HomeHeader title="마이페이지" />;
   else if (isExplorePage)  header = <HomeHeader title="둘러보기" />;
-  else if (isMyDetailPage)    header = <BackHeader title="나의 프로필" />;
+  else if (isMyDetailPage)    header = <BackHeader title="나의 프로필" myPage={true} />;
   else if (isEditTagPage
         || isEditKeywordPage
         || isEditTimePage)    header = <BackHeader />;

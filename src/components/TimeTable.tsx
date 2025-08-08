@@ -37,13 +37,21 @@ const TimeTable = ({
   onChange,
   initialSlots = [],
 }: TimeTableProps) => {
+
   // initialSlots(TimeTableType[])를 TimeSlot[]로 매핑해서 초기 상태로 사용
-  const [selectedSlots, setselectedSlots] = useState<TimeSlot[]>(() =>
-    initialSlots.map(slot => ({
-      day: slot.dayOfWeek as Day,
-      time: `${slot.startTime}~${slot.endTime}`,
-    }))
-  );
+  const [selectedSlots, setselectedSlots] = useState<TimeSlot[]>([]);
+  const firstRef = useRef(true); 
+
+  useEffect(() => {
+    if (firstRef.current && initialSlots.length > 0) { //빈 배열이 아닌 경우에, 한번만 실행되도록
+      const mapped = initialSlots.map(slot => ({
+        day: slot.dayOfWeek as Day,
+        time: `${slot.startTime.slice(0, 5)}~${slot.endTime.slice(0, 5)}`
+      }));
+      setselectedSlots(mapped);
+      firstRef.current = false;
+    }
+  }, [initialSlots]);
 
   const isPointerDownRef = useRef(false);
   const touchedSlotsRef = useRef<Set<string>>(new Set());
@@ -167,14 +175,14 @@ const TimeTable = ({
         ))}
       </div>
 
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <h2 className="font-bold mb-2">선택된 시간</h2>
         <ul className="text-sm list-disc list-inside">
           {selectedSlots.map((slot, i) => (
             <li key={i}>{`${slot.day} ${slot.time}`}</li>
           ))}
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 };

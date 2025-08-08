@@ -7,7 +7,8 @@ export default function PublicLayout() {
 
   const hideHeader =
     matchPath('/onboarding', location.pathname) ||
-    matchPath('/onboarding/complete', location.pathname);
+    matchPath('/onboarding/complete', location.pathname) ||
+    matchPath('/auth/login/google', location.pathname);
 
   return (
     <>

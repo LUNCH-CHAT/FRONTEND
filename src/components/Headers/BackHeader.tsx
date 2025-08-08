@@ -3,13 +3,14 @@ import Back from '/src/assets/back.svg';
 
 interface BackHeaderProps {
   title?: string;
+  myPage?: boolean;
 }
 
-const BackHeader = ({ title }: BackHeaderProps) => {
+const BackHeader = ({ title, myPage = false }: BackHeaderProps) => {
   const navigate = useNavigate();
 
   const handleClickBack = () => {
-    navigate(-1);
+    myPage ? navigate('/my') : navigate(-1);
   };
 
   return (

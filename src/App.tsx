@@ -46,7 +46,10 @@ const publicRoutes: RouteObject[] = [
   },
   {
     path: '/auth/login/google',
-    element: <GoogleLoginPage />,
+    element: <PublicLayout />,
+    children: [
+      { index: true, element: <GoogleLoginPage /> }
+    ],
   },
 ];
 

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLogin } from "../../api/login";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
 
 export default function GoogleLoginPage() {
   const navigate = useNavigate();
@@ -37,5 +38,9 @@ export default function GoogleLoginPage() {
 
   }, []);
 
-  return <div>redirecting...</div>;
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <LoadingSpinner />
+    </div>
+  )
 }
