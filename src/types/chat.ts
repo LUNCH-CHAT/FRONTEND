@@ -4,8 +4,8 @@ export type ChatRoom = {
   roomId: number;
   friendName: string;
   department: string;
-  lastMessage: string;
-  lastMessageSentAt: Date;
+  lastMessage: string | null;
+  lastMessageSentAt: Date | null;
   unreadCount: number;
 };
 
@@ -13,9 +13,11 @@ export type ChatRoom = {
 export type ResponseChatRoomListDto = CommonResponse<{
   data: ChatRoom[];
   meta: {
+    currentPage: number;
     pageSize: number;
+    totalItems: number;
+    totalPages: number;
     hasNext: boolean;
-    nextCursor: string;
   };
 }>;
 

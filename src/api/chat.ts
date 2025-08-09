@@ -9,15 +9,15 @@ import type {
 // 채팅방 리스트 조회
 export const getChatList = async ({
   size,
-  cursor,
+  page,
 }: {
   size: number;
-  cursor: string | undefined;
+  page: number;
 }): Promise<ResponseChatRoomListDto> => {
   const { data } = await axiosInstance.get('/api/chatrooms', {
     params: {
       size,
-      cursor,
+      page,
     },
   });
 
@@ -26,7 +26,7 @@ export const getChatList = async ({
 
 // 채팅방 생성(채팅하기)
 export const createChatRoom = async (friendId: number): Promise<ResponseCreateChatRoomDto> => {
-  const { data } = await axiosInstance.post('/api/chatrooms', {
+  const { data } = await axiosInstance.post('/api/chatrooms', null, {
     params: { friendId },
   });
 

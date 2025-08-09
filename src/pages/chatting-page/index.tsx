@@ -31,31 +31,36 @@ export default function ChattingPage() {
       <div className="flex flex-col gap-4 select-none">
         {data?.pages.flatMap(page => {
           const chatRooms = page.result.data;
+
           // 최신 채팅순으로 재정렬
           const sortedChatRooms = chatRooms.sort(
             (a, b) =>
-              new Date(b.lastMessageSentAt).getTime() - new Date(a.lastMessageSentAt).getTime()
+              new Date(b.lastMessageSentAt || 0).getTime() -
+              new Date(a.lastMessageSentAt || 0).getTime()
           );
 
           return sortedChatRooms.map(room => {
             // 오전/오후로 시간 필터링
-            const { hours, minutes } = formatDate(room.lastMessageSentAt);
-            let displayHours = Number(hours);
-            let period = '오전';
-            if (displayHours >= 12) {
-              period = '오후';
-              if (displayHours > 12) {
-                displayHours = displayHours - 12;
+            let formattedTime;
+            if (room.lastMessageSentAt) {
+              const { hours, minutes } = formatDate(room.lastMessageSentAt);
+              let displayHours = Number(hours);
+              let period = '오전';
+              if (displayHours >= 12) {
+                period = '오후';
+                if (displayHours > 12) {
+                  displayHours = displayHours - 12;
+                }
               }
+              formattedTime = `${period} ${displayHours}:${minutes}`;
             }
-            const formattedTime = `${period} ${displayHours}:${minutes}`;
 
             return (
               <ChattingList
                 name={room.friendName}
                 friendInfo={room.department}
-                lastMessage={room.lastMessage}
-                time={formattedTime}
+                lastMessage={room.lastMessage ? room.lastMessage : ''}
+                time={formattedTime || ''}
                 id={room.roomId}
                 key={room.roomId}
               />
