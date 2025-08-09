@@ -83,7 +83,7 @@ function App() {
     const unsubscribe = onMessage(messaging, payload => {
       const { title, body } = payload.notification ?? {};
 
-      if (title && body) {
+      if (title || body) {
         toast(ToastNoti({ title, body }), {
           position: 'top-right',
           autoClose: 5000,

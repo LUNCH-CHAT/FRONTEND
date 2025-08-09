@@ -11,7 +11,6 @@ interface TimeSlot {
 }
 
 interface TimeTableProps {
-  
   isEditable?: boolean;
   onChange?: (slots: TimeTableType[]) => void;
   initialSlots?: TimeTableType[];
@@ -32,11 +31,7 @@ const times = [
   '19:00~20:00',
 ];
 
-const TimeTable = ({
-  isEditable = false,
-  onChange,
-  initialSlots = [],
-}: TimeTableProps) => {
+const TimeTable = ({ isEditable = false, onChange, initialSlots = [] }: TimeTableProps) => {
   // initialSlots(TimeTableType[])를 TimeSlot[]로 매핑해서 초기 상태로 사용
   const [selectedSlots, setselectedSlots] = useState<TimeSlot[]>(() =>
     initialSlots.map(slot => ({
@@ -154,11 +149,7 @@ const TimeTable = ({
                   data-day={day}
                   data-time={time}
                   className={`border border-[#969696] ${
-                    isSelected
-                      ? 'bg-[#FF7C6A]'
-                      : isEditable
-                      ? 'hover:bg-[#FF9B8E]'
-                      : ''
+                    isSelected ? 'bg-[#FF7C6A]' : isEditable ? 'hover:bg-[#FF9B8E]' : ''
                   }`}
                 />
               );
@@ -167,14 +158,14 @@ const TimeTable = ({
         ))}
       </div>
 
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <h2 className="font-bold mb-2">선택된 시간</h2>
         <ul className="text-sm list-disc list-inside">
           {selectedSlots.map((slot, i) => (
             <li key={i}>{`${slot.day} ${slot.time}`}</li>
           ))}
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 };
