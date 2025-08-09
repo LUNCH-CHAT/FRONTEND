@@ -15,7 +15,6 @@ const useFCM = () => {
     requestNotificationPermission()
       .then(token => {
         if (!token) return;
-        console.log(token);
 
         if (token !== previousToken.current) {
           registerFcmToken(token);
