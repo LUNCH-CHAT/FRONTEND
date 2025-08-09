@@ -14,7 +14,7 @@ export default function KeywordCard({
   const finalText = text.trim() === '' ? '등록된 설명이 없어요' : text;
 
   return (
-    <div className="border-l-2 border-[#FF7C6A] mb-5 pl-3">
+    <div className="mb-5">
       <p className="text-[#FF7C6A] text-[13px] font-[pretendard] font-medium text-sm pb-[9px]">
         {question}
       </p>

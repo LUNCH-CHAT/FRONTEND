@@ -1,6 +1,5 @@
 import { axiosInstance } from './axios';
 import type {
-  RequestCreateChatRoomDto,
   ResponseChatMessageDto,
   ResponseChatRoomListDto,
   ResponseCreateChatRoomDto,
@@ -10,29 +9,25 @@ import type {
 // 채팅방 리스트 조회
 export const getChatList = async ({
   size,
-  cursor,
+  page,
 }: {
   size: number;
-  cursor: string | undefined;
+  page: number;
 }): Promise<ResponseChatRoomListDto> => {
   const { data } = await axiosInstance.get('/api/chatrooms', {
     params: {
       size,
-      cursor,
+      page,
     },
   });
 
   return data;
 };
 
-// 채팅방 생성
-export const createChatRoom = async ({
-  starterId,
-  friendId,
-}: RequestCreateChatRoomDto): Promise<ResponseCreateChatRoomDto> => {
-  const { data } = await axiosInstance.post('/api/chatrooms', {
-    starterId,
-    friendId,
+// 채팅방 생성(채팅하기)
+export const createChatRoom = async (friendId: number): Promise<ResponseCreateChatRoomDto> => {
+  const { data } = await axiosInstance.post('/api/chatrooms', null, {
+    params: { friendId },
   });
 
   return data;

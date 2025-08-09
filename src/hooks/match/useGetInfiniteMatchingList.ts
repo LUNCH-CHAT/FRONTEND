@@ -8,10 +8,11 @@ function useGetInfiniteMatchingList(status: 'ACCEPTED' | 'REQUESTED' | 'RECEIVED
       getMatchingList({
         status,
         page: pageParam,
+        size: 10,
       }),
     initialPageParam: 0,
     getNextPageParam: lastPage => {
-      return lastPage.result.hasNext ? lastPage.result.totalPage : undefined;
+      return lastPage.result.meta.hasNext ? lastPage.result.meta.currentPage : undefined;
     },
   });
 }

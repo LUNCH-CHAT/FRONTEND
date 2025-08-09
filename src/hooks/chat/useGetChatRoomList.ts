@@ -4,14 +4,14 @@ import { getChatList } from '../../api/chat';
 function useGetChatRoomList() {
   return useInfiniteQuery({
     queryKey: ['chatRooms'],
-    queryFn: ({ pageParam }: QueryFunctionContext<string[], string | undefined>) =>
+    queryFn: ({ pageParam }: QueryFunctionContext<string[], number>) =>
       getChatList({
         size: 10,
-        cursor: pageParam,
+        page: pageParam,
       }),
-    initialPageParam: undefined,
+    initialPageParam: 0,
     getNextPageParam: lastpage => {
-      return lastpage.result.meta.hasNext ? lastpage.result.meta.nextCursor : undefined;
+      return lastpage.result.meta.hasNext ? lastpage.result.meta.currentPage : undefined;
     },
   });
 }

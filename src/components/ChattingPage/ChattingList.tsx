@@ -29,7 +29,7 @@ const ChattingList = ({ id, image, name, friendInfo, lastMessage, time }: Chatti
     >
       <div className="flex gap-3 items-center">
         <img
-          src={image ? image : BasicProfile}
+          src={image ? import.meta.env.VITE_API_URL + image : BasicProfile}
           alt={`${name}님의 프로필`}
           className="w-12 h-12 rounded-full object-cover mt-1"
         />

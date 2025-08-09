@@ -11,7 +11,6 @@ interface TimeSlot {
 }
 
 interface TimeTableProps {
-  
   isEditable?: boolean;
   onChange?: (slots: TimeTableType[]) => void;
   initialSlots?: TimeTableType[];
@@ -32,21 +31,17 @@ const times = [
   '19:00~20:00',
 ];
 
-const TimeTable = ({
-  isEditable = false,
-  onChange,
-  initialSlots = [],
-}: TimeTableProps) => {
-
+const TimeTable = ({ isEditable = false, onChange, initialSlots = [] }: TimeTableProps) => {
   // initialSlots(TimeTableType[])를 TimeSlot[]로 매핑해서 초기 상태로 사용
   const [selectedSlots, setselectedSlots] = useState<TimeSlot[]>([]);
-  const firstRef = useRef(true); 
+  const firstRef = useRef(true);
 
   useEffect(() => {
-    if (firstRef.current && initialSlots.length > 0) { //빈 배열이 아닌 경우에, 한번만 실행되도록
+    if (firstRef.current && initialSlots.length > 0) {
+      //빈 배열이 아닌 경우에, 한번만 실행되도록
       const mapped = initialSlots.map(slot => ({
         day: slot.dayOfWeek as Day,
-        time: `${slot.startTime.slice(0, 5)}~${slot.endTime.slice(0, 5)}`
+        time: `${slot.startTime.slice(0, 5)}~${slot.endTime.slice(0, 5)}`,
       }));
       setselectedSlots(mapped);
       firstRef.current = false;
@@ -162,11 +157,7 @@ const TimeTable = ({
                   data-day={day}
                   data-time={time}
                   className={`border border-[#969696] ${
-                    isSelected
-                      ? 'bg-[#FF7C6A]'
-                      : isEditable
-                      ? 'hover:bg-[#FF9B8E]'
-                      : ''
+                    isSelected ? 'bg-[#FF7C6A]' : isEditable ? 'hover:bg-[#FF9B8E]' : ''
                   }`}
                 />
               );
