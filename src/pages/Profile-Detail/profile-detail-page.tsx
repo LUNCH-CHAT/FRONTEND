@@ -4,11 +4,13 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { acceptMatch, getMatchingList, requestMatch } from '../../api/match';
 import { getProfileDetail } from '../../api/profile';
-import type { ProfileDetail } from '../../types/profile';
+import { type ProfileDetail } from '../../types/profile';
 import ProfileHeader from '../../components/ProfileDetailPage/ProfileHeader';
 import ProfileKeywords from '../../components/ProfileDetailPage/ProfileKeywords';
 import ProfileTimeTable from '../../components/ProfileDetailPage/ProfileTimeTable';
 import { createChatRoom } from '../../api/chat';
+import { getMyDetail } from '../../api/my';
+import type { MyDetail } from '../../types/user';
 
 interface ProfileDetailPageProps {
   my?: boolean;
@@ -21,7 +23,8 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
   const timetableRef = useRef<HTMLDivElement>(null);
 
   const [profile, setProfile] = useState<ProfileDetail | null>(null);
-  const [activeTab, setActiveTab] = useState<'소개' | '커피챗 가능 시간'>('소개');
+  const [myProfile, setMyProfile] = useState<MyDetail>();
+  const [activeTab, setActiveTab] = useState<'소개' | '런치챗 가능 시간'>('소개');
   const [hasRequested, setHasRequested] = useState(false);
   const [isReceived, setIsReceived] = useState(false);
   const [isMatched, setIsMatched] = useState(false);
@@ -111,12 +114,25 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
 
   // 탭 전환 시 스크롤
   useEffect(() => {
-    if (activeTab === '커피챗 가능 시간' && timetableRef.current) {
+    if (activeTab === '런치챗 가능 시간' && timetableRef.current) {
       timetableRef.current.scrollIntoView({ behavior: 'smooth' });
       setActiveTab('소개');
     }
   }, [activeTab]);
 
+  // 내 프로필 상세 조회
+  useEffect(() => {
+    if (my) {
+      getMyDetail()
+        .then(res => {
+          setMyProfile(res.result);
+        })
+        .catch(err => console.error('나의 프로필 조회 실패', err));
+    }
+  }, [my]);
+
+  const info = my ? myProfile : profile; //나의 프로필인지 아닌지 확인
+  console.log(info);
   return (
     <>
       {/* loading spinner */}
@@ -129,11 +145,12 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
           department={profile?.department}
           userKeywords={profile?.userKeywords}
           userInterests={profile?.userInterests}
+          my={my}
         />
         <div className="mt-[180px] border-t border-[#F4F4F4] border-[7px]" />
 
         <div className="flex border-b border-[#D4D4D4] px-5 gap-6">
-          {(['소개', '커피챗 가능 시간'] as const).map(tab => (
+          {(['소개', '런치챗 가능 시간'] as const).map(tab => (
             <button
               key={tab}
               className={`p-2 text-[16px] cursor-pointer ${
@@ -147,14 +164,14 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
         </div>
 
         {/* 본문 */}
-        <main className="flex-1 pb-12">
+        <main className="flex-1">
           {/* 소개 */}
-          <ProfileKeywords userKeywords={profile?.userKeywords} />
+          <ProfileKeywords userKeywords={profile?.userKeywords} my={my} />
 
-          <div className="border-t border-[#F4F4F4] border-[7px]" />
+          <div className="border-t border-[#F4F4F4]" />
 
           {/* 커피챗 가능 시간 */}
-          <ProfileTimeTable timetableRef={timetableRef} timeTables={profile?.timeTables} />
+          <ProfileTimeTable timetableRef={timetableRef} timeTables={profile?.timeTables} my={my} />
         </main>
 
         {/* 하단 버튼 */}

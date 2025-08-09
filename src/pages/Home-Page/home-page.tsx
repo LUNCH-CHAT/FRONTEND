@@ -2,11 +2,10 @@
 
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { axiosInstance } from '../../api/axios';
+import { getRecommendations, getPopularMembers } from '../../api/home';
+import { getUniName } from '../../api/auth';  
 import type {
-  ResponseRecommendationDto,
   RecommendationProfile,
-  ResponsePopularDto,
   PopularProfile,
 } from '../../types/profile';
 
@@ -28,42 +27,44 @@ import HobbyIcon from '@/assets/icons/extreaactivities.svg?react';
 import SchoolIcon from '@/assets/icons/campus.svg?react';
 import LunchatIcon from '@/assets/icons/lunchat.svg?react';
 import QuestionIcon from '@/assets/icons/question.svg?react';
-import homeBg from '@/assets/images/home-bg.png';
+import homeBg from '@/assets/images/home-bg1.png';
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const [recommendations, setRecommendations] = useState<RecommendationProfile[]>([]);
+  const [popularMembers, setPopularMembers] = useState<PopularProfile[]>([]);
+  const [schoolName, setSchoolName] = useState('');  
 
   /** 카테고리 클릭 시 ExplorePage로 이동 */
   const handleCategoryClick = (label: string) => {
     navigate(`/explore?category=${encodeURIComponent(label)}`);
   };
-
-  const [recommendations, setRecommendations] = useState<RecommendationProfile[]>([]);
-  const [popularMembers, setPopularMembers] = useState<PopularProfile[]>([]);
+    // 소속 학교명 조회 휘션
+  useEffect(() => {
+    getUniName()
+      .then(res => setSchoolName(res.data))
+      .catch(err => console.error('학교명 불러오기 실패:', err));
+  }, []);
 
   // “나와 ‘시간표 · 관심사’가 겹쳐요!” API 호출
   useEffect(() => {
-    axiosInstance
-      .get<ResponseRecommendationDto>('/api/members/recommendations')
+    getRecommendations()
       .then(res => {
-        console.log('추천 API 응답:', res.data);
         setRecommendations(res.data.result ?? []);
       })
       .catch(err => {
-        console.error('추천 사용자 불러오기 실패:', err.response?.data || err);
+        console.error('추천 사용자 불러오기 실패:', err);
       });
   }, []);
 
   // “이런 사람 어때요?” (인기 멤버) API 호출
   useEffect(() => {
-    axiosInstance
-      .get<ResponsePopularDto>('/api/members/popular')
+    getPopularMembers()
       .then(res => {
-        console.log('인기 멤버 API 응답:', res.data);
         setPopularMembers(res.data.result ?? []);
       })
       .catch(err => {
-        console.error('인기 멤버 불러오기 실패:', err.response?.data || err);
+        console.error('인기 멤버 불러오기 실패:', err);
       });
   }, []);
 
@@ -74,14 +75,25 @@ export default function HomePage() {
       <div className="w-full min-h-screen bg-white font-pretendard flex justify-center">
         <div className="w-full max-w-[700px]">
           {/* 메인 배너 */}
-          <section className="w-full overflow-hidden">
+          <section className="w-full overflow-hidden ">
             <Swiper autoplay={{ delay: 4000 }} loop slidesPerView={1}>
               <SwiperSlide>
-                <img
-                  src={homeBg}
-                  alt="홈 배경"
-                  className="w-full h-auto object-contain"
-                />
+                <div className="relative w-full h-auto">
+                  <img
+                    src={homeBg}
+                    alt="홈 배경"
+                    className="w-full h-auto object-contain"
+                  />
+                  {/* 배너 위 오버레이: 학교 이름 */}
+                  <div className="absolute bottom-8 left-4 text-white">
+                    <p className="text-[16px] font-pretendard pl-1 mb-1">{schoolName}</p>   
+                    <p className="text-[16px] font-bold pl-1 mb-1">Luch With Insight!</p>   
+                    <p className="text-[13px] font-pretendard  pl-1">
+                      혼자 먹는 점심, 텅 빈 공간 시간...<br/>
+                      이제는 비슷한 관심사를 가진 친구 혹은 선배와<br/>
+                      가볍게 이야기를 나눠요!</p>   
+                  </div>
+                </div>
               </SwiperSlide>
             </Swiper>
           </section>
@@ -184,6 +196,35 @@ export default function HomePage() {
             </Swiper>
           </section>
 
+          {/* 이달의 커피챗 멘토님은 누구? */}
+          <section className="pl-5 pb-5 mt-10">
+            <h2 className="text-[20px] font-semibold mb-4">
+              이달의 커피챗 멘토님은 누구?
+            </h2>
+            <div className="relative rounded-xl overflow-hidden w-[335px] h-[163px] sm:w-[440px] sm:h-[163px]">
+              <img
+                src="/images/mento.png"
+                alt="이달의 멘토 배너"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 flex flex-col justify-center px-5">
+                <p className="text-[16px] font-semibold text-black">김지윤 선배님</p>
+                <p className="mt-1 text-[13px] text-black opacity-90">
+                  컴퓨터공학과 16학번
+                </p>
+                <p className="text-[12px] text-black opacity-90">
+                  네이버 커머스 CIC 프론트엔드 개발자
+                </p>
+                <button
+                  onClick={() => navigate('/monthly-mentor')}
+                  className="mt-4 w-[113px] h-[26px] bg-[#FF7963] rounded-[8px] text-[12px] font-medium text-white flex items-center justify-center"
+                >
+                  지금 바로 신청하기
+                </button>
+              </div>
+            </div>
+          </section>
+
           {/* 런치챗 소개 */}
           <section className="bg-gray-50 py-6 px-4">
             <h2 className="text-[20px] font-semibold text-black mb-4">
@@ -198,8 +239,7 @@ export default function HomePage() {
                     'https://www.notion.so/native/1f283f3bbb0280c48b1be5c7118739f5?pvs=0&deepLinkOpenNewTab=true',
                     '_blank'
                   )
-                }
-              />
+                } />
               <InfoCard
                 title="자주 묻는 질문"
                 icon={<QuestionIcon className="w-[104px] h-[29px]" />}
@@ -208,8 +248,7 @@ export default function HomePage() {
                     'https://www.notion.so/native/1f283f3bbb0280c48b1be5c7118739f5?pvs=0&deepLinkOpenNewTab=true',
                     '_blank'
                   )
-                }
-              />
+                } />
             </div>
           </section>
         </div>
