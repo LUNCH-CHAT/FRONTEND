@@ -40,11 +40,10 @@ axiosInstance.interceptors.response.use(
     const originalRequest: CustomInternalAxiosRequestConfig = error.config;
 
     //401에러면서 아직 재시도하지않는 요청 경우 처리
-    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+    if (error.response && !originalRequest._retry) {
       //refresh 엔드포인트 401 에러가 발생한 경우(unauthorized), 중복 시도 방지를 위해 로그아웃 처리
       if (originalRequest.url === '/auth/reissue') {
         localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
         window.location.href = '/onboarding';
         return Promise.reject(error);
       }
@@ -57,14 +56,13 @@ axiosInstance.interceptors.response.use(
         //refresh 요청 실행 후 프라미스를 전역 변수에 할당
 
         refreshPromise = (async () => {
-          const refreshToken = localStorage.getItem('refreshToken');
-
-          const { data } = await axios.post('/auth/reissue', {
-            refresh: refreshToken,
-          });
+          const { data } = await axios.post(
+            '/auth/reissue',
+            undefined,
+            { withCredentials: true }
+          );
           //새 토큰이 반환
           localStorage.setItem('accessToken', data.result.accessToken);
-          localStorage.setItem('refreshToken', data.result.refreshToken);
 
           //새 accessToken을 반환하여 다른 요청들이 이것을 사용할 수 있게함.
           return data.result.accessToken;
@@ -72,7 +70,8 @@ axiosInstance.interceptors.response.use(
           .catch(error => {
             console.error('Refresh 실패:', error);
             localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
+            window.location.href = '/onboarding';
+            throw error;
           })
           .finally(() => {
             refreshPromise = null;
