@@ -10,9 +10,9 @@ import Step2 from '@/assets/icons/step2.svg';
 import Step3 from '@/assets/icons/step3.svg';
 import Step4 from '@/assets/icons/step4.svg';
 import Step5 from '@/assets/icons/step5.svg';
-import type { TimeTable as TimeTableType } from '../../types/user';
 import { getColleges, getDepartments, patchSignUp } from '../../api/login';
 import { useNavigate } from 'react-router-dom';
+import type { TimeTableDto } from '../../types/profile';
 
 export default function ProfileStepPage() {
   const [step, setStep] = useState(0);
@@ -24,7 +24,7 @@ export default function ProfileStepPage() {
   const [department, setDepartment] = useState<{ id: number; name: string }[]>();
   const [departmentId, setDepartmentId] = useState(0);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [timeTables, setTimeTables] = useState<TimeTableType[]>([]);
+  const [timeTables, setTimeTables] = useState<TimeTableDto[]>([]);
   const navigate = useNavigate();
 
   const StepImages =

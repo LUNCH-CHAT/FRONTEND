@@ -8,6 +8,7 @@ export const getLogin = async (code: string) => {
         params: {code},
         withCredentials: true, // 쿠키 저장 
     });
+    console.log(response);
     const accessToken = response.headers["access"];
     localStorage.setItem('accessToken', accessToken);
     return response;
