@@ -28,7 +28,8 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
   const [hasRequested, setHasRequested] = useState(false);
   const [isReceived, setIsReceived] = useState(false);
   const [isMatched, setIsMatched] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // 프로필 상세 로딩
+  const [isPending, setIsPending] = useState(false); // 매칭 수락 로딩
 
   // 1) 이미 매칭 요청이 있는지 조회
   useEffect(() => {
@@ -84,6 +85,7 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
 
   // 매칭 수락
   const handleAcceptMatch = async () => {
+    setIsPending(true);
     try {
       const data = await acceptMatch(memberId);
 
@@ -94,6 +96,8 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
     } catch (e) {
       console.log('accpet match error', e);
       alert('요청 중 오류가 발생했습니다.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -196,10 +200,10 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
             <button
               onClick={handleAcceptMatch}
               className={`w-full h-[48px] rounded-[10px] text-white font-semibold
-                bg-[#FF7C6A] cursor-pointer
+                ${isPending ? 'bg-gray-300 cursor-not-allowed' : 'bg-[#FF7C6A] cursor-pointer'}
               `}
             >
-              수락하기
+              {isPending ? '로딩중' : '수락하기'}
             </button>
           ) : (
             <button
