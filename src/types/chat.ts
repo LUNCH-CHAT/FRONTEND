@@ -24,7 +24,8 @@ export type ResponseChatRoomListDto = CommonResponse<{
 export type ChatRoomInfo = {
   chatRoomId: number;
   starterId: number;
-  friendId: number;
+  friendName: string;
+  friendDepartment: string;
 };
 
 // 채팅방 생성 응답
@@ -36,13 +37,14 @@ export type ResponseDeleteChatRoomDto = CommonResponse<string>;
 export type ChatMessage = {
   id: number;
   roomId: number;
-  senderId: number | undefined;
+  senderId: number;
   content: string;
   createdAt: Date;
 };
 
 // 채팅방 메시지 조회 응답
 export type ResponseChatMessageDto = CommonResponse<{
+  userId: number;
   data: ChatMessage[];
   meta: {
     pageSize: number;

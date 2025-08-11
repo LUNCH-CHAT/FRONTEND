@@ -5,11 +5,12 @@ import type { ChatMessage } from '../../types/chat';
 import { useMemo } from 'react';
 
 interface ChatMessagesProps {
+  userId: number;
   messages: ChatMessage[];
   senderName: string;
 }
 
-const ChatMessages = ({ messages, senderName }: ChatMessagesProps) => {
+const ChatMessages = ({ userId, messages, senderName }: ChatMessagesProps) => {
   // 메시지 타임라인, 시간, 렌더링 여부 파악
   const formattedMessages = useMemo(() => {
     let prevDate = '';
@@ -22,10 +23,12 @@ const ChatMessages = ({ messages, senderName }: ChatMessagesProps) => {
       const time = `${hours}:${minutes}`;
 
       const showDate = date !== prevDate;
-      const showProfile = msg.senderId && (msg.senderId !== prevSender || index === 0);
+      const showProfile = !userId && msg.senderId !== prevSender;
+
       // 다음 메시지 시간과 비교해 현재 메시지에 time을 렌더링할지 결정
       const nextMsg = messages[index + 1];
       let showTime = true;
+
       if (nextMsg) {
         const { hours: nextHours, minutes: nextMinutes } = formatDate(nextMsg.createdAt);
         const nextTime = `${nextHours}:${nextMinutes}`;
@@ -43,14 +46,15 @@ const ChatMessages = ({ messages, senderName }: ChatMessagesProps) => {
 
       return { ...msg, date, time, showDate, showProfile: !!showProfile, showTime };
     });
-  }, [messages]);
+  }, [messages, userId]);
 
   return (
-    <div>
+    <div className="w-full">
       {formattedMessages?.map(msg => (
         <ChatBox
           key={msg.id}
-          senderId={msg.senderId ?? undefined}
+          userId={userId}
+          senderId={msg.senderId}
           senderName={senderName}
           text={msg.content}
           time={msg.time}

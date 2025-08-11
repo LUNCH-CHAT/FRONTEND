@@ -1,7 +1,6 @@
 import { useInView } from 'react-intersection-observer';
 import ChattingList from '../../components/ChattingPage/ChattingList';
 import useGetChatRoomList from '../../hooks/chat/useGetChatRoomList';
-import { formatDate } from '../../utils/getDate';
 import { useEffect } from 'react';
 
 export default function ChattingPage() {
@@ -43,7 +42,9 @@ export default function ChattingPage() {
             // 오전/오후로 시간 필터링
             let formattedTime;
             if (room.lastMessageSentAt) {
-              const { hours, minutes } = formatDate(room.lastMessageSentAt);
+              const hours = String(room.lastMessageSentAt).split(':')[0];
+              const minutes = String(room.lastMessageSentAt).split(':')[1];
+
               let displayHours = Number(hours);
               let period = '오전';
               if (displayHours >= 12) {

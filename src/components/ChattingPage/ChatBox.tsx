@@ -2,7 +2,8 @@ import BasicProfile from '@/assets/basic-profile.png';
 import React from 'react';
 
 interface ChatBoxProps {
-  senderId?: number;
+  userId: number;
+  senderId: number;
   senderName: string;
   profile?: string;
   text: string;
@@ -12,6 +13,7 @@ interface ChatBoxProps {
 }
 
 const ChatBox = ({
+  userId,
   senderId,
   senderName,
   profile,
@@ -20,7 +22,7 @@ const ChatBox = ({
   showProfile = false,
   showTime = true,
 }: ChatBoxProps) => {
-  const isMine = !senderId;
+  const isMine = senderId === userId;
 
   return (
     <div

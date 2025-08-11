@@ -108,7 +108,12 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
 
       if (data.isSuccess) {
         const chatRoomId = data.result.chatRoomId;
-        navigate(`/chatting/${chatRoomId}`);
+        navigate(`/chatting/${chatRoomId}`, {
+          state: {
+            name: data.result.friendName,
+            friendInfo: data.result.friendDepartment,
+          },
+        });
       }
     } catch (e) {
       console.log('create chatroom error', e);
@@ -137,6 +142,7 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
 
   const info = my ? myProfile : profile; //나의 프로필인지 아닌지 확인
   console.log(info);
+
   return (
     <>
       {/* loading spinner */}
