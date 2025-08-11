@@ -47,7 +47,7 @@ export default function ChattingRoom() {
     const diff = newScrollHeight - previousScrollHeight.current;
 
     container.scrollTop += diff; // 위로 밀려났던 스크롤을 원래 보던 위치로 복원
-  }, [data?.pages.length, isFetching]);
+  }, [data?.pages, isFetching]);
 
   // 메시지 추가 후 스크롤 위치 보정
   useEffect(() => {
@@ -71,6 +71,18 @@ export default function ChattingRoom() {
     return messages;
   }, [data?.pages, lastMessages]);
 
+  // 사용자id 추출
+  const userId = data?.pages.flatMap(page => page.result.userId)[0]!;
+
+  // 메시지 전송
+  const handleSendMessage = () => {
+    sendMessage({
+      roomId: Number(roomId),
+      message,
+    });
+    setMessage('');
+  };
+
   if (isPending) {
     // loading spinner
     return <div>Loading...</div>;
@@ -80,26 +92,18 @@ export default function ChattingRoom() {
     return <div>Error</div>;
   }
 
-  // 메시지 전송
-  const handleSendMessage = () => {
-    sendMessage(Number(roomId), message);
-    setMessage('');
-  };
-
   return (
     <>
       <ChatHeader name={name} friendInfo={friendInfo} />
 
       {status !== 'OPEN' ? (
-        <p>채팅방 연결중입니다...</p>
+        // loading spinner
+        <p className="flex justify-center pt-7">채팅방 연결중입니다...</p>
       ) : (
         <>
-          <div
-            ref={scrollContainerRef}
-            className="flex flex-col-reverse overflow-y-auto h-[calc(100vh-120px)] px-4"
-          >
+          <div ref={scrollContainerRef} className="w-full flex pt-7 overflow-y-auto px-4">
             <div ref={ref}></div>
-            <ChatMessages messages={combinedMessages} senderName={name} />
+            <ChatMessages messages={combinedMessages} senderName={name} userId={userId} />
           </div>
         </>
       )}

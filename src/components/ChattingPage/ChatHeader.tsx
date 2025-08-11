@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import Back from '@/assets/back.svg';
 import BasicProfile from '@/assets/basic-profile.png';
+import React from 'react';
 
 interface ChatHeaderProps {
   name: string;
@@ -32,4 +33,4 @@ const ChatHeader = ({ name, friendInfo }: ChatHeaderProps) => {
   );
 };
 
-export default ChatHeader;
+export default React.memo(ChatHeader);
