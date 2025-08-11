@@ -1,9 +1,7 @@
 // src/pages/Home-Page/home-page.tsx
-
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getRecommendations, getPopularMembers } from '../../api/home';
-import { getUniName } from '../../api/auth';  
 import type {
   RecommendationProfile,
   PopularProfile,
@@ -29,22 +27,31 @@ import LunchatIcon from '@/assets/icons/lunchat.svg?react';
 import QuestionIcon from '@/assets/icons/question.svg?react';
 import homeBg from '@/assets/images/home-bg1.png';
 
+// 학교별 멘토 설정을 읽어오는 공용 훅
+import { useMentorConfig } from '../../hooks/useMentorConfig';
+import type { SchoolKey } from '../../config/school-mentor'; 
+
 export default function HomePage() {
   const navigate = useNavigate();
   const [recommendations, setRecommendations] = useState<RecommendationProfile[]>([]);
   const [popularMembers, setPopularMembers] = useState<PopularProfile[]>([]);
-  const [schoolName, setSchoolName] = useState('');  
+
+  // 학교명/멘토 정보 공용 훅
+  // const { conf, uniName } = useMentorConfig();
+  const { conf, key } = useMentorConfig() as { conf: { mentorName: string; mentorSub: string; mentorTitle: string }; key: SchoolKey }; // ✅ 변경: conf 타입 명시
+
+  //배너에 보여줄 표준 학교명
+  const displayName: Record<SchoolKey, string> = {
+    한국항공대: '한국항공대학교',
+    이화여대: '이화여자대학교',
+    가톨릭대: '가톨릭대학교',
+    UMC: 'UMC',
+  };
 
   /** 카테고리 클릭 시 ExplorePage로 이동 */
   const handleCategoryClick = (label: string) => {
     navigate(`/explore?category=${encodeURIComponent(label)}`);
   };
-    // 소속 학교명 조회 휘션
-  useEffect(() => {
-    getUniName()
-      .then(res => setSchoolName(res.data))
-      .catch(err => console.error('학교명 불러오기 실패:', err));
-  }, []);
 
   // “나와 ‘시간표 · 관심사’가 겹쳐요!” API 호출
   useEffect(() => {
@@ -86,12 +93,15 @@ export default function HomePage() {
                   />
                   {/* 배너 위 오버레이: 학교 이름 */}
                   <div className="absolute bottom-8 left-4 text-white">
-                    <p className="text-[16px] font-pretendard pl-1 mb-1">{schoolName}</p>   
-                    <p className="text-[16px] font-bold pl-1 mb-1">Luch With Insight!</p>   
-                    <p className="text-[13px] font-pretendard  pl-1">
-                      혼자 먹는 점심, 텅 빈 공간 시간...<br/>
-                      이제는 비슷한 관심사를 가진 친구 혹은 선배와<br/>
-                      가볍게 이야기를 나눠요!</p>   
+                    <p className="text-[16px] font-pretendard pl-1 mb-1">
+                      {displayName[key] ?? ''}
+                    </p>
+                    <p className="text-[16px] font-bold pl-1 mb-1">Luch With Insight!</p>
+                    <p className="text-[13px] font-pretendard pl-1">
+                      혼자 먹는 점심, 텅 빈 공간 시간...<br />
+                      이제는 비슷한 관심사를 가진 친구 혹은 선배와<br />
+                      가볍게 이야기를 나눠요!
+                    </p>
                   </div>
                 </div>
               </SwiperSlide>
@@ -208,12 +218,13 @@ export default function HomePage() {
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 flex flex-col justify-center px-5">
-                <p className="text-[16px] font-semibold text-black">김지윤 선배님</p>
+                {/* 학교별 멘토 정보 적용 */}
+                <p className="text-[16px] font-semibold text-black">{conf.mentorName}</p>
                 <p className="mt-1 text-[13px] text-black opacity-90">
-                  컴퓨터공학과 16학번
+                  {conf.mentorSub}
                 </p>
                 <p className="text-[12px] text-black opacity-90">
-                  네이버 커머스 CIC 프론트엔드 개발자
+                  {conf.mentorTitle}
                 </p>
                 <button
                   onClick={() => navigate('/monthly-mentor')}
@@ -236,19 +247,21 @@ export default function HomePage() {
                 icon={<LunchatIcon className="w-[104px] h-[29px]" />}
                 onClick={() =>
                   window.open(
-                    'https://www.notion.so/native/1f283f3bbb0280c48b1be5c7118739f5?pvs=0&deepLinkOpenNewTab=true',
+                    ' https://lunchchat.notion.site/24b83f3bbb028025bcbdce9088ce699d?source=copy_link',
                     '_blank'
                   )
-                } />
+                }
+              />
               <InfoCard
                 title="자주 묻는 질문"
                 icon={<QuestionIcon className="w-[104px] h-[29px]" />}
                 onClick={() =>
                   window.open(
-                    'https://www.notion.so/native/1f283f3bbb0280c48b1be5c7118739f5?pvs=0&deepLinkOpenNewTab=true',
+                    ' https://lunchchat.notion.site/FAQ-24b83f3bbb0280d6b0ecf52cb08445ce?source=copy_link',
                     '_blank'
                   )
-                } />
+                }
+              />
             </div>
           </section>
         </div>
