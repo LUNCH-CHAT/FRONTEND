@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import TimeTable from '../../components/TimeTable';
 import Modal from '../../components/Modal';
 import TagSelectList from '../../components/TagSelect/TagSelectList';
@@ -54,7 +54,7 @@ export default function ProfileStepPage() {
         const data = await getColleges();
         setCollege(data.result);
       } catch (error) {
-        console.log('실패');
+        console.log('단과대 불러오기 실패', error);
       }
     })();
   }, []);
@@ -66,32 +66,36 @@ export default function ProfileStepPage() {
         const data = await getDepartments(collegeId);
         setDepartment(data.result);
       } catch (error) {
-        console.log('실패');
+        console.log('학과 불러오기 실패', error);
       }
     })();
   }, [collegeId]);
 
+  const body = useMemo(
+    () => ({
+      membername: name,
+      studentNo,
+      collegeId,
+      departmentId,
+      interests: selectedTags,
+      timeTables,
+    }),
+    [name, studentNo, collegeId, departmentId, selectedTags, timeTables]
+  );
+
   {/*회원가입 정보 패치*/}
   useEffect(() => {
     if (step === 5) {
-      const body = {
-        membername: name,
-        studentNo: studentNo,
-        collegeId: collegeId,
-        departmentId: departmentId,
-        interests: selectedTags,
-        timeTables: timeTables
-      };
       (async () => {
         try {
           await patchSignUp(body);
           navigate(`/onboarding/complete`);
         } catch (error) {
-          console.log('실패');
+          console.log('회원가입 실패', error);
         }
       })();
     }
-  }, [step]);
+  }, [step,navigate,body]);
 
   return (
     <div>

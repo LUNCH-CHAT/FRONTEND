@@ -17,7 +17,7 @@ export default function EditTagPage() {
             console.log(body);
             navigate(`/my/profile`);
         } catch (error) {
-            console.log('실패');
+            console.log('태그 불러오기 실패', error);
         }
     }
 

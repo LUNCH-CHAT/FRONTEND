@@ -19,7 +19,7 @@ export default function MyPage() {
         const data = await getMyInfo();
         setMyInfo(data.result);
       } catch (error) {
-        console.log('실패');
+        console.log('내 정보 불러오기 실패', error);
       }
     })();
   },[]);

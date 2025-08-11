@@ -37,7 +37,7 @@ export default function EditKeywordPage() {
             console.log(body);
             navigate(`/my/profile`);
         } catch (error) {
-            console.log('실패');
+            console.log('키워드 불러오기 실패', error);
         }
     };  
 
