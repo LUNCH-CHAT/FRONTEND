@@ -5,11 +5,17 @@ import { postMonthlyMentor } from '../../api/mentor';
 import ChatIcon from '../../assets/icons/chat.svg?react';
 import CalendarIcon from '../../assets/icons/calendar.svg?react';
 import SpeciesIcon from '../../assets/icons/species.svg?react';
+//학교별 멘토 설정 훅
+import { useMentorConfig } from '../../hooks/useMentorConfig';
 
 export default function MonthlyMentorPage() {
   const [phone, setPhone] = useState('');
   const [question, setQuestion] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  //학교별 멘토 설정 불러오기
+  const { conf, loading } = useMentorConfig();
+  if (loading) return null;
 
   const handleSubmit = async () => {
     if (!phone) {
@@ -21,7 +27,6 @@ export default function MonthlyMentorPage() {
       const res = await postMonthlyMentor({ phone, question });
       if (res.isSuccess) {
         alert('신청이 완료되었습니다!');
-        // TODO: 필요하면 리디렉션 or 초기화
       } else {
         alert(`실패: ${res.message}`);
       }
@@ -33,33 +38,42 @@ export default function MonthlyMentorPage() {
     }
   };
 
+  const firstIntro = conf.introParagraphs[0] ?? '';
+  const restIntro = conf.introParagraphs.slice(1);
+
   return (
-    <div className="w-full min-h-screen bg-white font-pretendard">
-      {/* 멘토 배너 */}
-      <div className="w-full h-[257px] overflow-hidden rounded-b-lg">
+    <div className="w-full min-h-screen bg-white font-pretendard max-w-[480px] mx-auto">
+      {/* 멘토 배너 (학교별) */}
+      <div className="w-full flex justify-center rounded-b-lg">
         <img
-          src="/images/mento.png"
+          src={conf.bannerSrc}
           alt="이달의 멘토 배너"
-          className="w-full h-full object-cover"
+          className="
+            block
+            h-auto
+            max-w-full
+            object-contain
+            max-[480px]:w-[375px]   /* 480px 이하에서 가로 375px */
+          "
         />
       </div>
 
-      <main className="pt-[56px] pb-24">
-        {/* 프로필 정보 */}
+      <main className="pt-[22px] pb-24 md:pt-0">
+        {/* 프로필 정보 (학교별) */}
         <section className="mt-[4px] px-4">
-          <h2 className="text-[22px] font-semibold">박지후 선배님</h2>
+          <h2 className="text-[22px] font-semibold">{conf.mentorName}</h2>
           <p className="mt-1 text-[16px] text-gray-700">
-            에어버스 항공정비 엔지니어
+            {conf.mentorTitle}
           </p>
           <p className="mt-1 text-[13px] text-gray-500">
-            한국항공대학교 항공기계공학과 15학번 졸업
+            {conf.mentorSub}
           </p>
         </section>
 
         {/* 구분선 */}
         <div className="w-full h-[7px] bg-gray-100 my-6" />
 
-        {/* 멘토님 소개 */}
+        {/* 멘토님 소개 (학교별) */}
         <section className="mt-6 px-4">
           <div className="flex items-center gap-2 mb-2">
             <ChatIcon className="w-5 h-5 text-[#FF7963]" />
@@ -67,29 +81,26 @@ export default function MonthlyMentorPage() {
               멘토님 소개
             </span>
           </div>
-          <p className="text-[13px] text-gray-700">
-            전공이 정말 내 길이 맞는지 고민이 많았어요. 현장에서 일해보니
-            학교에서 배운 게 실무에 이렇게 쓰이는구나 느꼈죠.
-          </p>
-          <div className="mt-2 p-4 bg-[#FFF1F0] rounded-lg space-y-2 text-[12px] text-gray-700">
-            <p>
-              항공기 정비, 엔진 시스템 설계 등 실제 항공기 운항을 지원하는
-              다양한 업무를 맡고 있어요. 항공 산업 길도, 글로벌 기업 취업 전략,
-              자격증 준비 등 궁금한 분들 환영합니다.
+
+          {firstIntro && (
+            <p className="text-[13px] text-gray-700">
+              {firstIntro}
             </p>
-            <p>
-              직무 이해가 막막하거나, 포트폴리오/면접 준비가 궁금하시다면,
-              항공정비 엔지니어의 실무가 알고 싶은 분! 점심시간에 멘토님과
-              함께 현실적인 조언과 진로 인사이트를 나눌 수 있는 진-챗치
-              기회를 놓치지 마세요.
-            </p>
-          </div>
+          )}
+
+          {restIntro.length > 0 && (
+            <div className="mt-2 p-4 bg-[#FFF1F0] rounded-lg space-y-2 text-[12px] text-gray-700">
+              {restIntro.map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
+            </div>
+          )}
         </section>
 
         {/* 구분선 */}
         <div className="w-full h-[7px] bg-gray-100 my-6" />
 
-        {/* 커피챗 일정 */}
+        {/* 커피챗 일정 (학교별) */}
         <section className="mt-6 px-4">
           <div className="flex items-center gap-2 mb-2">
             <CalendarIcon className="w-5 h-5 text-[#FF7963]" />
@@ -98,17 +109,17 @@ export default function MonthlyMentorPage() {
             </span>
           </div>
           <ul className="list-disc list-inside space-y-1 text-[13px] pl-4">
-            <li>날짜: 9월 8일 (목)</li>
-            <li>시간: 12:30 ~ 13:20</li>
-            <li>장소: 공대 3호관 스터디룸</li>
-            <li>모집 인원: 최대 5명</li>
+            <li>날짜: {conf.schedule.date}</li>
+            <li>시간: {conf.schedule.time}</li>
+            <li>장소: {conf.schedule.place}</li>
+            <li>모집 인원: {conf.schedule.capacity}</li>
           </ul>
         </section>
 
         {/* 구분선 */}
         <div className="w-full h-[7px] bg-gray-100 my-6" />
 
-        {/* 신청 전 참고사항 */}
+        {/* 신청 전 참고사항 (고정) */}
         <section className="mt-6 px-4">
           <div className="flex items-center gap-2 mb-2">
             <SpeciesIcon className="w-5 h-5 text-[#FF7963]" />
@@ -155,13 +166,18 @@ export default function MonthlyMentorPage() {
               onChange={e => setQuestion(e.target.value)}
               placeholder="자유롭게 작성해 주세요. (최대 100자)"
               className="w-full h-24 p-3 border border-gray-300 rounded-lg text-[14px] placeholder-gray-300 resize-none"
+              maxLength={100}
             />
           </div>
         </section>
       </main>
 
       {/* 하단 신청하기 버튼 */}
-      <div className="fixed bottom-0 left-0 w-full max-w-[480px] px-5 pb-4 pt-2 bg-white border-t border-gray-200">
+      <div className="
+        fixed bottom-0 left-1/2 -translate-x-1/2
+        w-full max-w-[480px] px-5 pb-4 pt-2
+        bg-white border-t border-gray-200
+      ">
         <button
           onClick={handleSubmit}
           disabled={isLoading}
