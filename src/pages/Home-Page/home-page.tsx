@@ -2,10 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getRecommendations, getPopularMembers } from '../../api/home';
-import type {
-  RecommendationProfile,
-  PopularProfile,
-} from '../../types/profile';
+import type { RecommendationProfile, PopularProfile } from '../../types/profile';
 
 import HomeHeader from '../../components/Headers/HomeHeader';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -29,7 +26,7 @@ import homeBg from '@/assets/images/home-bg1.png';
 
 // 학교별 멘토 설정을 읽어오는 공용 훅
 import { useMentorConfig } from '../../hooks/useMentorConfig';
-import type { SchoolKey } from '../../config/school-mentor'; 
+import type { SchoolKey } from '../../config/school-mentor';
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -38,7 +35,10 @@ export default function HomePage() {
 
   // 학교명/멘토 정보 공용 훅
   // const { conf, uniName } = useMentorConfig();
-  const { conf, key } = useMentorConfig() as { conf: { mentorName: string; mentorSub: string; mentorTitle: string }; key: SchoolKey }; // ✅ 변경: conf 타입 명시
+  const { conf, key } = useMentorConfig() as {
+    conf: { mentorName: string; mentorSub: string; mentorTitle: string };
+    key: SchoolKey;
+  }; // ✅ 변경: conf 타입 명시
 
   //배너에 보여줄 표준 학교명
   const displayName: Record<SchoolKey, string> = {
@@ -86,11 +86,7 @@ export default function HomePage() {
             <Swiper autoplay={{ delay: 4000 }} loop slidesPerView={1}>
               <SwiperSlide>
                 <div className="relative w-full h-auto">
-                  <img
-                    src={homeBg}
-                    alt="홈 배경"
-                    className="w-full h-auto object-contain"
-                  />
+                  <img src={homeBg} alt="홈 배경" className="w-full h-auto object-contain" />
                   {/* 배너 위 오버레이: 학교 이름 */}
                   <div className="absolute bottom-8 left-4 text-white">
                     <p className="text-[16px] font-pretendard pl-1 mb-1">
@@ -98,8 +94,10 @@ export default function HomePage() {
                     </p>
                     <p className="text-[16px] font-bold pl-1 mb-1">Luch With Insight!</p>
                     <p className="text-[13px] font-pretendard pl-1">
-                      혼자 먹는 점심, 텅 빈 공간 시간...<br />
-                      이제는 비슷한 관심사를 가진 친구 혹은 선배와<br />
+                      혼자 먹는 점심, 텅 빈 공간 시간...
+                      <br />
+                      이제는 비슷한 관심사를 가진 친구 혹은 선배와
+                      <br />
                       가볍게 이야기를 나눠요!
                     </p>
                   </div>
@@ -162,9 +160,7 @@ export default function HomePage() {
 
           {/* 나와 ‘시간표 · 관심사’가 겹쳐요! */}
           <section className="pl-5 pb-6">
-            <h2 className="text-[20px] font-semibold mb-4">
-              나와 ‘시간표 · 관심사’가 겹쳐요!
-            </h2>
+            <h2 className="text-[20px] font-semibold mb-4">나와 ‘시간표 · 관심사’가 겹쳐요!</h2>
             <Swiper
               className="pl-4"
               spaceBetween={16}
@@ -207,11 +203,9 @@ export default function HomePage() {
           </section>
 
           {/* 이달의 커피챗 멘토님은 누구? */}
-          <section className="pl-5 pb-5 mt-10">
-            <h2 className="text-[20px] font-semibold mb-4">
-              이달의 커피챗 멘토님은 누구?
-            </h2>
-            <div className="relative rounded-xl overflow-hidden w-[335px] h-[163px] sm:w-[440px] sm:h-[163px]">
+          <section className="p-5 pb-5 mt-10">
+            <h2 className="text-[20px] font-semibold mb-4">이달의 커피챗 멘토님은 누구?</h2>
+            <div className="relative rounded-xl overflow-hidden w-full max-w-[480px] h-[163px]">
               <img
                 src="/images/mento.png"
                 alt="이달의 멘토 배너"
@@ -220,12 +214,8 @@ export default function HomePage() {
               <div className="absolute inset-0 flex flex-col justify-center px-5">
                 {/* 학교별 멘토 정보 적용 */}
                 <p className="text-[16px] font-semibold text-black">{conf.mentorName}</p>
-                <p className="mt-1 text-[13px] text-black opacity-90">
-                  {conf.mentorSub}
-                </p>
-                <p className="text-[12px] text-black opacity-90">
-                  {conf.mentorTitle}
-                </p>
+                <p className="mt-1 text-[13px] text-black opacity-90">{conf.mentorSub}</p>
+                <p className="text-[12px] text-black opacity-90">{conf.mentorTitle}</p>
                 <button
                   onClick={() => navigate('/monthly-mentor')}
                   className="mt-4 w-[113px] h-[26px] bg-[#FF7963] rounded-[8px] text-[12px] font-medium text-white flex items-center justify-center"
@@ -238,9 +228,7 @@ export default function HomePage() {
 
           {/* 런치챗 소개 */}
           <section className="bg-gray-50 py-6 px-4">
-            <h2 className="text-[20px] font-semibold text-black mb-4">
-              런치챗 소개
-            </h2>
+            <h2 className="text-[20px] font-semibold text-black mb-4">런치챗 소개</h2>
             <div className="grid grid-cols-2 gap-4">
               <InfoCard
                 title="런치챗 소개"
