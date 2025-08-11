@@ -23,44 +23,37 @@ export default function ChattingRoom() {
   // 채팅 입력창
   const [message, setMessage] = useState('');
 
-  const { ref, inView } = useInView({
+  const { ref: topRef, inView } = useInView({
     threshold: 0,
   });
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  // 이전 scrollHeight 저장용
-  const previousScrollHeight = useRef<number>(0);
 
   // 상단 도달 시 과거 메시지 로딩
   useEffect(() => {
-    if (inView && !isFetching && hasNextPage) {
-      previousScrollHeight.current = scrollContainerRef.current?.scrollHeight ?? 0;
-      fetchNextPage();
+    if (inView && !isFetching && hasNextPage && scrollRef.current) {
+      const prevScrollHeight = scrollRef.current.scrollHeight;
+      fetchNextPage().then(() => {
+        requestAnimationFrame(() => {
+          if (scrollRef.current) {
+            const newScrollHeight = scrollRef.current.scrollHeight;
+            scrollRef.current.scrollTop =
+              scrollRef.current.scrollTop + (newScrollHeight - prevScrollHeight);
+          }
+        });
+      });
     }
   }, [inView, isFetching, hasNextPage, fetchNextPage]);
 
-  // 과거 메시지 추가 후 스크롤 위치 보정
-  useEffect(() => {
-    if (isFetching || !scrollContainerRef.current) return;
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
-    const container = scrollContainerRef.current;
-    const newScrollHeight = container.scrollHeight; // 과거 메시지를 불러온 후 전체 스크롤 높이 업데이트
-    const diff = newScrollHeight - previousScrollHeight.current;
-
-    container.scrollTop += diff; // 위로 밀려났던 스크롤을 원래 보던 위치로 복원
-  }, [data?.pages, isFetching]);
-
-  // 메시지 추가 후 스크롤 위치 보정
-  useEffect(() => {
-    if (!scrollContainerRef.current) return;
-
-    scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight; // 스크롤 하단으로 이동
-  }, [lastMessages]);
-
-  // 처음 진입 시 맨 아래로 스크롤
-  useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+  const scrollBottom = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      console.log(scrollRef.current.scrollTop);
     }
+  };
+
+  useEffect(() => {
+    requestAnimationFrame(() => scrollBottom());
   }, [data?.pages]);
 
   // 과거 채팅 내역과 새로운 메시지 결합
@@ -81,6 +74,7 @@ export default function ChattingRoom() {
       message,
     });
     setMessage('');
+    requestAnimationFrame(() => scrollBottom());
   };
 
   if (isPending) {
@@ -101,8 +95,8 @@ export default function ChattingRoom() {
         <p className="flex justify-center pt-7">채팅방 연결중입니다...</p>
       ) : (
         <>
-          <div ref={scrollContainerRef} className="w-full flex pt-7 overflow-y-auto px-4">
-            <div ref={ref}></div>
+          <div ref={scrollRef} className="w-full flex flex-col pt-7 pb-5 overflow-y-auto px-4">
+            <div ref={topRef} className="h-1"></div>
             <ChatMessages messages={combinedMessages} senderName={name} userId={userId} />
           </div>
         </>

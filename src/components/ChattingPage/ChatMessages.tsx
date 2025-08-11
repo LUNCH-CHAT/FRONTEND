@@ -2,7 +2,7 @@ import ChatBox from '../../components/ChattingPage/ChatBox';
 import { formatDate, getDayOfWeek } from '../../utils/getDate';
 import BasicProfile from '@/assets/basic-profile.png';
 import type { ChatMessage } from '../../types/chat';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 interface ChatMessagesProps {
   userId: number;
@@ -23,7 +23,7 @@ const ChatMessages = ({ userId, messages, senderName }: ChatMessagesProps) => {
       const time = `${hours}:${minutes}`;
 
       const showDate = date !== prevDate;
-      const showProfile = !userId && msg.senderId !== prevSender;
+      const showProfile = msg.senderId !== prevSender;
 
       // 다음 메시지 시간과 비교해 현재 메시지에 time을 렌더링할지 결정
       const nextMsg = messages[index + 1];
@@ -46,10 +46,10 @@ const ChatMessages = ({ userId, messages, senderName }: ChatMessagesProps) => {
 
       return { ...msg, date, time, showDate, showProfile: !!showProfile, showTime };
     });
-  }, [messages, userId]);
+  }, [messages]);
 
   return (
-    <div className="w-full">
+    <>
       {formattedMessages?.map(msg => (
         <ChatBox
           key={msg.id}
@@ -63,8 +63,8 @@ const ChatMessages = ({ userId, messages, senderName }: ChatMessagesProps) => {
           showTime={msg.showTime}
         />
       ))}
-    </div>
+    </>
   );
 };
 
-export default ChatMessages;
+export default React.memo(ChatMessages);
