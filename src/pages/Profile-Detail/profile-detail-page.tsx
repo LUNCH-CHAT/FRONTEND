@@ -28,7 +28,8 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
   const [hasRequested, setHasRequested] = useState(false);
   const [isReceived, setIsReceived] = useState(false);
   const [isMatched, setIsMatched] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // 프로필 상세 로딩
+  const [isPending, setIsPending] = useState(false); // 매칭 수락 로딩
 
   // 1) 이미 매칭 요청이 있는지 조회
   useEffect(() => {
@@ -84,6 +85,7 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
 
   // 매칭 수락
   const handleAcceptMatch = async () => {
+    setIsPending(true);
     try {
       const data = await acceptMatch(memberId);
 
@@ -94,6 +96,8 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
     } catch (e) {
       console.log('accpet match error', e);
       alert('요청 중 오류가 발생했습니다.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -104,7 +108,12 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
 
       if (data.isSuccess) {
         const chatRoomId = data.result.chatRoomId;
-        navigate(`/chatting/${chatRoomId}`);
+        navigate(`/chatting/${chatRoomId}`, {
+          state: {
+            name: data.result.friendName,
+            friendInfo: data.result.friendDepartment,
+          },
+        });
       }
     } catch (e) {
       console.log('create chatroom error', e);
@@ -133,6 +142,7 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
 
   const info = my ? myProfile : profile; //나의 프로필인지 아닌지 확인
   console.log(info);
+
   return (
     <>
       {/* loading spinner */}
@@ -179,7 +189,7 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
           {my ? (
             <button
               onClick={() => navigate(`/my/`)}
-              className="w-full h-[48px] bg-[#FF7C6A] rounded-[10px] text-white font-semibold"
+              className="w-full h-[48px] bg-[#F56156] rounded-[10px] text-white font-semibold"
             >
               수정완료
             </button>
@@ -187,7 +197,7 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
             <button
               onClick={handleCreateChatRoom}
               className={`w-full h-[48px] rounded-[10px] text-white font-semibold
-                bg-[#FF7C6A] cursor-pointer
+                bg-[#F56156] cursor-pointer
               `}
             >
               채팅하기
@@ -196,17 +206,17 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
             <button
               onClick={handleAcceptMatch}
               className={`w-full h-[48px] rounded-[10px] text-white font-semibold
-                bg-[#FF7C6A] cursor-pointer
+                ${isPending ? 'bg-gray-300 cursor-not-allowed' : 'bg-[#F56156] cursor-pointer'}
               `}
             >
-              수락하기
+              {isPending ? '로딩중' : '수락하기'}
             </button>
           ) : (
             <button
               onClick={handleSendLunchChat}
               disabled={hasRequested}
               className={`w-full h-[48px] rounded-[10px] text-white font-semibold ${
-                hasRequested ? 'bg-gray-300 cursor-not-allowed' : 'bg-[#FF7C6A] cursor-pointer'
+                hasRequested ? 'bg-gray-300 cursor-not-allowed' : 'bg-[#F56156] cursor-pointer'
               }`}
             >
               {hasRequested ? '수락 대기중' : '런치챗 보내기'}

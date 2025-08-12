@@ -1,5 +1,4 @@
 import { Client, type IFrame, type IMessage } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
 import { useEffect, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import type { ChatMessage } from '../../types/chat';
@@ -33,10 +32,11 @@ export const useWebSocket = (roomId: number) => {
 
     // stomp 클라이언트 객체 생성
     const client = new Client({
-      webSocketFactory: () => new SockJS(import.meta.env.VITE_WS_URL),
+      webSocketFactory: () => new WebSocket(import.meta.env.VITE_WS_URL),
       // 헤더에 토큰 전달
       connectHeaders: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        'Content-Type': 'application/json',
       },
       reconnectDelay: 5000, // 자동 재연결 시도 간격
 
@@ -87,7 +87,7 @@ export const useWebSocket = (roomId: number) => {
   };
 
   // 메시지 전송
-  const sendMessage = (roomId: number, message: string) => {
+  const sendMessage = ({ roomId, message }: { roomId: number; message: string }) => {
     const client = wsClientRef.current;
     if (client && client.connected) {
       client.publish({
@@ -98,16 +98,6 @@ export const useWebSocket = (roomId: number) => {
       });
 
       queryClient.invalidateQueries({ queryKey: ['chatRooms'] });
-      setLastMessages(prev => [
-        ...prev,
-        {
-          id: Date.now(),
-          roomId,
-          senderId: undefined,
-          content: message,
-          createdAt: new Date(),
-        },
-      ]);
     }
   };
 

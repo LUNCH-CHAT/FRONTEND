@@ -2,7 +2,8 @@ import BasicProfile from '@/assets/basic-profile.png';
 import React from 'react';
 
 interface ChatBoxProps {
-  senderId?: number;
+  userId: number;
+  senderId: number;
   senderName: string;
   profile?: string;
   text: string;
@@ -12,6 +13,7 @@ interface ChatBoxProps {
 }
 
 const ChatBox = ({
+  userId,
   senderId,
   senderName,
   profile,
@@ -20,7 +22,7 @@ const ChatBox = ({
   showProfile = false,
   showTime = true,
 }: ChatBoxProps) => {
-  const isMine = !senderId;
+  const isMine = senderId === userId;
 
   return (
     <div
@@ -55,7 +57,7 @@ const ChatBox = ({
           {isMine && (
             <>
               {showTime && <time className="text-[#B6B6B6] text-[13px]">{time}</time>}
-              <div className="bg-[#FF7C6A] text-white rounded-lg px-3 py-1 w-fit">{text}</div>
+              <div className="bg-[#F56156] text-white rounded-lg px-3 py-1 w-fit">{text}</div>
             </>
           )}
         </div>

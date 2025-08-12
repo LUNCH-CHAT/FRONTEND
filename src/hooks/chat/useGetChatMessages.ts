@@ -16,5 +16,4 @@ const useGetChatMessages = (roomId: number) => {
     },
   });
 };
-
 export default useGetChatMessages;

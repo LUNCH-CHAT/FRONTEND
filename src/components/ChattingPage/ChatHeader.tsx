@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import Back from '@/assets/back.svg';
 import BasicProfile from '@/assets/basic-profile.png';
+import React from 'react';
 
 interface ChatHeaderProps {
   name: string;
@@ -15,7 +16,7 @@ const ChatHeader = ({ name, friendInfo }: ChatHeaderProps) => {
   };
 
   return (
-    <div className="w-full max-w-[480px] flex gap-1 px-5 pt-7 fixed top-0 select-none bg-[#ffffff]">
+    <div className="w-full max-w-[480px] flex gap-1 px-5 pt-5 fixed top-0 select-none bg-[#ffffff]">
       <button type="button" className="cursor-pointer" onClick={handleBack}>
         <img src={Back} alt="뒤로가기" />
       </button>
@@ -32,4 +33,4 @@ const ChatHeader = ({ name, friendInfo }: ChatHeaderProps) => {
   );
 };
 
-export default ChatHeader;
+export default React.memo(ChatHeader);

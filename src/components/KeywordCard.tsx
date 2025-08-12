@@ -15,7 +15,7 @@ export default function KeywordCard({
 
   return (
     <div className="mb-5">
-      <p className="text-[#FF7C6A] text-[13px] font-[pretendard] font-medium text-sm pb-[9px]">
+      <p className="text-[#F56156] text-[13px] font-[pretendard] font-medium text-sm pb-[9px]">
         {question}
       </p>
       <p className="text-black text-[16px] font-[pretendard] font-semibold pb-[7px]"># {finalKeyword}</p>
