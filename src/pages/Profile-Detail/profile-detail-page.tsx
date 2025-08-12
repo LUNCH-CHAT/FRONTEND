@@ -178,7 +178,7 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
           {/* 소개 */}
           <ProfileKeywords userKeywords={info?.userKeywords} my={my} />
 
-          <div className="border-t border-[#F4F4F4]" />
+          <div className="border-t border-[#F4F4F4] border-[7px]" />
 
           {/* 커피챗 가능 시간 */}
           <ProfileTimeTable timetableRef={timetableRef} timeTables={info?.timeTables} my={my} />

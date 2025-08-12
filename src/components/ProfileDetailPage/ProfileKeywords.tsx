@@ -20,7 +20,7 @@ const ProfileKeywords = ({ my = false, userKeywords }: ProfileKeywordsProps) => 
           <button
             type="button"
             onClick={() => navigate(`/my/edit-keyword`)}
-            className="flex gap-1 text-[13px] text-[#A0A0A0]"
+            className="flex items-center gap-1 text-[13px] text-[#A0A0A0] cursor-pointer"
           >
             키워드 소개 수정
             <img src={Pencil} alt="수정" className="w-3 h-3" />
