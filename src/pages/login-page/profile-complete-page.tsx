@@ -48,7 +48,7 @@ export default function ProfileCompletePage() {
 
   return (
     <div
-      className={`min-h-screen flex flex-col justify-center px-[65px] text-center text-white font-[pretendard] bg-gradient-to-b from-[#FFECEB] via-[#FF9B8E] to-[#FF7C6A] 
+      className={`min-h-screen flex flex-col justify-center px-[65px] text-center text-white font-[pretendard] bg-gradient-to-b from-[#FFECEB] via-[#FF9B8E] to-[#F56156] 
       transition-opacity duration-1000 ${fadeout ? 'opacity-0' : 'opacity-100'}`}
     >
       {step >= 0 && (

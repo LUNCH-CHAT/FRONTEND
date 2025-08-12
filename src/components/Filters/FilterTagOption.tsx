@@ -39,7 +39,7 @@ export default function FilterTagOption({
               [@media(min-width:480px)]:text-[13px]
 
               ${isSelected
-                ? 'bg-[#FF786A] text-white border-[#FF786A]'
+                ? 'bg-[#F56156] text-white border-[#F56156]'
                 : 'bg-white text-gray-700 border-gray-300'}
             `}
           >

@@ -61,7 +61,7 @@ export default function MyPage() {
             {myInfo?.tags.map((tag,idx)=>(
               <p 
                 key={idx}
-                className="inline-block px-[9px] py-[6px] border border-[#FF7C6A] rounded-[15px] text-black text-[13px] font-[pretendard] font-light leading-[11px]">
+                className="inline-block px-[9px] py-[6px] border border-[#F56156] rounded-[15px] text-black text-[13px] font-[pretendard] font-light leading-[11px]">
                 {INTEREST_TYPE_LABELS[tag]}
               </p>
             ))}

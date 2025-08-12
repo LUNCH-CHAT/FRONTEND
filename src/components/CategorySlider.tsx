@@ -35,7 +35,7 @@ export default function CategorySlider({
                 flex flex-col items-center
                 px-2 pb-1
                 ${selectedCategory === category.label
-                  ? 'text-[#FF7C6A] font-bold'
+                  ? 'text-[#F56156] font-bold'
                   : 'text-[#7D7D7D]'}
               `}
             >
