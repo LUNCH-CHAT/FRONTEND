@@ -59,7 +59,7 @@ export default function ChattingPage() {
             return (
               <ChattingList
                 name={room.friendName}
-                friendInfo={room.department}
+                friendInfo={room.friendDepartment}
                 lastMessage={room.lastMessage ? room.lastMessage : ''}
                 time={formattedTime || ''}
                 id={room.roomId}

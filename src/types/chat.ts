@@ -3,7 +3,7 @@ import type { CommonResponse } from './common';
 export type ChatRoom = {
   roomId: number;
   friendName: string;
-  department: string;
+  friendDepartment: string;
   lastMessage: string | null;
   lastMessageSentAt: Date | null;
   unreadCount: number;
@@ -35,7 +35,10 @@ export type ResponseCreateChatRoomDto = CommonResponse<ChatRoomInfo>;
 export type ResponseDeleteChatRoomDto = CommonResponse<string>;
 
 export type ChatMessage = {
-  id: number;
+  id: {
+    timestamp: number;
+    date: Date;
+  };
   roomId: number;
   senderId: number;
   content: string;
