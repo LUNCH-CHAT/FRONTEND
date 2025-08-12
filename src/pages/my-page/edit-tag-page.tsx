@@ -1,8 +1,25 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TagSelectList from "../../components/TagSelect/TagSelectList";
+import { patchTags } from "../../api/my";
+import { INTEREST_TYPE_LABELS } from "../../components/ProfileCard";
 
 export default function EditTagPage() {
     const navigate = useNavigate();
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    
+    const handleFinish = async() => {
+        const keys= Object.keys(INTEREST_TYPE_LABELS);
+        const tags= selectedTags.map((tag)=>keys.indexOf(tag)+1);
+        const body={"interestIds": tags};
+        try {
+            await patchTags(body);
+            console.log(body);
+            navigate(`/my/profile`);
+        } catch (error) {
+            console.log('실패');
+        }
+    }
 
     return(
         <>
@@ -13,14 +30,12 @@ export default function EditTagPage() {
                 <p className="text-[#FF7C6A] text-[13px] font-[pretendard] font-medium mb-[40px]">
                     최대 3개까지 선택 가능합니다.
                 </p>
-                <TagSelectList />
+                <TagSelectList selected={selectedTags} onChange={setSelectedTags}/>
             </div>
             <div className="fixed w-full max-w-[480px] bottom-0 px-5 pb-4">
                 <button
                     type="button"
-                    onClick={() => {
-                        navigate(`/my/profile`);
-                    }}
+                    onClick={handleFinish}
                     className="w-full h-[48px] bg-[#FF7C6A] rounded-[10px] text-center text-white font-[pretendard] font-semibold cursor-pointer"
                 >
                     수정완료

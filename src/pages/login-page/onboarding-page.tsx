@@ -5,7 +5,10 @@ import Google from '@/assets/icons/google-logo.svg';
 
 export default function OnboardingPage() {
   const navigate = useNavigate();
-  const [step,setStep] = useState(0);
+  
+  {/* 테스트 할 때 번거로워서 잠시 애니메이션 중지하겠습니다 */}
+//  const [step,setStep] = useState(0); 
+  const [step,setStep] = useState(5);
 
   useEffect(() => {
     if (step < 5) {
@@ -14,8 +17,15 @@ export default function OnboardingPage() {
     }
   },[step]);
 
+  const redirectUri = encodeURIComponent(`${import.meta.env.VITE_API_URL}/auth/callback/google`);
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  const scope = encodeURIComponent("email profile");
+
+  const handleGoogleLogin = () => {
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&access_type=offline`;
+  }
   return(
-    <div className="bg-[url(/images/onbording.png)] h-screen bg-top flex justify-center items-center">
+    <div className="bg-[#FFE9E7] h-screen bg-top flex justify-center items-center">
       <div className="text-center flex flex-col items-center justify-center">
         {step >= 0 && (
           <img src={Logo} alt="로고 이미지" className="w-[194px] h-15 animate-fade-up"/>
@@ -52,6 +62,7 @@ export default function OnboardingPage() {
           {step >= 4 && (
             <button 
               type="button" 
+              onClick={handleGoogleLogin}
               className="w-[212px] h-[40px] bg-white rounded-[10px] text-center text-black font-[pretendard] font-medium text-4 leading-5 cursor-pointer mb-[10px] flex items-center justify-center border border-[#D4D4D4] animate-fade-up">
               <img src={Google} alt="구글 로고 이미지" className="size-[19px] pr-[7px]"/> 이메일 로그인
             </button> 

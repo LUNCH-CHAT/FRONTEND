@@ -19,6 +19,7 @@ function LayoutContent() {
   const isChattingPage      = !!matchPath('/chatting',    location.pathname);
   const isMatchingPage      = !!matchPath('/matching',    location.pathname);
   const isProfileDetailPage = !!matchPath('/profile/:id', location.pathname);
+  const isMonthlyMentorPage = !!matchPath('/monthly-mentor', location.pathname);
   const isMyPage            = !!matchPath('/my',          location.pathname);
   const isExplorePage       = !!matchPath('/explore',     location.pathname);
   const isMyDetailPage      = !!matchPath('/my/profile',  location.pathname);
@@ -33,9 +34,10 @@ function LayoutContent() {
   else if (isChattingPage) header = <HomeHeader title="채팅" />;
   else if (isMatchingPage) header = <HomeHeader title="매칭리스트" />;
   else if (isProfileDetailPage) header = <BackHeader title="프로필 상세" />;
+  else if (isMonthlyMentorPage) header = <BackHeader title="이달의 커피챗 멘토님" />;
   else if (isMyPage)       header = <HomeHeader title="마이페이지" />;
   else if (isExplorePage)  header = <HomeHeader title="둘러보기" />;
-  else if (isMyDetailPage)    header = <BackHeader title="나의 프로필" />;
+  else if (isMyDetailPage)    header = <BackHeader title="나의 프로필" myPage={true} />;
   else if (isEditTagPage
         || isEditKeywordPage
         || isEditTimePage)    header = <BackHeader />;

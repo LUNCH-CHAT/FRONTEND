@@ -1,7 +1,10 @@
 import BasicProfile from '@/assets/basic-profile.png';
+import React from 'react';
 
 interface ChatBoxProps {
-  sender?: string;
+  userId: number;
+  senderId: number;
+  senderName: string;
   profile?: string;
   text: string;
   time: string;
@@ -10,14 +13,16 @@ interface ChatBoxProps {
 }
 
 const ChatBox = ({
-  sender,
+  userId,
+  senderId,
+  senderName,
   profile,
   text,
   time,
   showProfile = false,
   showTime = true,
 }: ChatBoxProps) => {
-  const isMine = !sender;
+  const isMine = senderId === userId;
 
   return (
     <div
@@ -39,7 +44,7 @@ const ChatBox = ({
       {/* 메시지 내용 */}
       <div className="flex flex-col gap-1.5 max-w-[65%]">
         {/* 이름 */}
-        {!isMine && showProfile && <p className="text-[13px]">{sender}</p>}
+        {!isMine && showProfile && <p className="text-[13px]">{senderName}</p>}
 
         {/* 메시지 + 시간 */}
         <div className={`flex items-end gap-2 ${isMine ? 'justify-end' : ''}`}>
@@ -61,4 +66,4 @@ const ChatBox = ({
   );
 };
 
-export default ChatBox;
+export default React.memo(ChatBox);

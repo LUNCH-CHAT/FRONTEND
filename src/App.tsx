@@ -1,6 +1,8 @@
 // src/App.tsx
 import './index.css';
 import { createBrowserRouter, RouterProvider, type RouteObject } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import PublicLayout from './layouts/public-layout';
 import OnboardingPage from './pages/login-page/onboarding-page';
@@ -20,6 +22,16 @@ import MyPage from './pages/my-page/my-page';
 import EditTagPage from './pages/my-page/edit-tag-page';
 import EditKeywordPage from './pages/my-page/edit-keyword-page';
 import EditTimePage from './pages/my-page/edit-time-page';
+import MonthlyMentorPage from './pages/Home-Page/monthly-mentor-page';
+// import MyMatchesPage from './pages/my-page/my-matches-page';
+
+import { useEffect } from 'react';
+import { onMessage } from 'firebase/messaging';
+import { messaging } from './firebase/firebase';
+import GoogleLoginPage from './pages/login-page/redirect-page';
+import useFCM from './hooks/alarm/useFCM';
+import { toast, ToastContainer } from 'react-toastify';
+import ToastNoti from './components/ToastNoti';
 
 const publicRoutes: RouteObject[] = [
   {
@@ -30,6 +42,13 @@ const publicRoutes: RouteObject[] = [
       { path: 'email', element: <EmailStepPage /> },
       { path: 'profile', element: <ProfileStepPage /> },
       { path: 'complete', element: <ProfileCompletePage /> },
+    ],
+  },
+  {
+    path: '/auth/login/google',
+    element: <PublicLayout />,
+    children: [
+      { index: true, element: <GoogleLoginPage /> }
     ],
   },
 ];
@@ -51,14 +70,47 @@ const protectedRoutes: RouteObject[] = [
       { path: 'my/edit-tag', element: <EditTagPage /> },
       { path: 'my/edit-keyword', element: <EditKeywordPage /> },
       { path: 'my/edit-time', element: <EditTimePage /> },
+      { path: 'monthly-mentor', element: <MonthlyMentorPage /> },
+      // { path: 'my/matches', element: <MyMatchesPage /> },
     ],
   },
 ];
 
 const router = createBrowserRouter([...publicRoutes, ...protectedRoutes]);
 
+const queryClient = new QueryClient();
+
 function App() {
-  return <RouterProvider router={router} />;
+  useFCM();
+
+  // 포그라운드 메시지 처리
+  useEffect(() => {
+    const unsubscribe = onMessage(messaging, payload => {
+      const { title, body } = payload.notification ?? {};
+
+      if (title || body) {
+        toast(ToastNoti({ title, body }), {
+          position: 'top-right',
+          autoClose: 5000,
+          closeOnClick: true,
+          pauseOnHover: true,
+          theme: 'light',
+        });
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  return (
+    <>
+      <ToastContainer />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+      </QueryClientProvider>
+    </>
+  );
 }
 
 export default App;

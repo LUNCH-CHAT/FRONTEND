@@ -5,17 +5,19 @@ interface ChattingListProps {
   id: number;
   image?: string;
   name: string;
+  friendInfo: string;
   lastMessage?: string;
-  time: string;
+  time?: string;
 }
 
-const ChattingList = ({ id, image, name, lastMessage, time }: ChattingListProps) => {
+const ChattingList = ({ id, image, name, friendInfo, lastMessage, time }: ChattingListProps) => {
   const navigate = useNavigate();
 
   const handleEnterRoom = () => {
     navigate(`/chatting/${id}`, {
       state: {
         name,
+        friendInfo,
       },
     });
   };
@@ -27,7 +29,7 @@ const ChattingList = ({ id, image, name, lastMessage, time }: ChattingListProps)
     >
       <div className="flex gap-3 items-center">
         <img
-          src={image ? image : BasicProfile}
+          src={image ? import.meta.env.VITE_API_URL + image : BasicProfile}
           alt={`${name}님의 프로필`}
           className="w-12 h-12 rounded-full object-cover mt-1"
         />

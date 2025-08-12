@@ -3,24 +3,29 @@ import type { CommonResponse } from './common';
 export type ChatRoom = {
   roomId: number;
   friendName: string;
-  lastMessage: string;
-  lastMessageSentAt: Date;
+  department: string;
+  lastMessage: string | null;
+  lastMessageSentAt: Date | null;
   unreadCount: number;
 };
 
 // 채팅방 리스트 조회 응답
-export type ResponseChatRoomListDto = CommonResponse<ChatRoom[]>;
-
-// 채팅방 생성 요청
-export type RequestCreateChatRoomDto = {
-  starterId: number;
-  friendId: number;
-};
+export type ResponseChatRoomListDto = CommonResponse<{
+  data: ChatRoom[];
+  meta: {
+    currentPage: number;
+    pageSize: number;
+    totalItems: number;
+    totalPages: number;
+    hasNext: boolean;
+  };
+}>;
 
 export type ChatRoomInfo = {
   chatRoomId: number;
   starterId: number;
-  friendId: number;
+  friendName: string;
+  friendDepartment: string;
 };
 
 // 채팅방 생성 응답
@@ -38,4 +43,12 @@ export type ChatMessage = {
 };
 
 // 채팅방 메시지 조회 응답
-export type ResponseChatMessageDto = CommonResponse<ChatMessage[]>;
+export type ResponseChatMessageDto = CommonResponse<{
+  userId: number;
+  data: ChatMessage[];
+  meta: {
+    pageSize: number;
+    hasNext: boolean;
+    nextCursor: string;
+  };
+}>;

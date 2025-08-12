@@ -1,51 +1,75 @@
+import { useInView } from 'react-intersection-observer';
 import ChattingList from '../../components/ChattingPage/ChattingList';
-import { formatDate } from '../../utils/getDate';
-
-const mockData = [
-  {
-    id: 1,
-    sender: '유엠씨',
-    lastMessage: '12반에 학관에서 봬요!',
-    time: 1720330200000,
-  },
-  {
-    id: 2,
-    sender: '챗터',
-    lastMessage: '12반에 학관에서 봬요!',
-    time: 1720416600000,
-  },
-];
+import useGetChatRoomList from '../../hooks/chat/useGetChatRoomList';
+import { useEffect } from 'react';
 
 export default function ChattingPage() {
-  const sortedData = mockData.sort((a, b) => b.time - a.time);
+  const { data, isFetching, hasNextPage, isPending, isError, fetchNextPage } = useGetChatRoomList();
+
+  const { ref, inView } = useInView({
+    threshold: 0,
+  });
+
+  useEffect(() => {
+    if (inView && !isFetching && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, isFetching, hasNextPage, fetchNextPage]);
+
+  if (isPending) {
+    // loading spinner
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error</div>;
+  }
 
   return (
     <>
       <div className="flex flex-col gap-4 select-none">
-        {sortedData?.map(data => {
-          const { hours, minutes } = formatDate(data.time);
+        {data?.pages.flatMap(page => {
+          const chatRooms = page.result.data;
 
-          let displayHours = Number(hours);
-          let period = '오전';
-          if (displayHours >= 12) {
-            period = '오후';
-            if (displayHours > 12) {
-              displayHours = displayHours - 12;
-            }
-          }
-          const formattedTime = `${period} ${displayHours}:${minutes}`;
-
-          return (
-            <ChattingList
-              name={data.sender}
-              lastMessage={data.lastMessage}
-              time={formattedTime}
-              id={data.id}
-              key={data.id}
-            />
+          // 최신 채팅순으로 재정렬
+          const sortedChatRooms = chatRooms.sort(
+            (a, b) =>
+              new Date(b.lastMessageSentAt || 0).getTime() -
+              new Date(a.lastMessageSentAt || 0).getTime()
           );
+
+          return sortedChatRooms.map(room => {
+            // 오전/오후로 시간 필터링
+            let formattedTime;
+            if (room.lastMessageSentAt) {
+              const hours = String(room.lastMessageSentAt).split(':')[0];
+              const minutes = String(room.lastMessageSentAt).split(':')[1];
+
+              let displayHours = Number(hours);
+              let period = '오전';
+              if (displayHours >= 12) {
+                period = '오후';
+                if (displayHours > 12) {
+                  displayHours = displayHours - 12;
+                }
+              }
+              formattedTime = `${period} ${displayHours}:${minutes}`;
+            }
+
+            return (
+              <ChattingList
+                name={room.friendName}
+                friendInfo={room.department}
+                lastMessage={room.lastMessage ? room.lastMessage : ''}
+                time={formattedTime || ''}
+                id={room.roomId}
+                key={room.roomId}
+              />
+            );
+          });
         })}
       </div>
+      <div ref={ref}></div>
     </>
   );
 }

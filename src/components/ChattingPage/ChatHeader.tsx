@@ -1,12 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import Back from '@/assets/back.svg';
 import BasicProfile from '@/assets/basic-profile.png';
+import React from 'react';
 
 interface ChatHeaderProps {
   name: string;
+  friendInfo: string;
 }
 
-const ChatHeader = ({ name }: ChatHeaderProps) => {
+const ChatHeader = ({ name, friendInfo }: ChatHeaderProps) => {
   const navigate = useNavigate();
 
   const handleBack = () => {
@@ -14,7 +16,7 @@ const ChatHeader = ({ name }: ChatHeaderProps) => {
   };
 
   return (
-    <div className="w-full max-w-[480px] flex gap-1 px-5 pt-7 fixed top-0 select-none bg-[#ffffff]">
+    <div className="w-full max-w-[480px] flex gap-1 px-5 pt-5 fixed top-0 select-none bg-[#ffffff]">
       <button type="button" className="cursor-pointer" onClick={handleBack}>
         <img src={Back} alt="뒤로가기" />
       </button>
@@ -25,10 +27,10 @@ const ChatHeader = ({ name }: ChatHeaderProps) => {
       />
       <div>
         <p className="font-[pretendard] font-normal">{name}</p>
-        <p className="font-[pretendard] font-normal text-[13px]">컴퓨터공학과</p>
+        <p className="font-[pretendard] font-normal text-[13px]">{friendInfo}</p>
       </div>
     </div>
   );
 };
 
-export default ChatHeader;
+export default React.memo(ChatHeader);
