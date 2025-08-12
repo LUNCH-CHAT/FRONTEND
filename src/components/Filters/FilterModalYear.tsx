@@ -83,7 +83,7 @@ export default function FilterModalYear({
               text-[16px] font-medium
               rounded-[10px]
               border border-transparent
-              bg-[#FF786A] text-white
+              bg-[#F56156] text-white
             `}
           >
             적용하기

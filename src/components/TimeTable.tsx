@@ -157,7 +157,7 @@ const TimeTable = ({ isEditable = false, onChange, initialSlots = [] }: TimeTabl
                   data-day={day}
                   data-time={time}
                   className={`border border-[#969696] ${
-                    isSelected ? 'bg-[#FF7C6A]' : isEditable ? 'hover:bg-[#FF9B8E]' : ''
+                    isSelected ? 'bg-[#F56156]' : isEditable ? 'hover:bg-[#FF9B8E]' : ''
                   }`}
                 />
               );
