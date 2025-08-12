@@ -29,7 +29,13 @@ export default function ProfileCompletePage() {
         console.log('실패');
       }
     })();
+  },[]);
 
+  useEffect(() => {
+    updateToken(); //로그인 직후 토큰 등록
+  },[updateToken]);
+
+  useEffect(() => {
     if (step < 3) {
       const time = setTimeout(() => setStep(step + 1), 1000);
       return () => clearTimeout(time);
@@ -42,9 +48,7 @@ export default function ProfileCompletePage() {
     setTimeout(() => {
       navigate(`/`);
     }, 3500);
-
-    updateToken(); //로그인 직후 토큰 등록
-  }, [step, navigate, updateToken]);
+  }, [step, navigate]);
 
   return (
     <div

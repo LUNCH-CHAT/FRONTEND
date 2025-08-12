@@ -149,12 +149,12 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
       {isLoading && <div>Loading...</div>}
       <div className="min-h-screen flex flex-col bg-white font-[pretendard]">
         <ProfileHeader
-          profileImageUrl={profile?.profileImageUrl}
-          memberName={profile?.memberName}
-          studentNo={profile?.studentNo}
-          department={profile?.department}
-          userKeywords={profile?.userKeywords}
-          userInterests={profile?.userInterests}
+          profileImageUrl={info?.profileImageUrl}
+          memberName={info?.memberName}
+          studentNo={info?.studentNo}
+          department={info?.department}
+          userKeywords={info?.userKeywords}
+          userInterests={info?.userInterests}
           my={my}
         />
         <div className="mt-[180px] border-t border-[#F4F4F4] border-[7px]" />
@@ -176,12 +176,12 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
         {/* 본문 */}
         <main className="flex-1">
           {/* 소개 */}
-          <ProfileKeywords userKeywords={profile?.userKeywords} my={my} />
+          <ProfileKeywords userKeywords={info?.userKeywords} my={my} />
 
           <div className="border-t border-[#F4F4F4]" />
 
           {/* 커피챗 가능 시간 */}
-          <ProfileTimeTable timetableRef={timetableRef} timeTables={profile?.timeTables} my={my} />
+          <ProfileTimeTable timetableRef={timetableRef} timeTables={info?.timeTables} my={my} />
         </main>
 
         {/* 하단 버튼 */}

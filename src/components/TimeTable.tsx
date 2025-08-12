@@ -1,7 +1,7 @@
 // src/components/TimeTable.tsx
 
 import React, { useEffect, useRef, useState } from 'react';
-import type { TimeTable as TimeTableType } from '../types/user';
+import type { TimeTableDto } from '../types/profile';
 
 type Day = 'MON' | 'TUE' | 'WED' | 'THU' | 'FRI';
 
@@ -12,8 +12,8 @@ interface TimeSlot {
 
 interface TimeTableProps {
   isEditable?: boolean;
-  onChange?: (slots: TimeTableType[]) => void;
-  initialSlots?: TimeTableType[];
+  onChange?: (slots: TimeTableDto[]) => void;
+  initialSlots?: TimeTableDto[];
 }
 
 const days: Day[] = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
@@ -52,7 +52,7 @@ const TimeTable = ({ isEditable = false, onChange, initialSlots = [] }: TimeTabl
   const touchedSlotsRef = useRef<Set<string>>(new Set());
 
   // TimeSlot[] → TimeTableType[] 변환 함수
-  const changeSlotType = (slots: TimeSlot[]): TimeTableType[] =>
+  const changeSlotType = (slots: TimeSlot[]): TimeTableDto[] =>
     slots.map(slot => {
       const [startTime, endTime] = slot.time.split('~');
       return {

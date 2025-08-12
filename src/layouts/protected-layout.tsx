@@ -1,6 +1,6 @@
 // src/layouts/protected-layout.tsx
 
-import { matchPath, Outlet, useLocation } from 'react-router-dom';
+import { matchPath, Navigate, Outlet, useLocation } from 'react-router-dom';
 import HomeHeader from '../components/Headers/HomeHeader';
 import BackHeader from '../components/Headers/BackHeader';
 import Navbar from '../components/Navbar';
@@ -46,6 +46,12 @@ function LayoutContent() {
   const showNavbar =
     (isHomePage || isChattingPage || isMatchingPage || isMyPage || isExplorePage)
     && !hideNav;
+
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (!accessToken){
+    return <Navigate to ={'/onboarding'} replace/>
+  }
 
   return (
     <>

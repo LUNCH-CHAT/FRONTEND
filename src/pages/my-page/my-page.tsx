@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { getMyInfo } from '../../api/my';
 import type { MyInfo } from '../../types/user';
 import { INTEREST_TYPE_LABELS } from '../../components/ProfileCard';
+import { postLogout } from '../../api/login';
 
 export default function MyPage() {
   const navigate = useNavigate();
@@ -19,10 +20,22 @@ export default function MyPage() {
         const data = await getMyInfo();
         setMyInfo(data.result);
       } catch (error) {
-        console.log('실패');
+        console.log('내 정보 불러오기 실패', error);
       }
     })();
   },[]);
+
+  const handleLogout = async () => {
+    try {
+      const data = await postLogout();
+      if (data.isSuccess) {
+        localStorage.removeItem('accessToken');
+        navigate('/onboarding');
+      }
+    } catch (error) {
+      console.log('로그아웃 실패', error);
+    }
+  };
 
   return (
     <div className="max-w-[480px] px-[20px]">
@@ -97,6 +110,7 @@ export default function MyPage() {
 
       <button
         type="button"
+        onClick={handleLogout}
         className="text-black text-[13px] font-[pretendard] font-medium mt-[19px] cursor-pointer"
       >
         로그아웃

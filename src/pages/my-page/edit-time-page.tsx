@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import TimeTable from "../../components/TimeTable";
-import type { TimeTable as TimeTableType } from "../../types/user";
 import { useState } from "react";
 import { patchTimeTables } from "../../api/my";
+import type { TimeTableDto } from "../../types/profile";
 
 export default function EditTimePage() {
     const navigate = useNavigate();
-    const [timeTables, setTimeTables] = useState<TimeTableType[]>([]);
+    const [timeTables, setTimeTables] = useState<TimeTableDto[]>([]);
     
     const handleFinish = async() => {
         const body={"timeTableList": timeTables};
@@ -15,7 +15,7 @@ export default function EditTimePage() {
             console.log(body);
             navigate(`/my/profile`);
         } catch (error) {
-            console.log('실패');
+            console.log('시간표 불러오기 실패', error);
         }
     }
 
