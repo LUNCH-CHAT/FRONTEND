@@ -14,6 +14,11 @@ export const axiosInstance = axios.create({
   },
 });
 
+export const refreshAxiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true,
+})
+
 //요청 인터셉터: 모든 요청 전에 accessToken을 Authorization 헤더에 추가한다.
 axiosInstance.interceptors.request.use(
   config => {
@@ -39,8 +44,8 @@ axiosInstance.interceptors.response.use(
   async error => {
     const originalRequest: CustomInternalAxiosRequestConfig = error.config;
 
-    //401에러면서 아직 재시도하지않는 요청 경우 처리
-    if (error.response && !originalRequest._retry) {
+    //401에러면서 아직 재시도하지않는 요청 경우 처리 + 500인 경우도 추가 
+    if (error.response && (error.response.status === 401 || error.response.status === 500) && !originalRequest._retry) {
       //refresh 엔드포인트 401 에러가 발생한 경우(unauthorized), 중복 시도 방지를 위해 로그아웃 처리
       if (originalRequest.url === '/auth/reissue') {
         localStorage.removeItem('accessToken');
@@ -56,11 +61,8 @@ axiosInstance.interceptors.response.use(
         //refresh 요청 실행 후 프라미스를 전역 변수에 할당
 
         refreshPromise = (async () => {
-          const { data } = await axios.post(
-            '/auth/reissue',
-            undefined,
-            { withCredentials: true }
-          );
+          const { data } = await refreshAxiosInstance.post('/auth/reissue');
+          console.log('리프레쉬 시도:'+data);
           //새 토큰이 반환
           localStorage.setItem('accessToken', data.result.accessToken);
 

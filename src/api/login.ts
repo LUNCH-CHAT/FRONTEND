@@ -2,6 +2,7 @@ import axios from "axios";
 import type { ResponseSigninDto, SignupInfo } from "../types/auth";
 import type { ResponseCollegeListDto, ResponseDepartmentListDto } from "../types/college";
 import { axiosInstance } from "./axios";
+import type { CommonResponse } from "../types/common";
 
 export const getLogin = async (code: string) => {
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/auth/login/google`,{
@@ -28,5 +29,13 @@ export const getColleges = async (): Promise <ResponseCollegeListDto> => {
 
 export const getDepartments = async (collegeId: number): Promise <ResponseDepartmentListDto> => {
     const { data } = await axiosInstance.get(`/api/colleges/${collegeId}/departments`);
+    return data;
+}
+
+export const postLogout = async (): Promise <CommonResponse<string>> => {
+    const { data } = await axiosInstance.post(`/auth/logout`,
+        {},
+        { withCredentials: true, }
+    );
     return data;
 }
