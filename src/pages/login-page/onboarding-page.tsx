@@ -19,10 +19,9 @@ export default function OnboardingPage() {
 
   const redirectUri = encodeURIComponent(`${import.meta.env.VITE_API_URL}/auth/callback/google`);
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-  const scope = encodeURIComponent("email profile");
 
   const handleGoogleLogin = () => {
-    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&access_type=offline`;
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=email%20profile&access_type=offline&service=lso&o2v=2&flowName=GeneralOAuthFlow`;
   }
   return(
     <div className="bg-[#FFE9E7] h-screen bg-top flex justify-center items-center">

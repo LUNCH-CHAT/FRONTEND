@@ -24,8 +24,9 @@ export default function GoogleLoginPage() {
       }
 
       try {
+        console.log('구글 코드',code);
         const res = await getLogin(code); // 토큰 저장됨
-        console.log("로그인 응답:", res.data);
+        console.log("getLogin 로그인 응답:", res.data);
 
         // 기존 흐름 유지 (50ms 지연)
         setTimeout(async () => {
