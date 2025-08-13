@@ -19,10 +19,10 @@ export default function TagSelectList({selected, onChange}: TagSelectListProps) 
         {id:"EMPLOYMENT_CAREER", text:"취업/진로", icon:<CareerIcon className='size-full'/>},
         {id:"EXAM_PREPARATION", text:"고시준비", icon:<ExamIcon className='size-full'/>},
         {id:"STARTUP", text:"창업", icon:<StartupIcon className='size-full'/>},
-        {id:"FOREIGN_LANGUAGE_STUDY", text:"학점관리", icon:<GradeIcon className='size-full'/>},
-        {id:"HOBBY_LEISURE", text:"외국어 공부", icon:<LanguageIcon className='size-full'/>},
-        {id:"SCHOOL_LIFE", text:"취미/여가", icon:<HobbyIcon className='size-full'/>},
-        {id:"ETC", text:"학교생활", icon:<SchoolIcon className='size-full'/>},
+        {id:"GPA_MANAGEMENT", text:"학점관리", icon:<GradeIcon className='size-full'/>},
+        {id:"FOREIGN_LANGUAGE_STUDY", text:"외국어 공부", icon:<LanguageIcon className='size-full'/>},
+        {id:"HOBBY_LEISURE", text:"취미/여가", icon:<HobbyIcon className='size-full'/>},
+        {id:"SCHOOL_LIFE", text:"학교생활", icon:<SchoolIcon className='size-full'/>},
     ]
 
     const MAX_SELECT=3;
