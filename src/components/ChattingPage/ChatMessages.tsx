@@ -50,9 +50,9 @@ const ChatMessages = ({ userId, messages, senderName }: ChatMessagesProps) => {
 
   return (
     <>
-      {formattedMessages?.map(msg => (
+      {formattedMessages?.map((msg, idx) => (
         <ChatBox
-          key={msg.id}
+          key={idx}
           userId={userId}
           senderId={msg.senderId}
           senderName={senderName}

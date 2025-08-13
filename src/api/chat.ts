@@ -34,15 +34,9 @@ export const createChatRoom = async (friendId: number): Promise<ResponseCreateCh
 };
 
 // 채팅방 퇴장
-export const deleteChatRoom = async ({
-  roomId,
-  userId,
-}: {
-  roomId: number;
-  userId: number;
-}): Promise<ResponseDeleteChatRoomDto> => {
+export const deleteChatRoom = async (roomId: number): Promise<ResponseDeleteChatRoomDto> => {
   const { data } = await axiosInstance.patch(`/api/chatrooms/${roomId}`, {
-    params: { roomId, userId },
+    params: { roomId },
   });
 
   return data;
