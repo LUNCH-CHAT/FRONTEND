@@ -32,7 +32,7 @@ const Modal = ({ modalTitle, modalText, onClose, onClick }: ModalState) => {
           )}
           <button
             type="button"
-            className="px-3 py-1 text-[#FF7C6A] cursor-pointer font-[pretendard] font-semibold"
+            className="px-3 py-1 text-[#F56156] cursor-pointer font-[pretendard] font-semibold"
             onClick={onClick ? onClick : onClick}
           >
             확인
