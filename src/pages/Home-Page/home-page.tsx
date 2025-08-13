@@ -22,7 +22,21 @@ import HobbyIcon from '@/assets/icons/extreaactivities.svg?react';
 import SchoolIcon from '@/assets/icons/campus.svg?react';
 import LunchatIcon from '@/assets/icons/lunchat.svg?react';
 import QuestionIcon from '@/assets/icons/question.svg?react';
-import homeBg from '@/assets/images/home-bg1.png';
+import { Autoplay } from 'swiper/modules'; 
+import homeBg1 from '@/assets/images/home-bg1.png';
+import homeBg2 from '@/assets/images/home-bg2.png';
+import homeBg3 from '@/assets/images/home-bg3.png';
+
+const homeBgs = [homeBg1, homeBg2, homeBg3];
+const bannerTexts = [
+  `혼자 먹는 점심, 텅 빈 공간 시간...
+   이제는 비슷한 관심사를 가진 친구 혹은 선배와
+   가볍게 이야기를 나눠요!`,
+  `시간표와 관심사를 기준으로
+   나와 잘 맞는 친구를 매칭해드려요!`,
+  `혼밥은 그만, 점심시간에 나와 관심사가 맞는
+   친구를 만나는 가장 쉬운 방법 - 런치챗`,
+];
 
 // 학교별 멘토 설정을 읽어오는 공용 훅
 import { useMentorConfig } from '../../hooks/useMentorConfig';
@@ -33,12 +47,10 @@ export default function HomePage() {
   const [recommendations, setRecommendations] = useState<RecommendationProfile[]>([]);
   const [popularMembers, setPopularMembers] = useState<PopularProfile[]>([]);
 
-  // 학교명/멘토 정보 공용 훅
-  // const { conf, uniName } = useMentorConfig();
   const { conf, key } = useMentorConfig() as {
     conf: { mentorName: string; mentorSub: string; mentorTitle: string };
     key: SchoolKey;
-  }; // ✅ 변경: conf 타입 명시
+  }; 
 
   //배너에 보여줄 표준 학교명
   const displayName: Record<SchoolKey, string> = {
@@ -83,31 +95,29 @@ export default function HomePage() {
         <div className="w-full max-w-[700px]">
           {/* 메인 배너 */}
           <section className="w-full overflow-hidden ">
-            <Swiper autoplay={{ delay: 4000 }} loop slidesPerView={1}>
-              <SwiperSlide>
-                <div className="relative w-full h-auto">
-                  <img src={homeBg} alt="홈 배경" className="w-full h-auto object-contain" />
-                  {/* 배너 위 오버레이: 학교 이름 */}
-                  <div className="absolute bottom-8 left-4 text-white">
-                    <p className="text-[16px] font-pretendard pl-1 mb-1">
-                      {displayName[key] ?? ''}
-                    </p>
-                    <p className="text-[16px] font-bold pl-1 mb-1">Luch With Insight!</p>
-                    <p className="text-[13px] font-pretendard pl-1">
-                      혼자 먹는 점심, 텅 빈 공간 시간...
-                      <br />
-                      이제는 비슷한 관심사를 가진 친구 혹은 선배와
-                      <br />
-                      가볍게 이야기를 나눠요!
-                    </p>
+            <Swiper modules={[Autoplay]} autoplay={{ delay: 3000 }} loop slidesPerView={1}>
+              {homeBgs.map((bg, i) => (
+                <SwiperSlide key={i}>
+                  <div className="relative w-full h-auto">
+                    <img src={bg} alt={`홈 배경 ${i + 1}`} className="w-full h-auto object-contain" />
+                    {/* 배너 위 오버레이: 학교 이름 */}
+                    <div className="absolute bottom-8 left-4 text-white">
+                      <p className="text-[16px] font-pretendard pl-1 mb-1">
+                        {displayName[key] ?? ''}
+                      </p>
+                      <p className="text-[16px] font-bold pl-1 mb-1">Lunch With Insight!</p>
+                      <p className="text-[13px] font-pretendard pl-1 whitespace-pre-line">
+                        {bannerTexts[i] ?? ''}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </SwiperSlide>
+                </SwiperSlide>
+              ))}
             </Swiper>
           </section>
 
           {/* 관심사 카테고리 */}
-          <section className="grid grid-cols-4 gap-x-[40px] gap-y-[18px] justify-items-center pt-[25px] px-[20px] mt-[25px] mb-[42px]">
+          <section className="grid grid-cols-4 gap-x-[40px] gap-y-[18px] justify-items-center pt-[18px] px-[20px] mt-[25px] mb-[42px]">
             <CategoryGridItem
               icon={<ExchangeIcon />}
               label="교환학생"
@@ -142,7 +152,7 @@ export default function HomePage() {
               icon={<LanguageIcon />}
               label="외국어 공부"
               onClick={() => handleCategoryClick('외국어 공부')}
-              textClassName="text-[13px] leading-[16px]"
+              textClassName="text-[13px] leading-[16px] whitespace-nowrap"
             />
             <CategoryGridItem
               icon={<HobbyIcon />}
@@ -172,6 +182,7 @@ export default function HomePage() {
                     id={String(profile.memberId)}
                     name={profile.memberName}
                     department={`${profile.department} ${profile.studentNo}`}
+                    keywords={profile.userKeywords?.map(k => k.title) ?? []}
                     tags={profile.userInterests}
                     image={profile.profileImageUrl}
                   />
@@ -194,6 +205,7 @@ export default function HomePage() {
                     id={String(profile.memberId)}
                     name={profile.memberName}
                     department={`${profile.department} ${profile.studentNo}`}
+                    keywords={profile.userKeywords?.map(k => k.title) ?? []}
                     tags={profile.userInterests}
                     image={profile.profileImageUrl ?? '/images/profile.png'}
                   />
@@ -218,7 +230,7 @@ export default function HomePage() {
                 <p className="text-[12px] text-black opacity-90">{conf.mentorTitle}</p>
                 <button
                   onClick={() => navigate('/monthly-mentor')}
-                  className="mt-4 w-[113px] h-[26px] bg-[#F56156] rounded-[8px] text-[12px] font-medium text-white flex items-center justify-center"
+                  className="mt-4 w-[113px] h-[26px] bg-[#F56156] rounded-[8px] text-[12px] font-medium text-white flex items-center justify-center cursor-pointer hover:bg-[#e04c4c] hover:scale-105 transition-all duration-200"
                 >
                   지금 바로 신청하기
                 </button>
@@ -227,7 +239,7 @@ export default function HomePage() {
           </section>
 
           {/* 런치챗 소개 */}
-          <section className="bg-gray-50 py-6 px-4">
+          <section className="bg-gray-100 py-6 px-4">
             <h2 className="text-[20px] font-semibold text-black mb-4">런치챗 소개</h2>
             <div className="grid grid-cols-2 gap-4">
               <InfoCard
