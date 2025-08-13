@@ -6,6 +6,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import useGetChatMessages from '../../hooks/chat/useGetChatMessages';
 import { useInView } from 'react-intersection-observer';
 import { useWebSocket } from '../../hooks/chat/useWebSocket';
+import { LoadingSpinner } from '../../components/LoadingSpinner';
 
 export default function ChattingRoom() {
   // 상대 정보 추출
@@ -78,6 +79,7 @@ export default function ChattingRoom() {
 
   // 사용자id 추출
   const userId = data?.pages.flatMap(page => page.result.userId)[0]!;
+  const friendId = data?.pages.flatMap(page => page.result.friendId)[0]!;
 
   // 메시지 전송
   const handleSendMessage = () => {
@@ -94,8 +96,11 @@ export default function ChattingRoom() {
   };
 
   if (isPending) {
-    // loading spinner
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (isError) {
@@ -104,12 +109,12 @@ export default function ChattingRoom() {
 
   return (
     <div className="h-screen flex flex-col">
-      <ChatHeader name={name} friendInfo={friendInfo} />
+      <ChatHeader id={friendId} name={name} friendInfo={friendInfo} />
 
       {status !== 'OPEN' ? (
         <p className="flex justify-center pt-7">채팅방 연결중입니다...</p>
       ) : (
-        <div ref={scrollRef} className="h-[calc(100vh-54px-76px)] overflow-y-auto pt-5 pb-5 px-4">
+        <div ref={scrollRef} className="h-[calc(100dvh-65px-70px)] overflow-y-auto pt-5 pb-5 px-4">
           <div ref={topRef} className="h-1"></div>
           <ChatMessages messages={combinedMessages} senderName={name} userId={userId} />
         </div>

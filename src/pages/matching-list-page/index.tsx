@@ -3,6 +3,7 @@ import ProfileCard from '../../components/ProfileCard';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import useGetInfiniteMatchingList from '../../hooks/match/useGetInfiniteMatchingList';
 import { useInView } from 'react-intersection-observer';
+import { LoadingSpinner } from '../../components/LoadingSpinner';
 
 type SelectedTab = 'ACCEPTED' | 'REQUESTED' | 'RECEIVED' | 'NONE';
 
@@ -37,8 +38,11 @@ export default function MatchingListPage() {
   }, [searchParams]);
 
   if (isPending) {
-    // loading spinner
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (isError) {

@@ -3,6 +3,7 @@ import AlarmCard from '../../components/AlarmPage/AlarmCard';
 import useGetAlarmList from '../../hooks/alarm/useGetAlarmList';
 import { formatDate } from '../../utils/getDate';
 import { useInView } from 'react-intersection-observer';
+import { LoadingSpinner } from '../../components/LoadingSpinner';
 
 export default function AlarmPage() {
   const { data, isFetching, hasNextPage, isPending, isError, fetchNextPage } = useGetAlarmList();
@@ -18,7 +19,11 @@ export default function AlarmPage() {
   }, [inView, isFetching, hasNextPage, fetchNextPage]);
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (isError) {
