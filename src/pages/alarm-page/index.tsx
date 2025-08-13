@@ -40,6 +40,7 @@ export default function AlarmPage() {
                 image={noti.senderProfileImageUrl}
                 content={noti.content}
                 time={`${month}/${day} ${hours}:${minutes}`}
+                type={noti.type}
               />
             </div>
           );
