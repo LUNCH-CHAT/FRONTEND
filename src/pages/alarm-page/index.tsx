@@ -35,21 +35,32 @@ export default function AlarmPage() {
       {data?.pages.flatMap(page => {
         const notifications = page.result.notifications;
 
-        return notifications.map(noti => {
-          const { month, day, hours, minutes } = formatDate(noti.createdAt);
+        if (notifications.length > 0) {
+          return notifications.map(noti => {
+            const { month, day, hours, minutes } = formatDate(noti.createdAt);
 
-          return (
-            <div key={noti.id}>
-              <AlarmCard
-                sender={noti.senderMembername}
-                image={noti.senderProfileImageUrl}
-                content={noti.content}
-                time={`${month}/${day} ${hours}:${minutes}`}
-                type={noti.type}
-              />
-            </div>
-          );
-        });
+            return (
+              <div key={noti.id}>
+                <AlarmCard
+                  sender={noti.senderMembername}
+                  image={noti.senderProfileImageUrl}
+                  content={noti.content}
+                  time={`${month}/${day} ${hours}:${minutes}`}
+                  type={noti.type}
+                />
+              </div>
+            );
+          });
+        } else {
+          return [
+            <p
+              key="no-alarm"
+              className="flex justify-center items-center min-h-[200px] text-gray-400 font-[pretendard]"
+            >
+              알림이 존재하지 않습니다
+            </p>,
+          ];
+        }
       })}
       <div ref={ref}></div>
     </>
