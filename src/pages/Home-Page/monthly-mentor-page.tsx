@@ -76,8 +76,8 @@ export default function MonthlyMentorPage() {
         {/* 멘토님 소개 (학교별) */}
         <section className="mt-6 px-4">
           <div className="flex items-center gap-2 mb-2">
-            <ChatIcon className="w-5 h-5 text-[#FF7963]" />
-            <span className="text-[15px] font-semibold text-[#FF7C6A]">
+            <ChatIcon className="w-5 h-5 text-[#F56156]" />
+            <span className="text-[15px] font-semibold text-[#F56156]">
               멘토님 소개
             </span>
           </div>
@@ -103,8 +103,8 @@ export default function MonthlyMentorPage() {
         {/* 커피챗 일정 (학교별) */}
         <section className="mt-6 px-4">
           <div className="flex items-center gap-2 mb-2">
-            <CalendarIcon className="w-5 h-5 text-[#FF7963]" />
-            <span className="text-[15px] font-semibold text-[#FF7C6A]">
+            <CalendarIcon className="w-5 h-5 text-[#F56156]" />
+            <span className="text-[15px] font-semibold text-[#F56156]">
               커피챗 일정
             </span>
           </div>
@@ -122,8 +122,8 @@ export default function MonthlyMentorPage() {
         {/* 신청 전 참고사항 (고정) */}
         <section className="mt-6 px-4">
           <div className="flex items-center gap-2 mb-2">
-            <SpeciesIcon className="w-5 h-5 text-[#FF7963]" />
-            <span className="text-[15px] font-semibold text-[#FF7C6A]">
+            <SpeciesIcon className="w-5 h-5 text-[#F56156]" />
+            <span className="text-[15px] font-semibold text-[#F56156]">
               신청 전 참고사항
             </span>
           </div>
@@ -139,8 +139,8 @@ export default function MonthlyMentorPage() {
         {/* 신청서 작성 */}
         <section className="mt-6 px-4 space-y-4">
           <div className="flex items-center gap-2 mb-2">
-            <SpeciesIcon className="w-5 h-5 text-[#FF7963]" />
-            <span className="text-[15px] font-semibold text-[#FF7C6A]">
+            <SpeciesIcon className="w-5 h-5 text-[#F56156]" />
+            <span className="text-[15px] font-semibold text-[#F56156]">
               신청서 작성
             </span>
           </div>
@@ -182,7 +182,7 @@ export default function MonthlyMentorPage() {
           onClick={handleSubmit}
           disabled={isLoading}
           className={`w-full h-12 rounded-lg text-white font-medium ${
-            isLoading ? 'bg-gray-300' : 'bg-[#FF7963]'
+            isLoading ? 'bg-gray-300' : 'bg-[#F56156]'
           }`}
         >
           {isLoading ? '신청 중…' : '신청하기'}

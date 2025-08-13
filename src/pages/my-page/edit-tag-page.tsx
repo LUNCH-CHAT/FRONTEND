@@ -17,7 +17,7 @@ export default function EditTagPage() {
             console.log(body);
             navigate(`/my/profile`);
         } catch (error) {
-            console.log('실패');
+            console.log('태그 불러오기 실패', error);
         }
     }
 
@@ -27,7 +27,7 @@ export default function EditTagPage() {
                 <p className="text-black text-[22px] font-[pretendard] font-semibold mt-11 mb-[4px]">
                     관심사 태그 수정
                 </p>
-                <p className="text-[#FF7C6A] text-[13px] font-[pretendard] font-medium mb-[40px]">
+                <p className="text-[#F56156] text-[13px] font-[pretendard] font-medium mb-[40px]">
                     최대 3개까지 선택 가능합니다.
                 </p>
                 <TagSelectList selected={selectedTags} onChange={setSelectedTags}/>
@@ -36,7 +36,7 @@ export default function EditTagPage() {
                 <button
                     type="button"
                     onClick={handleFinish}
-                    className="w-full h-[48px] bg-[#FF7C6A] rounded-[10px] text-center text-white font-[pretendard] font-semibold cursor-pointer"
+                    className="w-full h-[48px] bg-[#F56156] rounded-[10px] text-center text-white font-[pretendard] font-semibold cursor-pointer"
                 >
                     수정완료
                 </button>

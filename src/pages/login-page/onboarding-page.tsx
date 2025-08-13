@@ -19,10 +19,9 @@ export default function OnboardingPage() {
 
   const redirectUri = encodeURIComponent(`${import.meta.env.VITE_API_URL}/auth/callback/google`);
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-  const scope = encodeURIComponent("email profile");
 
   const handleGoogleLogin = () => {
-    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&access_type=offline`;
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=email%20profile&access_type=offline&service=lso&o2v=2&flowName=GeneralOAuthFlow`;
   }
   return(
     <div className="bg-[#FFE9E7] h-screen bg-top flex justify-center items-center">
@@ -55,7 +54,7 @@ export default function OnboardingPage() {
               onClick={() => {
                 navigate(`/onboarding/email`)
               }}
-              className="w-[212px] h-[40px] bg-[#FF7C6A] rounded-[10px] text-center text-white font-[pretendard] text-4 leading-5 font-medium cursor-pointer mb-[10px] animate-fade-up">
+              className="w-[212px] h-[40px] bg-[#F56156] rounded-[10px] text-center text-white font-[pretendard] text-4 leading-5 font-medium cursor-pointer mb-[10px] animate-fade-up">
               이메일 로그인
             </button>
           )}

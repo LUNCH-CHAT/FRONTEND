@@ -35,8 +35,8 @@ export default function FilterButton({
 
   const colorStyles = selected
     ? variant === 'pill'
-      ? 'bg-white text-[#FF786A] border-[#FF786A]'  
-      : 'bg-[#FF786A] text-white border-transparent' 
+      ? 'bg-white text-[#F56156] border-[#F56156]'  
+      : 'bg-[#F56156] text-white border-transparent' 
     : 'bg-white text-gray-700 border-gray-300';
 
   return (

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import TimeTable from '../../components/TimeTable';
 import Modal from '../../components/Modal';
 import TagSelectList from '../../components/TagSelect/TagSelectList';
@@ -10,9 +10,9 @@ import Step2 from '@/assets/icons/step2.svg';
 import Step3 from '@/assets/icons/step3.svg';
 import Step4 from '@/assets/icons/step4.svg';
 import Step5 from '@/assets/icons/step5.svg';
-import type { TimeTable as TimeTableType } from '../../types/user';
 import { getColleges, getDepartments, patchSignUp } from '../../api/login';
 import { useNavigate } from 'react-router-dom';
+import type { TimeTableDto } from '../../types/profile';
 
 export default function ProfileStepPage() {
   const [step, setStep] = useState(0);
@@ -24,7 +24,7 @@ export default function ProfileStepPage() {
   const [department, setDepartment] = useState<{ id: number; name: string }[]>();
   const [departmentId, setDepartmentId] = useState(0);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [timeTables, setTimeTables] = useState<TimeTableType[]>([]);
+  const [timeTables, setTimeTables] = useState<TimeTableDto[]>([]);
   const navigate = useNavigate();
 
   const StepImages =
@@ -54,7 +54,7 @@ export default function ProfileStepPage() {
         const data = await getColleges();
         setCollege(data.result);
       } catch (error) {
-        console.log('실패');
+        console.log('단과대 불러오기 실패', error);
       }
     })();
   }, []);
@@ -66,32 +66,36 @@ export default function ProfileStepPage() {
         const data = await getDepartments(collegeId);
         setDepartment(data.result);
       } catch (error) {
-        console.log('실패');
+        console.log('학과 불러오기 실패', error);
       }
     })();
   }, [collegeId]);
 
+  const body = useMemo(
+    () => ({
+      membername: name,
+      studentNo,
+      collegeId,
+      departmentId,
+      interests: selectedTags,
+      timeTables,
+    }),
+    [name, studentNo, collegeId, departmentId, selectedTags, timeTables]
+  );
+
   {/*회원가입 정보 패치*/}
   useEffect(() => {
     if (step === 5) {
-      const body = {
-        membername: name,
-        studentNo: studentNo,
-        collegeId: collegeId,
-        departmentId: departmentId,
-        interests: selectedTags,
-        timeTables: timeTables
-      };
       (async () => {
         try {
           await patchSignUp(body);
           navigate(`/onboarding/complete`);
         } catch (error) {
-          console.log('실패');
+          console.log('회원가입 실패', error);
         }
       })();
     }
-  }, [step]);
+  }, [step,navigate,body]);
 
   return (
     <div>
@@ -112,7 +116,7 @@ export default function ProfileStepPage() {
         {step === 0 && (
           <div className="px-[22px] ">
             <p className="text-black text-[22px] font-[pretendard] font-semibold mt-[57px] mb-[25px] flex items-center">
-              <span className="text-[#FF7C6A] font-bold">실명</span>을 적어주세요
+              <span className="text-[#F56156] font-bold">실명</span>을 적어주세요
               <button
                 className="cursor-pointer ml-[9px]"
                 onClick={() => {
@@ -126,7 +130,7 @@ export default function ProfileStepPage() {
               type="text"
               placeholder="이름을 입력하세요"
               onChange={(e) => setName(e.target.value)}
-              className="w-full text-black text-[16px] font-[pretendard] font-medium border-b border-[#7D7D7D] focus:border-[#FF7C6A] focus:outline-none "
+              className="w-full text-black text-[16px] font-[pretendard] font-medium border-b border-[#7D7D7D] focus:border-[#F56156] focus:outline-none "
             />
           </div>
         )}
@@ -134,13 +138,13 @@ export default function ProfileStepPage() {
         {step === 1 && (
           <div className="px-[22px]">
             <p className="text-black text-[22px] font-[pretendard] font-semibold mt-[57px] mb-[25px] flex items-center">
-              <span className="text-[#FF7C6A] font-bold">학번</span>을 적어주세요
+              <span className="text-[#F56156] font-bold">학번</span>을 적어주세요
             </p>
             <input
               type="text"
               placeholder="ex) 25"
               onChange={(e) => setStudentNo(e.target.value)}
-              className="w-full text-black text-[16px] font-[pretendard] font-medium border-b border-[#7D7D7D] focus:border-[#FF7C6A] focus:outline-none "
+              className="w-full text-black text-[16px] font-[pretendard] font-medium border-b border-[#7D7D7D] focus:border-[#F56156] focus:outline-none "
             />
           </div>
         )}
@@ -148,14 +152,14 @@ export default function ProfileStepPage() {
         {step === 2 && (
           <div className="px-[22px]">
             <p className="text-black text-[22px] font-[pretendard] font-semibold mt-[57px] mb-[25px] flex items-center">
-              <span className="text-[#FF7C6A] font-bold">학과</span>를 선택해주세요
+              <span className="text-[#F56156] font-bold">학과</span>를 선택해주세요
             </p>
 
             <div className="flex w-full gap-[19px]">
               <Listbox value={collegeId} onChange={setCollegeId}>
                 <div className="relative w-full">
                   <ListboxButton
-                    className={`w-full pb-1 border-b border-[#7D7D7D] text-left focus:border-[#FF7C6A] text-[16px] font-[pretendard] font-medium 
+                    className={`w-full pb-1 border-b border-[#7D7D7D] text-left focus:border-[#F56156] text-[16px] font-[pretendard] font-medium 
                     ${collegeId ? 'text-black' : 'text-[#B6B6B6]'}`}
                   >
                     <div className="flex justify-between items-center">
@@ -181,7 +185,7 @@ export default function ProfileStepPage() {
               <Listbox value={departmentId} onChange={setDepartmentId}>
                 <div className="relative w-full">
                   <ListboxButton
-                    className={`w-full pb-1 border-b border-[#7D7D7D] text-left focus:border-[#FF7C6A] text-[16px] font-[pretendard] font-medium 
+                    className={`w-full pb-1 border-b border-[#7D7D7D] text-left focus:border-[#F56156] text-[16px] font-[pretendard] font-medium 
                     ${departmentId ? 'text-black' : 'text-[#B6B6B6]'}`}
                   >
                     <div className="flex justify-between items-center">
@@ -210,10 +214,10 @@ export default function ProfileStepPage() {
         {step === 3 && (
           <div className="px-[22px]">
             <p className="text-black text-[22px] font-[pretendard] font-semibold mt-[57px] mb-[6px]">
-              런치챗,&nbsp;<span className="text-[#FF7C6A] font-bold">어떤 목적</span>으로
+              런치챗,&nbsp;<span className="text-[#F56156] font-bold">어떤 목적</span>으로
               시작하시나요?
             </p>
-            <p className="text-[#FF7C6A] text-[13px] font-[pretendard] font-medium mb-[40px]">
+            <p className="text-[#F56156] text-[13px] font-[pretendard] font-medium mb-[40px]">
               최대 3개까지 선택 가능합니다.
             </p>
             <div className="w-full">
@@ -225,7 +229,7 @@ export default function ProfileStepPage() {
         {step === 4 && (
           <div className="flex flex-col items-center px-[20px]">
             <p className="text-black text-[22px] font-[pretendard] font-semibold mt-[50px] mb-[10px] text-center">
-              <span className="text-[#FF7C6A] font-bold">런치챗이 가능한 시간대</span>를<br />
+              <span className="text-[#F56156] font-bold">런치챗이 가능한 시간대</span>를<br />
               선택해주세요
             </p>
             <TimeTable isEditable={true} onChange={setTimeTables}/>
@@ -236,7 +240,7 @@ export default function ProfileStepPage() {
           <button
             type="button"
             onClick={() => setStep(step + 1)}
-            className="max-w-[480px] w-full h-[48px] bg-[#FF7C6A] rounded-[10px] text-center text-white font-[pretendard] font-semibold cursor-pointer"
+            className="max-w-[480px] w-full h-[48px] bg-[#F56156] rounded-[10px] text-center text-white font-[pretendard] font-semibold cursor-pointer"
           >
             다음
           </button>

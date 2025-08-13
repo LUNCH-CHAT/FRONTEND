@@ -21,7 +21,7 @@ const ProfileTimeTable = ({ my = false, timetableRef, timeTables }: ProfileTimeT
           <button
             type="button"
             onClick={() => navigate(`/my/edit-time`)}
-            className="flex gap-1 text-[13px] text-[#A0A0A0]"
+            className="flex items-center gap-1 text-[13px] text-[#A0A0A0] cursor-pointer"
           >
             시간 수정
             <img src={Pencil} alt="수정" className="w-3 h-3" />

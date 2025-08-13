@@ -6,7 +6,7 @@ interface ToastNotiProps {
 const ToastNoti = ({ title, body }: ToastNotiProps) => {
   return (
     <div>
-      <p className="font-[pretendard] font-semibold text-sm text-[#FF7C6A]">{title}</p>
+      <p className="font-[pretendard] font-semibold text-sm text-[#F56156]">{title}</p>
       <p className="font-[pretendard] font-normal text-sm">{body}</p>
     </div>
   );

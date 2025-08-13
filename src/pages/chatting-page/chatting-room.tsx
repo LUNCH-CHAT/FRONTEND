@@ -49,6 +49,13 @@ export default function ChattingRoom() {
     }
   }, [inView, isFetching, hasNextPage, fetchNextPage]);
 
+  // 처음 진입 시 맨 아래로 스크롤
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [data?.pages]);
+
   // 과거 메시지 추가 후 스크롤 위치 보정
   useEffect(() => {
     if (isFetching || !scrollRef.current) return;
@@ -60,23 +67,10 @@ export default function ChattingRoom() {
     container.scrollTop += diff; // 위로 밀려났던 스크롤을 원래 보던 위치로 복원
   }, [data?.pages, isFetching]);
 
-  // 메시지 추가 후 스크롤 위치 보정
-  useEffect(() => {
-    if (!scrollRef.current) return;
-
-    scrollRef.current.scrollTop = scrollRef.current.scrollHeight; // 스크롤 하단으로 이동
-  }, [lastMessages]);
-
-  // 처음 진입 시 맨 아래로 스크롤
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
-  }, [data?.pages]);
-
   // 과거 채팅 내역과 새로운 메시지 결합
   const combinedMessages = useMemo(() => {
-    const previousMessages = data?.pages.flatMap(page => page.result.data) ?? [];
+    // 이전 메세지 서버 최신순 -> 오래된순 변환에 따른 reverse 처리
+    const previousMessages = data?.pages.flatMap(page => page.result.data).reverse() ?? [];
     const messages = [...previousMessages, ...lastMessages];
 
     return messages;
@@ -92,6 +86,11 @@ export default function ChattingRoom() {
       message,
     });
     setMessage('');
+
+    // 메시지 추가 후 스크롤 위치 보정
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight; // 스크롤 하단으로 이동
+    }
   };
 
   if (isPending) {

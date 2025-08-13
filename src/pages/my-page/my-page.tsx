@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { getMyInfo } from '../../api/my';
 import type { MyInfo } from '../../types/user';
 import { INTEREST_TYPE_LABELS } from '../../components/ProfileCard';
+import { postLogout } from '../../api/login';
 
 export default function MyPage() {
   const navigate = useNavigate();
@@ -19,10 +20,26 @@ export default function MyPage() {
         const data = await getMyInfo();
         setMyInfo(data.result);
       } catch (error) {
-        console.log('실패');
+        console.log('내 정보 불러오기 실패', error);
       }
     })();
   },[]);
+
+  const handleLogout = async () => {
+    try {
+      const data = await postLogout();
+      if (data.isSuccess) {
+        localStorage.removeItem('accessToken');
+        navigate('/onboarding');
+      }
+    } catch (error) {
+      console.log('로그아웃 실패', error);
+    }
+  };
+
+  const handleTabClick = (tab: string) => {
+    navigate(`/matching?selectTab=${encodeURIComponent(tab)}`);
+  };
 
   return (
     <div className="max-w-[480px] px-[20px]">
@@ -61,7 +78,7 @@ export default function MyPage() {
             {myInfo?.tags.map((tag,idx)=>(
               <p 
                 key={idx}
-                className="inline-block px-[9px] py-[6px] border border-[#FF7C6A] rounded-[15px] text-black text-[13px] font-[pretendard] font-light leading-[11px]">
+                className="inline-block px-[9px] py-[6px] border border-[#F56156] rounded-[15px] text-black text-[13px] font-[pretendard] font-light leading-[11px]">
                 {INTEREST_TYPE_LABELS[tag]}
               </p>
             ))}
@@ -71,32 +88,39 @@ export default function MyPage() {
 
       <div className="w-full border border-[#D4D4D4] mt-[29px] rounded-[10px] flex justify-center items-center">
         <div className="flex w-[80%] justify-center items-center my-3">
-          <div className="w-[60px] flex flex-col items-center">
+          <button
+            onClick={()=>{handleTabClick('RECIEVED')}}
+            className="w-[60px] flex flex-col items-center cursor-pointer">
             <img src={ReceivedRequest} alt="받은 요청 이미지" className="size-[32px] mb-[6px]" />
             <p className="text-black text-[13px] font-[pretendard] font-medium mb-[2px]">{myInfo?.received}건</p>
             <p className="text-[#A0A0A0] text-[13px] font-[pretendard] font-regular">받은 요청</p>
-          </div>
+          </button>
           <div className="w-full flex flex-1 justify-center items-center ">
             <div className="w-[1px] h-[45px] border border-[#D4D4D4]" />
           </div>
-          <div className="w-[60px] flex flex-col items-center">
+          <button
+            onClick={()=>{handleTabClick('REQUESTED')}}
+            className="w-[60px] flex flex-col items-center cursor-pointer">
             <img src={SentRequest} alt="보낸 요청 이미지" className="size-[32px] mb-[6px]" />
             <p className="text-black text-[13px] font-[pretendard] font-medium mb-[2px]">{myInfo?.requested}건</p>
             <p className="text-[#A0A0A0] text-[13px] font-[pretendard] font-regular">보낸 요청</p>
-          </div>
+          </button>
           <div className="w-full flex flex-1 justify-center items-center ">
             <div className="w-[1px] h-[45px] border border-[#D4D4D4]" />
           </div>
-          <div className="w-[60px] flex flex-col items-center">
+          <button
+            onClick={()=>{handleTabClick('ACCEPTED')}}
+            className="w-[60px] flex flex-col items-center cursor-pointer">
             <img src={TagSelect} alt="매칭 완료 이미지" className="size-[32px] mb-[6px]" />
             <p className="text-black text-[13px] font-[pretendard] font-medium mb-[2px]">{myInfo?.completed}건</p>
             <p className="text-[#A0A0A0] text-[13px] font-[pretendard] font-regular">매칭 완료</p>
-          </div>
+          </button>
         </div>
       </div>
 
       <button
         type="button"
+        onClick={handleLogout}
         className="text-black text-[13px] font-[pretendard] font-medium mt-[19px] cursor-pointer"
       >
         로그아웃

@@ -1,5 +1,5 @@
 import type { CommonResponse } from './common';
-import type { TimeTable } from './user';
+import type { TimeTableDto } from './profile';
 
 export type ResponseSigninDto = CommonResponse<string>;
 
@@ -9,5 +9,5 @@ export interface SignupInfo {
     collegeId: number;
     departmentId: number;
     interests: string[];
-    timeTables: TimeTable[];
+    timeTables: TimeTableDto[];
 }

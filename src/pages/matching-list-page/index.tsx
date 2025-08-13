@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import ProfileCard from '../../components/ProfileCard';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import useGetInfiniteMatchingList from '../../hooks/match/useGetInfiniteMatchingList';
 import { useInView } from 'react-intersection-observer';
 
@@ -25,6 +25,15 @@ export default function MatchingListPage() {
     }
   }, [inView, isFetching, hasNextPage, fetchNextPage]);
 
+  {/*마이페이지에서 이동*/}
+  const [searchParams] = useSearchParams();
+  useEffect(() => {
+    const param = searchParams.get('selectTab');
+    if (param === 'ACCEPTED' || param === 'REQUESTED' || param === 'RECEIVED'){
+      setSelectedTab(param ?? 'RECEIVED');
+    }
+  }, [searchParams]);
+
   if (isPending) {
     // loading spinner
     return <div>Loading...</div>;
@@ -40,7 +49,7 @@ export default function MatchingListPage() {
         <button
           type="button"
           className={`w-1/3 pb-1 ${
-            selectedTab === 'RECEIVED' && 'text-[#FF7C6A] font-bold border-[#FF7C6A] border-b-2'
+            selectedTab === 'RECEIVED' && 'text-[#F56156] font-bold border-[#F56156] border-b-2'
           }`}
           onClick={() => setSelectedTab('RECEIVED')}
         >
@@ -49,7 +58,7 @@ export default function MatchingListPage() {
         <button
           type="button"
           className={`w-1/3 pb-1 ${
-            selectedTab === 'REQUESTED' && 'text-[#FF7C6A] font-bold border-[#FF7C6A] border-b-2'
+            selectedTab === 'REQUESTED' && 'text-[#F56156] font-bold border-[#F56156] border-b-2'
           }`}
           onClick={() => setSelectedTab('REQUESTED')}
         >
@@ -58,7 +67,7 @@ export default function MatchingListPage() {
         <button
           type="button"
           className={`w-1/3 pb-1 ${
-            selectedTab === 'ACCEPTED' && 'text-[#FF7C6A] font-bold border-[#FF7C6A] border-b-2'
+            selectedTab === 'ACCEPTED' && 'text-[#F56156] font-bold border-[#F56156] border-b-2'
           }`}
           onClick={() => setSelectedTab('ACCEPTED')}
         >

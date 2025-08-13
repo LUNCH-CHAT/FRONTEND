@@ -1,5 +1,5 @@
 import type { CommonResponse } from './common';
-import type { UserKeywordDto } from './profile';
+import type { TimeTableDto, UserKeywordDto } from './profile';
 
 export type UserKeyword = {
   id: number;
@@ -9,13 +9,6 @@ export type UserKeyword = {
 export type UserInterest = {
   id: number;
   interestName: string;
-};
-
-export type TimeTable = {
-  dayOfWeek: string;
-  startTime: string;
-  endTime: string;
-  subjectName: string;
 };
 
 export type UserDetail = {
@@ -29,7 +22,7 @@ export type UserDetail = {
   profileImageUrl: string;
   userKeywords: UserKeyword[];
   userInterests: UserInterest[];
-  timeTables: TimeTable[];
+  timeTables: TimeTableDto[];
   createdAt: Date;
   updatedAt: Date;
 };
@@ -69,8 +62,12 @@ export type MyDetail = {
   profileImageUrl: string;
   userKeywords: UserKeywordDto[];
   userInterests: string[];
-  timeTables: TimeTable[];
+  timeTables: TimeTableDto[];
 };
+
+export type AIkeyword = {
+  keyword: string;
+}
 
 // 마이페이지 조회 응답
 export type ResponseMyInfoDto = CommonResponse<MyInfo>;
@@ -94,5 +91,7 @@ export type MyTags = {
 }
 
 export type MyTimeTables = {
-  "timeTableList": TimeTable[];
+  "timeTableList": TimeTableDto[];
 }
+
+export type ResponseKeywordDto = CommonResponse<AIkeyword>;
