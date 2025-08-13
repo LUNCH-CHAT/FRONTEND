@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import ProfileCard from '../../components/ProfileCard';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import useGetInfiniteMatchingList from '../../hooks/match/useGetInfiniteMatchingList';
 import { useInView } from 'react-intersection-observer';
 
@@ -24,6 +24,15 @@ export default function MatchingListPage() {
       fetchNextPage();
     }
   }, [inView, isFetching, hasNextPage, fetchNextPage]);
+
+  {/*마이페이지에서 이동*/}
+  const [searchParams] = useSearchParams();
+  useEffect(() => {
+    const param = searchParams.get('selectTab');
+    if (param === 'ACCEPTED' || param === 'REQUESTED' || param === 'RECEIVED'){
+      setSelectedTab(param ?? 'RECEIVED');
+    }
+  }, [searchParams]);
 
   if (isPending) {
     // loading spinner

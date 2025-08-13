@@ -15,7 +15,7 @@ export default function ProfileCompletePage() {
     (async () => {
       try {
         const data = await getUniv();
-        setUniName(data);
+        handleUniName(data);
       } catch {
         console.log('실패');
       }
@@ -50,13 +50,19 @@ export default function ProfileCompletePage() {
     }, 3500);
   }, [step, navigate]);
 
+  const handleUniName = (uniName: string) => {
+    if (uniName === '가톨릭대') setUniName('가톨릭대학교');
+    else if (uniName === '항공대') setUniName('항공대학교');
+    else if (uniName === '이화여대') setUniName('이화여자대학교');
+  };
+
   return (
     <div
-      className={`min-h-screen flex flex-col justify-center px-[65px] text-center text-white font-[pretendard] bg-gradient-to-b from-[#FFECEB] via-[#FF9B8E] to-[#F56156] 
+      className={`min-h-screen flex flex-col justify-center px-[65px] text-center text-white font-[pretendard] bg-gradient-to-b from-[#FFECEB] via-[#FF9B8E] to-[#FF7C6A] 
       transition-opacity duration-1000 ${fadeout ? 'opacity-0' : 'opacity-100'}`}
     >
       {step >= 0 && (
-        <p className="text-[22px] font-semibold mb-[31px] animate-fade-up">{uniName}학교 런치챗</p>
+        <p className="text-[22px] font-semibold mb-[31px] animate-fade-up">{uniName} 런치챗</p>
       )}
       {step >= 1 && (
         <p className="text-[22px] font-bold mb-[31px] animate-fade-up">

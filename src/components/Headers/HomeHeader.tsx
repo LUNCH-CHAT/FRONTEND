@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Logo from '/src/assets/logo.svg';
+import Logo from '@/assets/icons/lunchat.svg';
 import Alarm from '/src/assets/alarm.svg';
 
 interface HomeHeaderProps {
@@ -47,7 +47,7 @@ export default function HomeHeader({
         <h1 className="font-pretendard font-semibold">{title}</h1>
       ) : (
         <button onClick={() => navigate('/')}>
-          <img src={Logo} alt="LunchChat" />
+          <img src={Logo} alt="LunchChat" className="h-6"/>
         </button>
       )}
 
