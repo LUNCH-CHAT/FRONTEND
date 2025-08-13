@@ -2,9 +2,13 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLogin } from "../../api/login";
-import { updateProfileImage } from "../../api/profile";
+import { getProfileDetail, updateProfileImage } from "../../api/profile";
 import { pickRandomDefaultProfile as pickDefaultProfileUrl } from "../../config/defaultProfile";
+import { getMemberIdFromToken } from "../../utils/jwt";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+
+const isBadUrl = (u?: string | null) =>
+  !u || u.trim() === "" || /^string$/i.test(u) || !/^https?:\/\//.test(u);
 
 export default function GoogleLoginPage() {
   const navigate = useNavigate();
@@ -30,14 +34,27 @@ export default function GoogleLoginPage() {
         // 기존 흐름 유지 (50ms 지연)
         setTimeout(async () => {
           try {
-            if (res?.data?.result === "isNewUser") {
-              // 새 유저일 때만 기본 프로필 이미지를 서버에 1회 저장
-              const url = pickDefaultProfileUrl();
-              try {
-                await updateProfileImage(url);
-              } catch (e) {
-                console.warn("기본 프로필 이미지 저장 실패(무시):", e);
+            // 1) 신규/기존 공통으로 프로필 이미지 값 검증 및 교정
+            try {
+              // 로그인 응답에 memberId가 있으면 사용, 없으면 토큰에서 추출
+              const memberIdFromRes =
+                (res?.data?.memberId ?? res?.data?.result?.memberId) as number | undefined;
+              const memberId = memberIdFromRes ?? getMemberIdFromToken();
+
+              if (memberId) {
+                const meRes = await getProfileDetail(memberId);
+                const me: any = (meRes as any)?.data?.result ?? (meRes as any)?.data;
+                if (isBadUrl(me?.profileImageUrl)) {
+                  await updateProfileImage(pickDefaultProfileUrl());
+                }
               }
+            } catch (e) {
+              console.warn("내 프로필 조회/교정 실패(무시):", e);
+            }
+
+            // 2) 기존 라우팅
+            if (res?.data?.result === "isNewUser") {
+              // 신규라면 온보딩으로
               navigate("/onboarding/profile");
             } else {
               navigate("/onboarding/complete");
