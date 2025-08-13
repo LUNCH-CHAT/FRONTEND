@@ -21,6 +21,7 @@ export default function InfoCard({
       className="
         flex flex-col w-full items-start 
         font-[pretendard] focus:outline-none
+        hover:bg-gray-200 transition-colors
       "
     >
       
