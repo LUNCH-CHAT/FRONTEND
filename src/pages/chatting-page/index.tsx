@@ -1,9 +1,14 @@
 import { useInView } from 'react-intersection-observer';
 import ChattingList from '../../components/ChattingPage/ChattingList';
 import useGetChatRoomList from '../../hooks/chat/useGetChatRoomList';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Modal from '../../components/Modal';
+import { deleteChatRoom } from '../../api/chat';
 
 export default function ChattingPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null);
+
   const { data, isFetching, hasNextPage, isPending, isError, fetchNextPage } = useGetChatRoomList();
 
   const { ref, inView } = useInView({
@@ -16,6 +21,25 @@ export default function ChattingPage() {
     }
   }, [inView, isFetching, hasNextPage, fetchNextPage]);
 
+  // 채팅방 퇴장
+  const handleDeleteChatRoom = async (roomId: number | null) => {
+    if (roomId) {
+      try {
+        const data = await deleteChatRoom(roomId);
+
+        // 성공 시 새로고침하여 채팅 목록 재호출
+        if (data.isSuccess) {
+          location.reload();
+        }
+      } catch (error) {
+        console.log('chatRoom delete error', error);
+      } finally {
+        setSelectedRoomId(null);
+        setIsModalOpen(false);
+      }
+    }
+  };
+
   if (isPending) {
     // loading spinner
     return <div>Loading...</div>;
@@ -27,7 +51,7 @@ export default function ChattingPage() {
 
   return (
     <>
-      <div className="flex flex-col gap-4 select-none">
+      <div className="flex flex-col gap-1 select-none">
         {data?.pages.flatMap(page => {
           const chatRooms = page.result.data;
 
@@ -59,17 +83,30 @@ export default function ChattingPage() {
             return (
               <ChattingList
                 name={room.friendName}
-                friendInfo={room.department}
+                friendInfo={room.friendDepartment}
                 lastMessage={room.lastMessage ? room.lastMessage : ''}
                 time={formattedTime || ''}
                 id={room.roomId}
                 key={room.roomId}
+                onLongPress={() => {
+                  setIsModalOpen(true);
+                  setSelectedRoomId(room.roomId); // longPress를 실행한 roomId 저장
+                }}
               />
             );
           });
         })}
       </div>
       <div ref={ref}></div>
+
+      {isModalOpen && (
+        <Modal
+          modalTitle="채팅방을 나가시겠습니까?"
+          modalText="퇴장 후 대화 내용은 복구할 수 없습니다."
+          onClose={() => setIsModalOpen(false)}
+          onClick={() => handleDeleteChatRoom(selectedRoomId)}
+        />
+      )}
     </>
   );
 }

@@ -47,9 +47,7 @@ const publicRoutes: RouteObject[] = [
   {
     path: '/auth/login/google',
     element: <PublicLayout />,
-    children: [
-      { index: true, element: <GoogleLoginPage /> }
-    ],
+    children: [{ index: true, element: <GoogleLoginPage /> }],
   },
 ];
 
@@ -86,7 +84,7 @@ function App() {
   // 포그라운드 메시지 처리
   useEffect(() => {
     const unsubscribe = onMessage(messaging, payload => {
-      const { title, body } = payload.notification ?? {};
+      const { title, body } = payload.data ?? {};
 
       if (title || body) {
         toast(ToastNoti({ title, body }), {
