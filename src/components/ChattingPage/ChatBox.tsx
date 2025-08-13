@@ -57,7 +57,7 @@ const ChatBox = ({
           {isMine && (
             <>
               {showTime && <time className="text-[#B6B6B6] text-[13px]">{time}</time>}
-              <div className="bg-[#FF7C6A] text-white rounded-lg px-3 py-1 w-fit">{text}</div>
+              <div className="bg-[#F56156] text-white rounded-lg px-3 py-1 w-fit">{text}</div>
             </>
           )}
         </div>

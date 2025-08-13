@@ -218,7 +218,7 @@ export default function HomePage() {
                 <p className="text-[12px] text-black opacity-90">{conf.mentorTitle}</p>
                 <button
                   onClick={() => navigate('/monthly-mentor')}
-                  className="mt-4 w-[113px] h-[26px] bg-[#FF7963] rounded-[8px] text-[12px] font-medium text-white flex items-center justify-center"
+                  className="mt-4 w-[113px] h-[26px] bg-[#F56156] rounded-[8px] text-[12px] font-medium text-white flex items-center justify-center"
                 >
                   지금 바로 신청하기
                 </button>

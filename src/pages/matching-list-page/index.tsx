@@ -40,7 +40,7 @@ export default function MatchingListPage() {
         <button
           type="button"
           className={`w-1/3 pb-1 ${
-            selectedTab === 'RECEIVED' && 'text-[#FF7C6A] font-bold border-[#FF7C6A] border-b-2'
+            selectedTab === 'RECEIVED' && 'text-[#F56156] font-bold border-[#F56156] border-b-2'
           }`}
           onClick={() => setSelectedTab('RECEIVED')}
         >
@@ -49,7 +49,7 @@ export default function MatchingListPage() {
         <button
           type="button"
           className={`w-1/3 pb-1 ${
-            selectedTab === 'REQUESTED' && 'text-[#FF7C6A] font-bold border-[#FF7C6A] border-b-2'
+            selectedTab === 'REQUESTED' && 'text-[#F56156] font-bold border-[#F56156] border-b-2'
           }`}
           onClick={() => setSelectedTab('REQUESTED')}
         >
@@ -58,7 +58,7 @@ export default function MatchingListPage() {
         <button
           type="button"
           className={`w-1/3 pb-1 ${
-            selectedTab === 'ACCEPTED' && 'text-[#FF7C6A] font-bold border-[#FF7C6A] border-b-2'
+            selectedTab === 'ACCEPTED' && 'text-[#F56156] font-bold border-[#F56156] border-b-2'
           }`}
           onClick={() => setSelectedTab('ACCEPTED')}
         >

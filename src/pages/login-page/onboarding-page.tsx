@@ -55,7 +55,7 @@ export default function OnboardingPage() {
               onClick={() => {
                 navigate(`/onboarding/email`)
               }}
-              className="w-[212px] h-[40px] bg-[#FF7C6A] rounded-[10px] text-center text-white font-[pretendard] text-4 leading-5 font-medium cursor-pointer mb-[10px] animate-fade-up">
+              className="w-[212px] h-[40px] bg-[#F56156] rounded-[10px] text-center text-white font-[pretendard] text-4 leading-5 font-medium cursor-pointer mb-[10px] animate-fade-up">
               이메일 로그인
             </button>
           )}
