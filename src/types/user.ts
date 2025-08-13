@@ -65,6 +65,10 @@ export type MyDetail = {
   timeTables: TimeTableDto[];
 };
 
+export type AIkeyword = {
+  keyword: string;
+}
+
 // 마이페이지 조회 응답
 export type ResponseMyInfoDto = CommonResponse<MyInfo>;
 
@@ -89,3 +93,5 @@ export type MyTags = {
 export type MyTimeTables = {
   "timeTableList": TimeTableDto[];
 }
+
+export type ResponseKeywordDto = CommonResponse<AIkeyword>;

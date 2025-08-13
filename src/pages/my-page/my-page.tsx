@@ -37,6 +37,10 @@ export default function MyPage() {
     }
   };
 
+  const handleTabClick = (tab: string) => {
+    navigate(`/matching?selectTab=${encodeURIComponent(tab)}`);
+  };
+
   return (
     <div className="max-w-[480px] px-[20px]">
       <div className="flex gap-[16px]">
@@ -84,27 +88,33 @@ export default function MyPage() {
 
       <div className="w-full border border-[#D4D4D4] mt-[29px] rounded-[10px] flex justify-center items-center">
         <div className="flex w-[80%] justify-center items-center my-3">
-          <div className="w-[60px] flex flex-col items-center">
+          <button
+            onClick={()=>{handleTabClick('RECIEVED')}}
+            className="w-[60px] flex flex-col items-center cursor-pointer">
             <img src={ReceivedRequest} alt="받은 요청 이미지" className="size-[32px] mb-[6px]" />
             <p className="text-black text-[13px] font-[pretendard] font-medium mb-[2px]">{myInfo?.received}건</p>
             <p className="text-[#A0A0A0] text-[13px] font-[pretendard] font-regular">받은 요청</p>
-          </div>
+          </button>
           <div className="w-full flex flex-1 justify-center items-center ">
             <div className="w-[1px] h-[45px] border border-[#D4D4D4]" />
           </div>
-          <div className="w-[60px] flex flex-col items-center">
+          <button
+            onClick={()=>{handleTabClick('REQUESTED')}}
+            className="w-[60px] flex flex-col items-center cursor-pointer">
             <img src={SentRequest} alt="보낸 요청 이미지" className="size-[32px] mb-[6px]" />
             <p className="text-black text-[13px] font-[pretendard] font-medium mb-[2px]">{myInfo?.requested}건</p>
             <p className="text-[#A0A0A0] text-[13px] font-[pretendard] font-regular">보낸 요청</p>
-          </div>
+          </button>
           <div className="w-full flex flex-1 justify-center items-center ">
             <div className="w-[1px] h-[45px] border border-[#D4D4D4]" />
           </div>
-          <div className="w-[60px] flex flex-col items-center">
+          <button
+            onClick={()=>{handleTabClick('ACCEPTED')}}
+            className="w-[60px] flex flex-col items-center cursor-pointer">
             <img src={TagSelect} alt="매칭 완료 이미지" className="size-[32px] mb-[6px]" />
             <p className="text-black text-[13px] font-[pretendard] font-medium mb-[2px]">{myInfo?.completed}건</p>
             <p className="text-[#A0A0A0] text-[13px] font-[pretendard] font-regular">매칭 완료</p>
-          </div>
+          </button>
         </div>
       </div>
 

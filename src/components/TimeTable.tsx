@@ -125,12 +125,12 @@ const TimeTable = ({ isEditable = false, onChange, initialSlots = [] }: TimeTabl
         role="table"
         className="grid gap-0.5 text-xs grid-cols-[50px_repeat(5,1fr)] mobile-sm:grid-cols-[87px_repeat(5,1fr)]"
       >
-        <div role="columnheader" className="border border-[#969696] p-2 rounded-tl-md" />
+        <div role="columnheader" className="border border-[#B6B6B6] p-2 rounded-tl-md" />
         {days.map(day => (
           <div
             role="columnheader"
             key={day}
-            className={`border border-[#969696] p-2 font-[pretendard] font-medium text-sm text-center ${
+            className={`border border-[#B6B6B6] p-2 font-[pretendard] font-medium text-sm text-center ${
               day === 'FRI' ? 'rounded-tr-md' : ''
             }`}
           >
@@ -142,7 +142,7 @@ const TimeTable = ({ isEditable = false, onChange, initialSlots = [] }: TimeTabl
           <React.Fragment key={time}>
             <div
               role="rowheader"
-              className={`border border-[#969696] p-2 py-3 text-[10px] break-all mobile-sm:text-xs text-center font-[pretendard] text-[#969696] ${
+              className={`border border-[#B6B6B6] p-2 py-3 text-[10px] break-all mobile-sm:text-xs text-center font-[pretendard] text-[#969696] ${
                 idx === times.length - 1 ? 'rounded-bl-md' : ''
               }`}
             >
@@ -156,7 +156,7 @@ const TimeTable = ({ isEditable = false, onChange, initialSlots = [] }: TimeTabl
                   key={`${day}-${time}`}
                   data-day={day}
                   data-time={time}
-                  className={`border border-[#969696] ${
+                  className={`border border-[#B6B6B6] ${
                     isSelected ? 'bg-[#F56156]' : isEditable ? 'hover:bg-[#FF9B8E]' : ''
                   }`}
                 />
