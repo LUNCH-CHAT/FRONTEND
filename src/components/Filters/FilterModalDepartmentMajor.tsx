@@ -10,10 +10,9 @@ interface DepartmentItem {
 
 interface FilterModalDepartmentMajorProps {
   departments: DepartmentItem[];
-  // majors prop은 더 이상 필요 없음 (모달이 직접 불러옴)
-  localDepartment: string;
+  localDepartment: number | '';                             
   localMajor: string;
-  applyFilters: (department: string, major: string) => void;
+  applyFilters: (departmentId: number | '', major: string) => void; 
   resetFilters: () => void;
   onClose: () => void;
 }
@@ -28,38 +27,54 @@ export default function FilterModalDepartmentMajor({
 }: FilterModalDepartmentMajorProps) {
   const [visible, setVisible] = useState(false);
 
+  // 표시용 옵션(name 리스트)
   const deptNames = useMemo(() => departments.map(d => d.name), [departments]);
-  const [localMajors, setLocalMajors] = useState<string[]>([]);
 
-  const [selectedDept, setSelectedDept] = useState(localDepartment);
+  // 내부 상태
+  const [localMajors, setLocalMajors] = useState<string[]>([]);
+  const [selectedDeptId, setSelectedDeptId] = useState<number | ''>(localDepartment); 
+  const [selectedDeptName, setSelectedDeptName] = useState<string>('');               
   const [selectedMaj, setSelectedMaj] = useState(localMajor);
 
+  // 오픈 애니메이션
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 10);
     return () => clearTimeout(t);
   }, []);
 
+  // props 내부 상태 동기화 id → name 매핑
   useEffect(() => {
-    const found = departments.find(d => d.name === selectedDept);
-    if (!found) {
+    setSelectedDeptId(localDepartment);
+    setSelectedMaj(localMajor);
+
+    if (localDepartment === '') {
+      setSelectedDeptName('');
+      setLocalMajors([]);
+      return;
+    }
+
+    const found = departments.find(d => d.id === localDepartment);
+    setSelectedDeptName(found?.name ?? '');
+  }, [departments, localDepartment, localMajor]);
+
+  // 단대(id) 변경 시 학과 목록 갱신
+  useEffect(() => {
+    if (selectedDeptId === '') {
       setLocalMajors([]);
       setSelectedMaj('');
       return;
     }
 
-    getDepartments(found.id)
+    getDepartments(selectedDeptId as number)
       .then((majors) => {
         setLocalMajors(majors);
-        // 선택했던 학과가 목록에 없으면 초기화
-        if (!majors.includes(selectedMaj)) {
-          setSelectedMaj('');
-        }
+        if (!majors.includes(selectedMaj)) setSelectedMaj('');
       })
       .catch(() => {
         setLocalMajors([]);
         setSelectedMaj('');
       });
-  }, [selectedDept, departments, selectedMaj]); 
+  }, [selectedDeptId, selectedMaj]);
 
   return (
     <div
@@ -81,8 +96,12 @@ export default function FilterModalDepartmentMajor({
           <h3 className="font-semibold text-base mb-2">단대</h3>
           <FilterTagOption
             options={deptNames}
-            selected={selectedDept}
-            onSelect={(name) => setSelectedDept(name)}
+            selected={selectedDeptName} 
+            onSelect={(name) => {
+              setSelectedDeptName(name);
+              const found = departments.find(d => d.name === name);
+              setSelectedDeptId(found?.id ?? '');
+            }}
           />
         </div>
 
@@ -118,10 +137,10 @@ export default function FilterModalDepartmentMajor({
             초기화
           </button>
 
-          <button
+        <button
             type="button"
             onClick={() => {
-              applyFilters(selectedDept, selectedMaj);
+              applyFilters(selectedDeptId, selectedMaj); 
               onClose();
             }}
             className="

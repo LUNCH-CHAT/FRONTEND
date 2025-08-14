@@ -38,7 +38,6 @@ const bannerTexts = [
    친구를 만나는 가장 쉬운 방법 - 런치챗`,
 ];
 
-// 학교별 멘토 설정을 읽어오는 공용 훅
 import { useMentorConfig } from '../../hooks/useMentorConfig';
 import type { SchoolKey } from '../../config/school-mentor';
 
@@ -52,7 +51,6 @@ export default function HomePage() {
     key: SchoolKey;
   }; 
 
-  //배너에 보여줄 표준 학교명
   const displayName: Record<SchoolKey, string> = {
     한국항공대: '한국항공대학교',
     이화여대: '이화여자대학교',
@@ -60,7 +58,6 @@ export default function HomePage() {
     UMC: 'UMC',
   };
 
-  /** 카테고리 클릭 시 ExplorePage로 이동 */
   const handleCategoryClick = (label: string) => {
     navigate(`/explore?category=${encodeURIComponent(label)}`);
   };

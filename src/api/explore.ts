@@ -26,7 +26,7 @@ export interface MemberFilterParams {
   page: number
   sort: 'recommend' | 'recent'
   interest?: string
-  college?: string
+  college?: number
   department?: string
   studentNo?: string
 }
