@@ -16,7 +16,9 @@ export default function GoogleLoginPage() {
 
     (async () => {
       const params = new URLSearchParams(window.location.search);
-      const code = params.get("code");
+      const firstcode = params.get("code");
+
+      const code = firstcode?.trim();
 
       if (!code) {
         alert("구글 로그인 실패");
