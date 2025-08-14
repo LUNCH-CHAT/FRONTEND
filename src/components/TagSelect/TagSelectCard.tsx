@@ -1,3 +1,5 @@
+import Select from '@/assets/icons/tag-select.svg?react';
+ 
   interface TagSelectCardProps {
     title: string;
     icon: React.ReactNode;
@@ -11,7 +13,7 @@
       <div className="flex flex-col items-center justify-between relative w-[71px] h-[86px] ">
           {select===true &&(
               <>
-                  <img src="/src/assets/icons/tag-select.svg" alt="체크 이미지" className="absolute top-0 right-0 size-[25px]"/>
+                  <Select className="absolute top-0 right-0 size-6"/>
               </>
           )}
           <button onClick={onClick} className="size-[60px] flex items-center justify-center cursor-pointer">

@@ -17,8 +17,8 @@ const ChatMessages = ({ userId, messages, senderName }: ChatMessagesProps) => {
     let prevSender: number | undefined = undefined;
 
     return messages?.map((msg, index) => {
-      const { year, month, day, hours, minutes } = formatDate(msg.createdAt);
-      const dayOfWeek = getDayOfWeek(msg.createdAt);
+      const { year, month, day, hours, minutes } = formatDate(msg.id.date);
+      const dayOfWeek = getDayOfWeek(msg.id.date);
       const date = `${year}년 ${month}월 ${day}일 (${dayOfWeek})`;
       const time = `${hours}:${minutes}`;
 
@@ -51,17 +51,19 @@ const ChatMessages = ({ userId, messages, senderName }: ChatMessagesProps) => {
   return (
     <>
       {formattedMessages?.map((msg, idx) => (
-        <ChatBox
-          key={idx}
-          userId={userId}
-          senderId={msg.senderId}
-          senderName={senderName}
-          text={msg.content}
-          time={msg.time}
-          profile={BasicProfile}
-          showProfile={msg.showProfile}
-          showTime={msg.showTime}
-        />
+        <div key={idx}>
+          {msg.showDate && <p className="text-center p-3 text-[#A3A3A3] text-sm">{msg.date}</p>}
+          <ChatBox
+            userId={userId}
+            senderId={msg.senderId}
+            senderName={senderName}
+            text={msg.content}
+            time={msg.time}
+            profile={BasicProfile}
+            showProfile={msg.showProfile}
+            showTime={msg.showTime}
+          />
+        </div>
       ))}
     </>
   );

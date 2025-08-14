@@ -56,8 +56,6 @@ export default function GoogleLoginPage() {
   }, [navigate]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
       <LoadingSpinner />
-    </div>
   );
 }

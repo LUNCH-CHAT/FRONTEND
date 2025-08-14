@@ -48,6 +48,7 @@ export type ChatMessage = {
 // 채팅방 메시지 조회 응답
 export type ResponseChatMessageDto = CommonResponse<{
   userId: number;
+  friendId: number;
   data: ChatMessage[];
   meta: {
     pageSize: number;

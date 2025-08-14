@@ -4,6 +4,7 @@ import useGetChatRoomList from '../../hooks/chat/useGetChatRoomList';
 import { useEffect, useState } from 'react';
 import Modal from '../../components/Modal';
 import { deleteChatRoom } from '../../api/chat';
+import { LoadingSpinner } from '../../components/LoadingSpinner';
 
 export default function ChattingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,8 +42,11 @@ export default function ChattingPage() {
   };
 
   if (isPending) {
-    // loading spinner
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (isError) {
@@ -55,46 +59,57 @@ export default function ChattingPage() {
         {data?.pages.flatMap(page => {
           const chatRooms = page.result.data;
 
-          // 최신 채팅순으로 재정렬
-          const sortedChatRooms = chatRooms.sort(
-            (a, b) =>
-              new Date(b.lastMessageSentAt || 0).getTime() -
-              new Date(a.lastMessageSentAt || 0).getTime()
-          );
-
-          return sortedChatRooms.map(room => {
-            // 오전/오후로 시간 필터링
-            let formattedTime;
-            if (room.lastMessageSentAt) {
-              const hours = String(room.lastMessageSentAt).split(':')[0];
-              const minutes = String(room.lastMessageSentAt).split(':')[1];
-
-              let displayHours = Number(hours);
-              let period = '오전';
-              if (displayHours >= 12) {
-                period = '오후';
-                if (displayHours > 12) {
-                  displayHours = displayHours - 12;
-                }
-              }
-              formattedTime = `${period} ${displayHours}:${minutes}`;
-            }
-
-            return (
-              <ChattingList
-                name={room.friendName}
-                friendInfo={room.friendDepartment}
-                lastMessage={room.lastMessage ? room.lastMessage : ''}
-                time={formattedTime || ''}
-                id={room.roomId}
-                key={room.roomId}
-                onLongPress={() => {
-                  setIsModalOpen(true);
-                  setSelectedRoomId(room.roomId); // longPress를 실행한 roomId 저장
-                }}
-              />
+          if (chatRooms.length > 0) {
+            // 최신 채팅순으로 재정렬
+            const sortedChatRooms = chatRooms.sort(
+              (a, b) =>
+                new Date(b.lastMessageSentAt || 0).getTime() -
+                new Date(a.lastMessageSentAt || 0).getTime()
             );
-          });
+
+            return sortedChatRooms.map(room => {
+              // 오전/오후로 시간 필터링
+              let formattedTime;
+              if (room.lastMessageSentAt) {
+                const hours = String(room.lastMessageSentAt).split(':')[0];
+                const minutes = String(room.lastMessageSentAt).split(':')[1];
+
+                let displayHours = Number(hours);
+                let period = '오전';
+                if (displayHours >= 12) {
+                  period = '오후';
+                  if (displayHours > 12) {
+                    displayHours = displayHours - 12;
+                  }
+                }
+                formattedTime = `${period} ${displayHours}:${minutes}`;
+              }
+
+              return (
+                <ChattingList
+                  name={room.friendName}
+                  friendInfo={room.friendDepartment}
+                  lastMessage={room.lastMessage ? room.lastMessage : ''}
+                  time={formattedTime || ''}
+                  id={room.roomId}
+                  key={room.roomId}
+                  onLongPress={() => {
+                    setIsModalOpen(true);
+                    setSelectedRoomId(room.roomId); // longPress를 실행한 roomId 저장
+                  }}
+                />
+              );
+            });
+          } else {
+            return [
+              <p
+                key="no-chat"
+                className="flex justify-center items-center min-h-[200px] text-gray-400 font-[pretendard]"
+              >
+                채팅이 존재하지 않습니다
+              </p>,
+            ];
+          }
         })}
       </div>
       <div ref={ref}></div>

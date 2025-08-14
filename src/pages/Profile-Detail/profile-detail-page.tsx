@@ -141,7 +141,6 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
   }, [my]);
 
   const info = my ? myProfile : profile; //나의 프로필인지 아닌지 확인
-  console.log(info);
 
   return (
     <>
@@ -191,7 +190,7 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
               onClick={() => navigate(`/my/`)}
               className="w-full h-[48px] bg-[#F56156] rounded-[10px] text-white font-semibold"
             >
-              수정완료
+              수정 완료
             </button>
           ) : isMatched ? (
             <button
