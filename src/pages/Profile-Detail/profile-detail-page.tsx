@@ -11,6 +11,7 @@ import ProfileTimeTable from '../../components/ProfileDetailPage/ProfileTimeTabl
 import { createChatRoom } from '../../api/chat';
 import { getMyDetail } from '../../api/my';
 import type { MyDetail } from '../../types/user';
+import { LoadingSpinner } from '../../components/LoadingSpinner';
 
 interface ProfileDetailPageProps {
   my?: boolean;
@@ -30,6 +31,7 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
   const [isMatched, setIsMatched] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // 프로필 상세 로딩
   const [isPending, setIsPending] = useState(false); // 매칭 수락 로딩
+  const [isImageChange, setIsImageChange] = useState(false);
 
   // 1) 이미 매칭 요청이 있는지 조회
   useEffect(() => {
@@ -129,23 +131,29 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
     }
   }, [activeTab]);
 
+  const info = my ? myProfile : profile; //나의 프로필인지 아닌지 확인
+
   // 내 프로필 상세 조회
   useEffect(() => {
-    if (my) {
-      getMyDetail()
-        .then(res => {
-          setMyProfile(res.result);
-        })
-        .catch(err => console.error('나의 프로필 조회 실패', err));
-    }
-  }, [my]);
-
-  const info = my ? myProfile : profile; //나의 프로필인지 아닌지 확인
+    const fetchMyDetail = async () => {
+      if (!my) return;
+      setIsLoading(true);
+      try {
+        const res = await getMyDetail();
+        setMyProfile(res.result);
+      } catch (error) {
+        console.error('나의 프로필 조회 실패', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchMyDetail();
+    setIsImageChange(false);
+  }, [my,isImageChange]);
 
   return (
     <>
-      {/* loading spinner */}
-      {isLoading && <div>Loading...</div>}
+      {isLoading && <LoadingSpinner />}
       <div className="min-h-screen flex flex-col bg-white font-[pretendard]">
         <ProfileHeader
           profileImageUrl={info?.profileImageUrl}
@@ -155,6 +163,7 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
           userKeywords={info?.userKeywords}
           userInterests={info?.userInterests}
           my={my}
+          onChange={setIsImageChange}
         />
         <div className="mt-[180px] border-t border-[#F4F4F4] border-[7px]" />
 

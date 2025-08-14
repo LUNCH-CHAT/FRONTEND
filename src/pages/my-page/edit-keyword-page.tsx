@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { patchKeywords, postKeywordAI } from "../../api/my";
+import { getKeywords, patchKeywords, postKeywordAI } from "../../api/my";
 import type { MyKeywords } from "../../types/user";
 import Modal from "../../components/Modal";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
 
 export default function EditKeywordPage() {
     const navigate = useNavigate();
@@ -14,6 +15,29 @@ export default function EditKeywordPage() {
     const [interestDescription, setInterestDescription] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
     const [modalText, setModalText] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        setIsLoading(true);
+        (async () => {
+          try {
+            const data = await getKeywords();
+            console.log('키워드데이터:',data);
+            if (data.result){
+                setExpressTitle(data.result[0]?.title);
+                setExpressDescription(data.result[0]?.description);
+                setGoalTitle(data.result[1]?.title);
+                setGoalDescription(data.result[1]?.description);
+                setInterestTitle(data.result[2]?.title);
+                setInterestDescription(data.result[2]?.description);
+            } 
+          } catch (error) {
+            console.log('키워드 불러오기 실패', error);
+          } finally {
+            setIsLoading(false);
+          }
+        })();
+    },[]);
 
     const handleModalClose = () => {
         setModalOpen(false);
@@ -95,6 +119,7 @@ const handleKeyword = async (title:string) => {
 
     return(
         <>
+        {isLoading && <LoadingSpinner />}
         {modalOpen && <Modal modalText={modalText} onClose={handleModalClose} />}
         <div className="px-[20px]">
             <p className="text-black text-[22px] font-[pretendard] font-semibold mb-[19px]">
@@ -116,6 +141,7 @@ const handleKeyword = async (title:string) => {
                 </p>
                 <textarea
                     placeholder="상세 설명은 최대 100자(공백 포함)"
+                    value={expressDescription}
                     onChange={(e) => setExpressDescription(e.target.value)}
                     className="h-[101px] w-full px-[13px] py-[12px] rounded-[10px] border border-[#B6B6B6] text-[13px] font-[pretendard] font-medium leading-[150%] cursor-pointer resize-none focus:border-[#F56156] focus:outline-none"
                 />
@@ -149,6 +175,7 @@ const handleKeyword = async (title:string) => {
                 </p>
                 <textarea
                     placeholder="상세 설명은 최대 100자(공백 포함)"
+                    value={goalDescription}
                     onChange={(e) => setGoalDescription(e.target.value)}
                     className="h-[101px] w-full px-[13px] py-[12px] rounded-[10px] border border-[#B6B6B6] text-[13px] font-[pretendard] font-medium leading-[150%] cursor-pointer resize-none focus:border-[#F56156] focus:outline-none"
                 />
@@ -182,6 +209,7 @@ const handleKeyword = async (title:string) => {
                 </p>
                 <textarea
                     placeholder="상세 설명은 최대 100자(공백 포함)"
+                    value={interestDescription}
                     onChange={(e) => setInterestDescription(e.target.value)}
                     className="h-[101px] w-full px-[13px] py-[12px] rounded-[10px] border border-[#B6B6B6] text-[13px] font-[pretendard] font-medium leading-[150%] cursor-pointer resize-none focus:border-[#F56156] focus:outline-none"
                 />
