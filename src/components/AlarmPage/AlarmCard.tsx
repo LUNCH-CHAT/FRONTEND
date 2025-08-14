@@ -6,15 +6,16 @@ interface AlarmCardProps {
   sender: string;
   content: string;
   time: string;
+  type: string;
 }
 
-const AlarmCard = ({ image, sender, content, time }: AlarmCardProps) => {
+const AlarmCard = ({ image, sender, content, time, type }: AlarmCardProps) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
     navigate('/matching', {
       state: {
-        selectTab: 'matched',
+        selectTab: type === 'MATCH_ACCEPTED' ? 'ACCEPTED' : 'RECEIVED',
       },
     });
   };
@@ -22,8 +23,7 @@ const AlarmCard = ({ image, sender, content, time }: AlarmCardProps) => {
   return (
     <div className="flex gap-3 m-4 cursor-pointer" onClick={handleNavigate}>
       <img
-        src={image ? import.meta.env.VITE_API_URL + image : BasicProfile}
-        // onError={() => console.log('이미지 로드 실패:', import.meta.env.VITE_API_URL + image)}
+        src={image ? image : BasicProfile}
         alt={`${sender}님의 프로필`}
         className="w-[35px] h-[35px] rounded-full object-cover mt-1"
       />

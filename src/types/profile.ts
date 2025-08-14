@@ -7,6 +7,7 @@ export interface Profile {
   department: string;
   tags: string[];
   image: string;
+  keywords?: string[]; 
 }
 
 // 프로필 상세 조회용 타입 추가함
@@ -41,7 +42,7 @@ export interface PopularProfile {
   studentNo: string;
   department: string;
   userInterests: string[];
-  // userKeywords가 필요없으면 빼셔도 됩니다.
+  userKeywords?: UserKeywordDto[];
 }
 
 // CommonResponse 로 통일 

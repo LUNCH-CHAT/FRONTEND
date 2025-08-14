@@ -11,7 +11,7 @@ interface ChatInputProps {
 const ChatInput = ({ value, onChange, onSubmit }: ChatInputProps) => {
   return (
     <form
-      className="max-w-[480px] w-full flex gap-2 px-5 py-5 fixed bottom-0 bg-[#ffffff]"
+      className="max-w-[480px] w-full h-[66px] flex gap-2 px-5 py-3 fixed bottom-0 bg-[#ffffff]"
       onSubmit={e => {
         e.preventDefault();
         onSubmit();

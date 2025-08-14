@@ -1,9 +1,11 @@
+// src/components/ProfileCard.tsx
 import { useNavigate } from 'react-router-dom';
 
 interface ProfileCardProps {
   id?: string;
   name: string;
   department: string;
+  keywords?: string[];
   tags: string[];
   image?: string;
   icon?: React.ReactNode;
@@ -22,40 +24,62 @@ export const INTEREST_TYPE_LABELS: Record<string, string> = {
   SCHOOL_LIFE: '학교생활',
 };
 
-export default function ProfileCard({ id, name, department, tags, image, icon }: ProfileCardProps) {
+export default function ProfileCard({
+  id,
+  name,
+  department,
+  keywords = [],
+  tags,
+  image,
+  icon,
+}: ProfileCardProps) {
   const navigate = useNavigate();
   const handleClick = () => id && navigate(`/profile/${id}`);
 
   return (
     <div
       onClick={handleClick}
-      className={`w-full bg-white rounded-2xl  ${id ? 'cursor-pointer hover:shadow-md' : ''}`}
+      className={`w-full bg-white rounded-2xl ${id ? 'cursor-pointer hover:shadow-md' : ''}`}
     >
-      <div className="w-full aspect-square rounded-lg overflow-hidden bg-gray-100 mb-3">
+      {/* 이미지 영역 정사각형 비율, 중앙 기준 채움 */}
+      <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-gray-100 mb-3">
         {image ? (
           <img
             src={image}
             alt={`${name} 프로필`}
-            className="min-w-[160px] max-w-[180px] w-full h-full object-cover"
+            loading="lazy"
+            className="absolute inset-0 w-full h-full object-cover object-center"
           />
         ) : (
-          icon
+          <div className="absolute inset-0 flex items-center justify-center">
+            {icon}
+          </div>
         )}
       </div>
+
       <h3 className="text-base font-semibold leading-4 text-black mb-1 font-[pretendard]">
         {name}
       </h3>
+
       <p className="text-[13px] leading-[13px] font-normal text-black mb-1 font-[pretendard]">
         {department}
       </p>
-      <p className="flex text-xs leading-4 mb-2 font-[pretendard]">
-        {tags.map((tag, i) => (
-          <span key={tag} className="flex items-center">
-            <span className="text-[#7D7D7D] font-normal">{INTEREST_TYPE_LABELS[tag] ?? tag}</span>
-            {i < tags.length - 1 && <span className="text-[#D4D4D4] mx-[4px]">|</span>}
-          </span>
-        ))}
-      </p>
+
+      {/* 전공 밑 한 줄: 키워드 */}
+      {keywords.length > 0 && (
+        <p className="flex text-xs leading-4 mb-2 font-[pretendard] text-[#7D7D7D]">
+          {keywords.map((k, i) => (
+            <span key={`${k}-${i}`} className="flex items-center">
+              {k}
+              {i < keywords.length - 1 && (
+                <span className="text-[#D4D4D4] mx-[4px]">|</span>
+              )}
+            </span>
+          ))}
+        </p>
+      )}
+
+      {/* 아래 칩: 태그(관심사) */}
       <div className="flex flex-wrap gap-1 font-[pretendard]">
         {tags.map(tag => (
           <span
