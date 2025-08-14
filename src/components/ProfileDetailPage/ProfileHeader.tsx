@@ -16,6 +16,7 @@ interface ProfileHeaderProps {
   userKeywords: UserKeywordDto[] | undefined;
   userInterests: string[] | undefined;
   my?: boolean;
+  onChange?: (updated: boolean) => void;
 }
 
 const ProfileHeader = ({
@@ -26,6 +27,7 @@ const ProfileHeader = ({
   userKeywords,
   userInterests,
   my = false,
+  onChange,
 }: ProfileHeaderProps) => {
 
   const navigate = useNavigate();
@@ -43,6 +45,7 @@ const ProfileHeader = ({
         await putImage(data.result.presignedUrl,file);
         const success = await updateProfileImage(data.result.s3Url);
         console.log('성공여부',success);
+        onChange?.(true);
       } catch (error) {
         console.log('사진 업로드 실패', error);
       }
@@ -57,7 +60,7 @@ const ProfileHeader = ({
               <img
                 src={profileImageUrl ?? sampleProfile}
                 alt="프로필"
-                className="rounded-full object-cover"
+                className="w-full h-full rounded-full object-cover"
               />
             </div>
             {my && (

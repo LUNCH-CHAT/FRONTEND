@@ -2,6 +2,7 @@ import axios from "axios";
 import type { CommonResponse } from "../types/common";
 import type { MyKeywords, MyTags, MyTimeTables, presignedUrlDto, ResponseKeywordDto, ResponseMyDetailDto, ResponseMyInfoDto } from "../types/user";
 import { axiosInstance } from "./axios";
+import type { UserKeywordDto } from "../types/profile";
 
 export const getMyInfo = async (): Promise <ResponseMyInfoDto> => {
     const { data } = await axiosInstance.get('/api/members/mypage');
@@ -59,4 +60,9 @@ export const putImage = async (presignedUrl: string, file: File) => {
             "Content-Type": file.type
         }
     });
+}
+
+export const getKeywords = async(): Promise <CommonResponse<UserKeywordDto[]>> => {
+    const {data} = await axiosInstance.get('/api/members/keywords');
+    return data;
 }

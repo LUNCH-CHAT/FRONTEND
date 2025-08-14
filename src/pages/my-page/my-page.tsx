@@ -8,18 +8,23 @@ import { getMyInfo } from '../../api/my';
 import type { MyInfo } from '../../types/user';
 import { INTEREST_TYPE_LABELS } from '../../components/ProfileCard';
 import { postLogout } from '../../api/login';
+import { LoadingSpinner } from '../../components/LoadingSpinner';
 
 export default function MyPage() {
   const navigate = useNavigate();
   const [myInfo, setMyInfo] = useState<MyInfo>();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     (async () => {
       try {
         const data = await getMyInfo();
         setMyInfo(data.result);
       } catch (error) {
         console.log('내 정보 불러오기 실패', error);
+      } finally {
+        setIsLoading(false);
       }
     })();
   },[]);
@@ -40,6 +45,10 @@ export default function MyPage() {
     navigate(`/matching?selectTab=${encodeURIComponent(tab)}`);
   };
 
+  if (isLoading){
+    return <LoadingSpinner />
+  }
+  
   return (
     <div className="max-w-[480px] px-[20px]">
       <div className="flex items-center gap-[16px]">
