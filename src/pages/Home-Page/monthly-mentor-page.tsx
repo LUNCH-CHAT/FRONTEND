@@ -11,7 +11,7 @@ export default function MonthlyMentorPage() {
   const [phone, setPhone] = useState('');
   const [question, setQuestion] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  // ✅ 입력 포커스 중인지 여부(키보드 열림 감지용)
+  // 입력 포커스 중인지 여부(키보드 열림 감지용)
   const [isFormFocused, setIsFormFocused] = useState(false);
 
   //학교별 멘토 설정 불러오기
@@ -59,7 +59,7 @@ export default function MonthlyMentorPage() {
         />
       </div>
 
-      {/* ✅ 포커스 아닐 땐 하단 버튼 높이+safe-area만큼 여백, 포커스 중엔 줄임 */}
+      {/*포커스 아닐 땐 하단 버튼 높이+safe-area만큼 여백, 포커스 중엔 줄임 */}
       <main className={`pt-[22px] md:pt-0 ${isFormFocused ? 'pb-6' : 'pb-[calc(env(safe-area-inset-bottom)+8rem)]'}`}>
         {/* 프로필 정보 (학교별) */}
         <section className="mt-[4px] px-4">

@@ -27,7 +27,7 @@ export default function FilterModalYear({
 
   return (
     <div
-      className="fixed inset-0 z-40 bg-black/40 flex justify-center items-end"
+      className="fixed inset-0 z-80 bg-black/40 flex justify-center items-end"
       onMouseDown={onClose}
     >
       <div
