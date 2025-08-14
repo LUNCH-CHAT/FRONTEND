@@ -141,7 +141,6 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
   }, [my]);
 
   const info = my ? myProfile : profile; //나의 프로필인지 아닌지 확인
-  console.log(info);
 
   return (
     <>

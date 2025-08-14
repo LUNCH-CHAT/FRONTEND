@@ -3,6 +3,7 @@ import ProfileCard from '../../components/ProfileCard';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import useGetInfiniteMatchingList from '../../hooks/match/useGetInfiniteMatchingList';
 import { useInView } from 'react-intersection-observer';
+import { LoadingSpinner } from '../../components/LoadingSpinner';
 
 type SelectedTab = 'ACCEPTED' | 'REQUESTED' | 'RECEIVED' | 'NONE';
 
@@ -25,18 +26,23 @@ export default function MatchingListPage() {
     }
   }, [inView, isFetching, hasNextPage, fetchNextPage]);
 
-  {/*마이페이지에서 이동*/}
+  {
+    /*마이페이지에서 이동*/
+  }
   const [searchParams] = useSearchParams();
   useEffect(() => {
     const param = searchParams.get('selectTab');
-    if (param === 'ACCEPTED' || param === 'REQUESTED' || param === 'RECEIVED'){
+    if (param === 'ACCEPTED' || param === 'REQUESTED' || param === 'RECEIVED') {
       setSelectedTab(param ?? 'RECEIVED');
     }
   }, [searchParams]);
 
   if (isPending) {
-    // loading spinner
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (isError) {
@@ -75,26 +81,36 @@ export default function MatchingListPage() {
         </button>
       </div>
 
-      <div className="mt-[27px] pt-7 px-5 grid grid-cols-2 xs:grid-cols-3 gap-3 justify-items-center gap-y-4">
-        {data.pages.flatMap(page => {
-          const matchUsers = page.result.data;
+      {data.pages.some(page => page.result.data.length > 0) ? (
+        <div className="mt-[27px] pt-7 px-5 grid grid-cols-2 xs:grid-cols-3 gap-3 justify-items-center gap-y-4">
+          {data.pages.flatMap(page =>
+            page.result.data.map(match => {
+              const matchUser = match.matchedUser;
+              return (
+                <ProfileCard
+                  key={String(match.id)}
+                  id={String(matchUser.id)}
+                  name={matchUser.memberName}
+                  department={matchUser.department}
+                  tags={matchUser.userInterests.map(interest => interest.interestName)}
+                  image={matchUser.profileImageUrl}
+                />
+              );
+            })
+          )}
+        </div>
+      ) : (
+        <div className="mt-[27px] pt-7 px-5 flex justify-center items-center min-h-[200px]">
+          {selectedTab === 'RECEIVED' ? (
+            <p className="font-[pretendard] text-gray-400">받은 요청이 없습니다</p>
+          ) : selectedTab === 'REQUESTED' ? (
+            <p className="font-[pretendard] text-gray-400">보낸 요청이 없습니다</p>
+          ) : (
+            <p className="font-[pretendard] text-gray-400">완료된 매칭이 없습니다</p>
+          )}
+        </div>
+      )}
 
-          return matchUsers.map(match => {
-            const matchUser = match.matchedUser;
-
-            return (
-              <ProfileCard
-                key={String(match.id)}
-                id={String(matchUser.id)}
-                name={matchUser.memberName}
-                department={matchUser.department}
-                tags={matchUser.userInterests.map(interest => interest.interestName)}
-                image={matchUser.profileImageUrl}
-              />
-            );
-          });
-        })}
-      </div>
       <div ref={ref}></div>
     </>
   );
