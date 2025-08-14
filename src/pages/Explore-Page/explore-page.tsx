@@ -30,12 +30,12 @@ import SchoolIcon from '@/assets/icons/campus.svg?react';
 const interestMap: Record<string, string> = {
   전체: '',
   교환학생: 'EXCHANGE_STUDENT',
-  '취업/진로': 'CAREER',
+  '취업/진로': 'EMPLOYMENT_CAREER',
   고시준비: 'EXAM_PREPARATION',
   창업: 'STARTUP',
-  학점관리: 'GRADE_MANAGEMENT',
-  '외국어 공부': 'FOREIGN_LANGUAGE',
-  '취미/여가': 'HOBBY',
+  학점관리: 'GPA_MANAGEMENT',
+  '외국어 공부': 'FOREIGN_LANGUAGE_STUDY',
+  '취미/여가': 'HOBBY_LEISURE',
   학교생활: 'SCHOOL_LIFE',
 };
 
@@ -105,13 +105,26 @@ export default function ExplorePage() {
     getFilteredMembers(params)
       .then(items =>
         setProfiles(
-          items.map(m => ({
-            id: m.memberId.toString(),
-            name: m.memberName,
-            image: m.profileImageUrl,
-            department: `${m.department} ${m.studentNo}`,
-            tags: m.userInterests.map(i => reverseInterestMap[i] || i),
-          }))
+          items.map((m: any) => {
+            // 칩(태그)용: 관심사 코드 -> 한글 라벨
+            const tags: string[] = (m.userInterests ?? []).map((i: string) => reverseInterestMap[i] || i);
+
+            // 전공 밑 한 줄: userKeywords.title 사용 (코드면 한글 라벨로, 텍스트면 그대로). 없으면 태그 3개 fallback
+            const kwFromApi = (m.userKeywords as { title: string }[] | undefined) ?? [];
+            const keywords =
+              kwFromApi.length > 0
+                ? kwFromApi.map(k => reverseInterestMap[k.title] || k.title)
+                : tags.slice(0, 3);
+
+            return {
+              id: String(m.memberId),
+              name: m.memberName,
+              image: m.profileImageUrl,
+              department: `${m.department} ${m.studentNo}`,
+              tags,
+              keywords,
+            } as Profile;
+          })
         )
       )
       .catch(err => {
