@@ -42,12 +42,14 @@ export default function MyPage() {
 
   return (
     <div className="max-w-[480px] px-[20px]">
-      <div className="flex gap-[16px]">
-        <img
-          src={myInfo?.profileImageUrl}
-          alt="마이 프로필"
-          className="size-[100px] rounded-full object-cover"
-        />
+      <div className="flex items-center gap-[16px]">
+        <div className="w-[100px] h-[100px] aspect-square rounded-full overflow-hidden flex-none shrink-0">
+          <img
+            src={myInfo?.profileImageUrl}
+            alt="마이 프로필"
+            className="w-full h-full rounded-full object-cover"
+          />
+        </div>
         <div className="w-full">
           <div className="flex justify-between items-center w-full mb-[4px]">
             <p className="text-black text-[16px] font-[pretendard] font-semibold">{myInfo?.name}</p>

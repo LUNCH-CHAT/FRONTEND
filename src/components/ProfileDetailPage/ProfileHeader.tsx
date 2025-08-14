@@ -53,11 +53,13 @@ const ProfileHeader = ({
         <img src={profileBg} alt="프로필 배경" className="w-full h-40 object-cover" />
         <div className="absolute top-16 w-full flex flex-col px-4">
           <div className="w-[140px] h-[140px] relative">
-            <img
-              src={profileImageUrl ?? sampleProfile}
-              alt="프로필"
-              className="rounded-full object-cover"
-            />
+            <div className="size-35 aspect-square rounded-full overflow-hidden flex-none shrink-0">
+              <img
+                src={profileImageUrl ?? sampleProfile}
+                alt="프로필"
+                className="rounded-full object-cover"
+              />
+            </div>
             {my && (
               <button
                 onClick={openInput} 

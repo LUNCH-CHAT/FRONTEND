@@ -102,3 +102,10 @@ export type Image = {
 }
 
 export type presignedUrlDto = CommonResponse<Image>;
+
+export type token = {
+  accessToken: string,
+  refreshToken: string,
+}
+
+export type refreshDto = CommonResponse<token>;
