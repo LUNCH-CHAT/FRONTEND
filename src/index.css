@@ -50,5 +50,14 @@
 }
 
 :root {
-  --toastify-color-progress-light: #F56156;
+  --toastify-color-progress-light: #f56156;
+}
+
+/* iOS scroll */
+@layer utilities {
+  @supports (-webkit-touch-callout: none) {
+    .ios-fill-available {
+      height: -webkit-fill-available;
+    }
+  }
 }

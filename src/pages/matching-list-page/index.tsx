@@ -54,7 +54,7 @@ export default function MatchingListPage() {
       <div className="max-w-[480px] w-full fixed top-[4rem] z-100 flex justify-between px-2 bg-[#ffffff] text-center font-[pretendard] font-normal text-[#7D7D7D]">
         <button
           type="button"
-          className={`w-1/3 pb-1 ${
+          className={`w-1/3 pb-1 cursor-pointer ${
             selectedTab === 'RECEIVED' && 'text-[#F56156] font-bold border-[#F56156] border-b-2'
           }`}
           onClick={() => setSelectedTab('RECEIVED')}
@@ -63,7 +63,7 @@ export default function MatchingListPage() {
         </button>
         <button
           type="button"
-          className={`w-1/3 pb-1 ${
+          className={`w-1/3 pb-1 cursor-pointer ${
             selectedTab === 'REQUESTED' && 'text-[#F56156] font-bold border-[#F56156] border-b-2'
           }`}
           onClick={() => setSelectedTab('REQUESTED')}
@@ -72,7 +72,7 @@ export default function MatchingListPage() {
         </button>
         <button
           type="button"
-          className={`w-1/3 pb-1 ${
+          className={`w-1/3 pb-1 cursor-pointer ${
             selectedTab === 'ACCEPTED' && 'text-[#F56156] font-bold border-[#F56156] border-b-2'
           }`}
           onClick={() => setSelectedTab('ACCEPTED')}
@@ -92,6 +92,7 @@ export default function MatchingListPage() {
                   id={String(matchUser.id)}
                   name={matchUser.memberName}
                   department={matchUser.department}
+                  keywords={matchUser.userKeywords.map(keyword => keyword.keywordName)}
                   tags={matchUser.userInterests.map(interest => interest.interestName)}
                   image={matchUser.profileImageUrl}
                 />

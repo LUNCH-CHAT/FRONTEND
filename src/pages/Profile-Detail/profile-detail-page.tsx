@@ -83,6 +83,8 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
     }
   };
 
+  console.log(memberId);
+
   // 매칭 수락
   const handleAcceptMatch = async () => {
     setIsPending(true);
@@ -107,11 +109,14 @@ export default function ProfileDetailPage({ my = false }: ProfileDetailPageProps
       const data = await createChatRoom(memberId);
 
       if (data.isSuccess) {
+        console.log(data.result.friendName, data.result.friendDepartment);
+
         const chatRoomId = data.result.chatRoomId;
         navigate(`/chatting/${chatRoomId}`, {
           state: {
             name: data.result.friendName,
             friendInfo: data.result.friendDepartment,
+            friendImage: profile?.profileImageUrl,
           },
         });
       }
