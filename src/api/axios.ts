@@ -65,7 +65,7 @@ axiosInstance.interceptors.response.use(
     const originalRequest: CustomInternalAxiosRequestConfig = error.config;
 
     //401에러면서 아직 재시도하지않는 요청 경우 처리
-    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+    if (error.response && (error.response.status === 401 || error.response.status === 403)&& !originalRequest._retry) {
       //refresh 엔드포인트 401 에러가 발생한 경우(unauthorized), 중복 시도 방지를 위해 로그아웃 처리
       if (originalRequest.url === '/auth/reissue') {
         localStorage.removeItem('accessToken');
