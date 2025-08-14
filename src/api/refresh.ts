@@ -4,7 +4,7 @@ import { refreshAxiosInstance } from "./axios";
 let timeout: number | null = null;
 
 function getExp(accessToken: string) {
-     try {
+  try {
     const [, p] = accessToken.split(".");
     if (!p) return null;
     const b64 = p.replace(/-/g, "+").replace(/_/g, "/");
@@ -16,14 +16,14 @@ function getExp(accessToken: string) {
   }
 }
 
-const patchSignUp = async (): Promise <refreshDto> => {
-    const { data } = await refreshAxiosInstance.post('/auth/reissue');
-    localStorage.setItem('accessToken',data.result.accessToken)
-    return data;
-}
+const patchSignUp = async (): Promise<refreshDto> => {
+  const { data } = await refreshAxiosInstance.post<refreshDto>("/auth/reissue");
+  localStorage.setItem("accessToken", data.result.accessToken);
+  return data;
+};
 
+export async function refreshTimer(bufferSec = 60): Promise<void> {
 
-export async function refreshTimer(bufferSec = 600): Promise<void> {
   if (timeout) {
     window.clearTimeout(timeout);
     timeout = null;
@@ -40,24 +40,26 @@ export async function refreshTimer(bufferSec = 600): Promise<void> {
 
   const runReissue = async () => {
     try {
-      await patchSignUp(); 
-      await refreshTimer(bufferSec);
-    } catch (e) {
-      console.error("refresh", e);
+      await patchSignUp();
+    } catch (error) {
+      console.error("재발급 실패", error);
+    } finally {
+      // 1초 후 새 토큰 기준으로 다시 '한 번'만 예약
+      timeout = window.setTimeout(() => { void refreshTimer(bufferSec); }, 1000);
     }
   };
 
   if (remain <= 0) {
-    await runReissue();
+    timeout = window.setTimeout(runReissue, 5000);
     return;
   }
 
   timeout = window.setTimeout(runReissue, remain * 1000);
 }
 
-export function logoutTimer(){
-    if (timeout) {
+export function logoutTimer() {
+  if (timeout) {
     window.clearTimeout(timeout);
-    timeout = null; 
+    timeout = null;
   }
 }
