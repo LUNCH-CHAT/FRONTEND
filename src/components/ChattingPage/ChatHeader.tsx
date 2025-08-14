@@ -4,21 +4,22 @@ import BasicProfile from '@/assets/basic-profile.png';
 import React from 'react';
 
 interface ChatHeaderProps {
-  id: number | undefined;
+  friendId: number | undefined;
   name: string;
   friendInfo: string;
+  friendImage: string;
 }
 
-const ChatHeader = ({ id, name, friendInfo }: ChatHeaderProps) => {
+const ChatHeader = ({ friendId, name, friendInfo, friendImage }: ChatHeaderProps) => {
   const navigate = useNavigate();
 
   const handleBack = () => {
     navigate('/chatting');
   };
 
-  const handleClickProfile = (memberId: number | undefined) => {
-    if (id) {
-      navigate(`/profile/${memberId}`);
+  const handleClickProfile = (friendId: number | undefined) => {
+    if (friendId) {
+      navigate(`/profile/${friendId}`);
     }
   };
 
@@ -28,11 +29,11 @@ const ChatHeader = ({ id, name, friendInfo }: ChatHeaderProps) => {
         <img src={Back} alt="뒤로가기" />
       </button>
       <div
-        className={`flex items-center gap-1 ${id ? 'cursor-pointer' : ''}`}
-        onClick={() => handleClickProfile(id)}
+        className={`flex items-center gap-1 ${friendId ? 'cursor-pointer' : ''}`}
+        onClick={() => handleClickProfile(friendId)}
       >
         <img
-          src={BasicProfile}
+          src={friendImage ? friendImage : BasicProfile}
           alt={`${name}님의 프로필`}
           className="w-[35px] h-[35px] rounded-full object-cover mt-1 ml-2"
         />

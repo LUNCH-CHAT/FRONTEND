@@ -4,9 +4,9 @@ import useLongPress from '../../hooks/chat/useLongPress';
 
 interface ChattingListProps {
   id: number;
-  image?: string;
   name: string;
   friendInfo: string;
+  friendImage: string;
   lastMessage?: string;
   time?: string;
   onLongPress: () => void;
@@ -14,9 +14,9 @@ interface ChattingListProps {
 
 const ChattingList = ({
   id,
-  image,
   name,
   friendInfo,
+  friendImage,
   lastMessage,
   time,
   onLongPress,
@@ -30,6 +30,7 @@ const ChattingList = ({
       state: {
         name,
         friendInfo,
+        friendImage,
       },
     });
   };
@@ -43,7 +44,7 @@ const ChattingList = ({
       >
         <div className="flex gap-3 items-center">
           <img
-            src={image ? import.meta.env.VITE_API_URL + image : BasicProfile}
+            src={friendImage ? friendImage : BasicProfile}
             alt={`${name}님의 프로필`}
             className="w-12 h-12 rounded-full object-cover mt-1"
           />

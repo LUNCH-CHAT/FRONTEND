@@ -11,7 +11,8 @@ import { LoadingSpinner } from '../../components/LoadingSpinner';
 export default function ChattingRoom() {
   // 상대 정보 추출
   const location = useLocation();
-  const { name, friendInfo } = location.state;
+  const { name, friendInfo, friendImage } = location.state;
+  // console.log(name, friendInfo, friendImage);
 
   // 웹소켓 연결
   const { id: roomId } = useParams();
@@ -33,11 +34,13 @@ export default function ChattingRoom() {
     threshold: 0,
   });
 
-  // body 영역의 스크롤 없애기
+  // html, body 영역의 스크롤 없애기
   useEffect(() => {
+    document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
 
     return () => {
+      document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
     };
   }, []);
@@ -108,13 +111,18 @@ export default function ChattingRoom() {
   }
 
   return (
-    <div className="h-screen flex flex-col">
-      <ChatHeader id={friendId} name={name} friendInfo={friendInfo} />
+    <div className="flex flex-col ios-fill-available">
+      <ChatHeader
+        friendId={friendId}
+        name={name}
+        friendInfo={friendInfo}
+        friendImage={friendImage}
+      />
 
       {status !== 'OPEN' ? (
         <p className="flex justify-center pt-7">채팅방 연결중입니다...</p>
       ) : (
-        <div ref={scrollRef} className="h-[calc(100dvh-65px-70px)] overflow-y-auto pt-5 pb-5 px-4">
+        <div ref={scrollRef} className="overflow-y-auto pt-5 pb-5 px-4 h-[calc(100dvh-65px-70px)] ">
           <div ref={topRef} className="h-1"></div>
           <ChatMessages messages={combinedMessages} senderName={name} userId={userId} />
         </div>

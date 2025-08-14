@@ -4,6 +4,7 @@ export type ChatRoom = {
   roomId: number;
   friendName: string;
   friendDepartment: string;
+  friendImageUrl: string;
   lastMessage: string | null;
   lastMessageSentAt: Date | null;
   unreadCount: number;
