@@ -17,6 +17,7 @@ import type { TimeTableDto } from '../../types/profile';
 export default function ProfileStepPage() {
   const [step, setStep] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalText, setModalText] = useState('');
   const [name, setName] = useState('');
   const [studentNo, setStudentNo] = useState('');
   const [college, setCollege] = useState<{ id: number; name: string }[]>();
@@ -39,9 +40,6 @@ export default function ProfileStepPage() {
       : step === 4
       ? Step5
       : undefined;
-
-  const modalText =
-    '런치챗은 교내 자기계발을 위한\n관심사 기반 밥약/커피챗 플랫폼입니다.\n건강한 소통 문화를 위해\n실명제로 운영됩니다.';
 
   const handleModalClose = () => {
     setModalOpen(false);
@@ -83,6 +81,20 @@ export default function ProfileStepPage() {
     [name, studentNo, collegeId, departmentId, selectedTags, timeTables]
   );
 
+  const isTrueStudentNo = (studentNo: string) => /^\d{2}$/.test(studentNo.trim());
+  //두 자리 번호인지 확인 
+
+  const handleClick = () =>{
+    if (step===1) {
+      if (!isTrueStudentNo(studentNo)){
+        setModalText('학번은 입학년도 끝 두 자리만 작성해주세요.');
+        setModalOpen(true);
+      }
+      else setStep(step + 1);
+    }
+    else setStep(step + 1);
+  }
+
   {/*회원가입 정보 패치*/}
   useEffect(() => {
     if (step === 5) {
@@ -99,7 +111,7 @@ export default function ProfileStepPage() {
 
   return (
     <div>
-      <div className="flex flex-col">
+      <div className="flex flex-col pb-20 pt-5">
         <div className="flex justify-between items-start px-[22px]">
           <div>
             <p className="text-black text-[20px] font-[pretendard] font-semibold mb-[10px]">
@@ -120,6 +132,7 @@ export default function ProfileStepPage() {
               <button
                 className="cursor-pointer ml-[9px]"
                 onClick={() => {
+                  setModalText('런치챗은 교내 자기계발을 위한\n관심사 기반 밥약/커피챗 플랫폼입니다.\n건강한 소통 문화를 위해\n실명제로 운영됩니다.');
                   setModalOpen(true);
                 }}
               >
@@ -130,7 +143,7 @@ export default function ProfileStepPage() {
               type="text"
               placeholder="이름을 입력하세요"
               onChange={(e) => setName(e.target.value)}
-              className="w-full text-black text-[16px] font-[pretendard] font-medium border-b border-[#7D7D7D] focus:border-[#F56156] focus:outline-none "
+              className="w-full text-black text-[16px] font-[pretendard] font-medium border-b border-[#7D7D7D] focus:border-[#F56156] focus:outline-none"
             />
           </div>
         )}
@@ -144,8 +157,12 @@ export default function ProfileStepPage() {
               type="text"
               placeholder="ex) 25"
               onChange={(e) => setStudentNo(e.target.value)}
-              className="w-full text-black text-[16px] font-[pretendard] font-medium border-b border-[#7D7D7D] focus:border-[#F56156] focus:outline-none "
+              className="w-full text-black text-[16px] font-[pretendard] font-medium border-b border-[#7D7D7D] focus:border-[#F56156] focus:outline-none"
             />
+            <p className="mt-3 text-[13px] font-[pretendard] font-medium leading-[18px] text-[#A0A0A0]">
+              학번은 입학년도 끝 두 자리만 작성해주세요.
+              <br/>ex{')'} 2025년도 입학 → 25
+            </p>
           </div>
         )}
 
@@ -236,10 +253,10 @@ export default function ProfileStepPage() {
           </div>
         )}
 
-        <div className="fixed max-w-[480px] bottom-0 px-5 w-full pb-4">
+        <div className="fixed w-full max-w-[480px] bottom-0 px-5 pb-4 pt-[10px] bg-white border-t border-gray-200">
           <button
             type="button"
-            onClick={() => setStep(step + 1)}
+            onClick={handleClick}
             className="max-w-[480px] w-full h-[48px] bg-[#F56156] rounded-[10px] text-center text-white font-[pretendard] font-semibold cursor-pointer"
           >
             다음

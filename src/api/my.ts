@@ -1,5 +1,6 @@
+import axios from "axios";
 import type { CommonResponse } from "../types/common";
-import type { MyKeywords, MyTags, MyTimeTables, ResponseKeywordDto, ResponseMyDetailDto, ResponseMyInfoDto } from "../types/user";
+import type { MyKeywords, MyTags, MyTimeTables, presignedUrlDto, ResponseKeywordDto, ResponseMyDetailDto, ResponseMyInfoDto } from "../types/user";
 import { axiosInstance } from "./axios";
 
 export const getMyInfo = async (): Promise <ResponseMyInfoDto> => {
@@ -43,4 +44,19 @@ export const postKeywordAI = async (description: string): Promise <ResponseKeywo
         {description}
     );
     return data;
+}
+
+export const postPresignedUrl = async (fileName: string): Promise <presignedUrlDto> => {
+    const { data } = await axiosInstance.post('/api/aws/presigned-url',
+        {fileName}
+    );
+    return data;
+}
+
+export const putImage = async (presignedUrl: string, file: File) => {
+    await axios.put(presignedUrl, file,{
+        headers: {
+            "Content-Type": file.type
+        }
+    });
 }

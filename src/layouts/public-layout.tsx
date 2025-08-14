@@ -16,7 +16,7 @@ export default function PublicLayout() {
       <div className="flex items-center justify-center bg-gray-100">
         <div className="max-w-[480px] w-full min-h-screen bg-white ">
           {!hideHeader && <BackHeader />}
-          <div className={`${hideHeader ? '' : 'pt-[8rem]'}`}>
+          <div className={`${hideHeader ? '' : 'mt-16'}`}>
             <Outlet />
           </div>
         </div>

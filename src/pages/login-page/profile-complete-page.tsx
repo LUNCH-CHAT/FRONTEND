@@ -54,11 +54,12 @@ export default function ProfileCompletePage() {
     if (uniName === '가톨릭대') setUniName('가톨릭대학교');
     else if (uniName === '항공대') setUniName('항공대학교');
     else if (uniName === '이화여대') setUniName('이화여자대학교');
+    else if (uniName === 'UMC대') setUniName('UMC대학교');
   };
 
   return (
     <div
-      className={`min-h-screen flex flex-col justify-center px-[65px] text-center text-white font-[pretendard] bg-gradient-to-b from-[#FFECEB] via-[#FF9B8E] to-[#FF7C6A] 
+      className={`min-h-[100dvh] flex flex-col justify-center px-[65px] text-center text-white font-[pretendard] bg-gradient-to-b from-[#FFECEB] via-[#FF9B8E] to-[#FF7C6A] 
       transition-opacity duration-1000 ${fadeout ? 'opacity-0' : 'opacity-100'}`}
     >
       {step >= 0 && (

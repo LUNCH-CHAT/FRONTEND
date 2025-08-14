@@ -32,13 +32,13 @@ export default function EditTagPage() {
                 </p>
                 <TagSelectList selected={selectedTags} onChange={setSelectedTags}/>
             </div>
-            <div className="fixed w-full max-w-[480px] bottom-0 px-5 pb-4">
+            <div className="fixed w-full max-w-[480px] bottom-0 px-5 pb-4 pt-[10px] bg-white border-t border-gray-200">
                 <button
                     type="button"
                     onClick={handleFinish}
                     className="w-full h-[48px] bg-[#F56156] rounded-[10px] text-center text-white font-[pretendard] font-semibold cursor-pointer"
                 >
-                    수정완료
+                    수정 완료
                 </button>
             </div>
         </>

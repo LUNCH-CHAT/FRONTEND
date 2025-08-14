@@ -3,6 +3,7 @@ import type { ResponseSigninDto, SignupInfo } from "../types/auth";
 import type { ResponseCollegeListDto, ResponseDepartmentListDto } from "../types/college";
 import { axiosInstance } from "./axios";
 import type { CommonResponse } from "../types/common";
+import { logoutTimer, refreshTimer } from "./refresh";
 
 export const getLogin = async (code: string) => {
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/auth/login/google`,{
@@ -12,6 +13,15 @@ export const getLogin = async (code: string) => {
     console.log(response);
     const accessToken = response.headers["access"];
     localStorage.setItem('accessToken', accessToken);
+    await refreshTimer();
+
+    const payloadBase64 = accessToken.split('.')[1];
+    const payload = JSON.parse(atob(payloadBase64));
+    console.log('exp', payload.exp);
+    const expDate = new Date(payload.exp * 1000);
+    console.log('만료일시(KST):', expDate.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }));
+    console.log('현재일시(KST):', new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }));
+    console.log('남은 시간(초):', payload.exp - Math.floor(Date.now() / 1000));
     return response;
 };
 
@@ -37,5 +47,7 @@ export const postLogout = async (): Promise <CommonResponse<string>> => {
         {},
         { withCredentials: true, }
     );
+    localStorage.removeItem('accessToken');
+    logoutTimer();
     return data;
 }

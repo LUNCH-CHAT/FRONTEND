@@ -1,4 +1,5 @@
 import axios, { type InternalAxiosRequestConfig } from 'axios';
+import { refreshTimer } from './refresh';
 
 interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean; //요청 재시도 여부 나타내는 플래그
@@ -21,6 +22,25 @@ export const refreshAxiosInstance = axios.create({
 
 //요청 인터셉터: 모든 요청 전에 accessToken을 Authorization 헤더에 추가한다.
 axiosInstance.interceptors.request.use(
+  config => {
+    const accessToken = localStorage.getItem('accessToken'); //localStorage에서 accessToken을 가져온다.
+
+    //accessToken이 존재하면 Authorization 헤더에 Bearer 토큰 형식으로 추가한다.
+    if (accessToken) {
+      config.headers = config.headers || {};
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+
+    //수정된 요청 설정을 반환합니다.
+    return config;
+  },
+
+  //요청 인터셉터 실패하면 에러 뿜음.
+  error => Promise.reject(error)
+);
+
+//요청 인터셉터: 모든 요청 전에 accessToken을 Authorization 헤더에 추가한다.
+refreshAxiosInstance.interceptors.request.use(
   config => {
     const accessToken = localStorage.getItem('accessToken'); //localStorage에서 accessToken을 가져온다.
 
@@ -85,6 +105,8 @@ axiosInstance.interceptors.response.use(
         //원본 요청의 Authorization 헤더를 갱신된 토큰으로 업뎃
         originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
         //업데이트된 원본 요청을 재시도
+
+        refreshTimer();
         return axiosInstance.request(originalRequest);
       });
     }
