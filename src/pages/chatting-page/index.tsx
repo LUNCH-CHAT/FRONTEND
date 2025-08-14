@@ -60,14 +60,7 @@ export default function ChattingPage() {
           const chatRooms = page.result.data;
 
           if (chatRooms.length > 0) {
-            // 최신 채팅순으로 재정렬
-            const sortedChatRooms = chatRooms.sort(
-              (a, b) =>
-                new Date(b.lastMessageSentAt || 0).getTime() -
-                new Date(a.lastMessageSentAt || 0).getTime()
-            );
-
-            return sortedChatRooms.map(room => {
+            return chatRooms.map(room => {
               // 오전/오후로 시간 필터링
               let formattedTime;
               if (room.lastMessageSentAt) {
@@ -89,6 +82,7 @@ export default function ChattingPage() {
                 <ChattingList
                   name={room.friendName}
                   friendInfo={room.friendDepartment}
+                  friendImage={room.friendImageUrl}
                   lastMessage={room.lastMessage ? room.lastMessage : ''}
                   time={formattedTime || ''}
                   id={room.roomId}
