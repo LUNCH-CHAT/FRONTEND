@@ -5,8 +5,8 @@ interface ProfileCardProps {
   id?: string;
   name: string;
   department: string;
-  keywords?: string[];   
-  tags: string[];        
+  keywords?: string[];
+  tags: string[];
   image?: string;
   icon?: React.ReactNode;
 }
@@ -28,7 +28,7 @@ export default function ProfileCard({
   id,
   name,
   department,
-  keywords = [],        
+  keywords = [],
   tags,
   image,
   icon,
@@ -41,15 +41,19 @@ export default function ProfileCard({
       onClick={handleClick}
       className={`w-full bg-white rounded-2xl ${id ? 'cursor-pointer hover:shadow-md' : ''}`}
     >
-      <div className="w-full aspect-square rounded-lg overflow-hidden bg-gray-100 mb-3">
+      {/* 이미지 영역 정사각형 비율, 중앙 기준 채움 */}
+      <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-gray-100 mb-3">
         {image ? (
           <img
             src={image}
             alt={`${name} 프로필`}
-            className="min-w-[160px] max-w-[180px] w-full h-full object-cover"
+            loading="lazy"
+            className="absolute inset-0 w-full h-full object-cover object-center"
           />
         ) : (
-          icon
+          <div className="absolute inset-0 flex items-center justify-center">
+            {icon}
+          </div>
         )}
       </div>
 

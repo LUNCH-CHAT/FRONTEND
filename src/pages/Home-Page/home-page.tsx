@@ -192,7 +192,7 @@ export default function HomePage() {
           </section>
 
           {/* 이런 사람 어때요? */}
-          <section className="pl-5 pb-6 mt-10">
+          <section className="pl-5 pb-5 mt-10">
             <h2 className="text-[20px] font-semibold mb-4">이런 사람 어때요?</h2>
             <Swiper
               className="pl-4"
@@ -215,7 +215,7 @@ export default function HomePage() {
           </section>
 
           {/* 이달의 커피챗 멘토님은 누구? */}
-          <section className="p-5 pb-5 mt-10">
+          <section className="p-5 pb-5 mt-6">
             <h2 className="text-[20px] font-semibold mb-4">이달의 커피챗 멘토님은 누구?</h2>
             <div className="relative rounded-xl overflow-hidden w-full max-w-[480px] h-[163px]">
               <img
