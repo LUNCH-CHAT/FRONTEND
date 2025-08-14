@@ -33,7 +33,7 @@ const Modal = ({ modalTitle, modalText, onClose, onClick }: ModalState) => {
           <button
             type="button"
             className="px-3 py-1 text-[#F56156] cursor-pointer font-[pretendard] font-semibold"
-            onClick={onClick ? onClick : onClick}
+            onClick={onClick ? onClick : onClose}
           >
             확인
           </button>

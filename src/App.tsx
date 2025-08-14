@@ -6,7 +6,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import PublicLayout from './layouts/public-layout';
 import OnboardingPage from './pages/login-page/onboarding-page';
-import EmailStepPage from './pages/login-page/email-step-page';
+//import EmailStepPage from './pages/login-page/email-step-page';
 import ProfileStepPage from './pages/login-page/profile-step-page';
 import ProfileCompletePage from './pages/login-page/profile-complete-page';
 
@@ -39,9 +39,9 @@ const publicRoutes: RouteObject[] = [
     element: <PublicLayout />,
     children: [
       { index: true, element: <OnboardingPage /> },
-      { path: 'email', element: <EmailStepPage /> },
       { path: 'profile', element: <ProfileStepPage /> },
       { path: 'complete', element: <ProfileCompletePage /> },
+      //{ path: 'email', element: <EmailStepPage /> },
     ],
   },
   {

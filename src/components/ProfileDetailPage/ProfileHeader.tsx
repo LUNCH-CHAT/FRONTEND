@@ -4,7 +4,9 @@ import { INTEREST_TYPE_LABELS } from '../../components/ProfileCard';
 import Pencil from '@/assets/icons/pencil.svg';
 import { useNavigate } from 'react-router-dom';
 import type { UserKeywordDto } from '../../types/profile';
-import React from 'react';
+import React, { useRef } from 'react';
+import { postPresignedUrl, putImage } from '../../api/my';
+import { updateProfileImage } from '../../api/profile';
 
 interface ProfileHeaderProps {
   profileImageUrl: string | undefined;
@@ -25,7 +27,26 @@ const ProfileHeader = ({
   userInterests,
   my = false,
 }: ProfileHeaderProps) => {
+
   const navigate = useNavigate();
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const openInput = () =>inputRef.current?.click(); 
+
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+      try {
+        const data = await postPresignedUrl(file.name);
+        console.log(data);
+        await putImage(data.result.presignedUrl,file);
+        const success = await updateProfileImage(data.result.s3Url);
+        console.log('성공여부',success);
+      } catch (error) {
+        console.log('사진 업로드 실패', error);
+      }
+    };
 
   return (
     <header className="relative">
@@ -38,9 +59,18 @@ const ProfileHeader = ({
               className="rounded-full object-cover"
             />
             {my && (
-              <button className="absolute bottom-0 right-0 w-10 h-10 flex items-center justify-center bg-white rounded-full cursor-pointer">
+              <button
+                onClick={openInput} 
+                className="absolute bottom-0 right-0 w-10 h-10 flex items-center justify-center bg-white rounded-full cursor-pointer">
                 <div className="border border-[#A0A0A0] rounded-full w-9 h-9 flex items-center justify-center">
                   <img src={Pencil} alt="수정" className="w-5 h-5"/>
+                  <input
+                    ref={inputRef}
+                    type="file"
+                    accept="image/*"  //이미지 파일만
+                    className="hidden"
+                    onChange={handleChange}
+                  />
                 </div>
               </button>
             )}

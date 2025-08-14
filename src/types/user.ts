@@ -95,3 +95,10 @@ export type MyTimeTables = {
 }
 
 export type ResponseKeywordDto = CommonResponse<AIkeyword>;
+
+export type Image = {
+  presignedUrl: string,
+  s3Url: string,
+}
+
+export type presignedUrlDto = CommonResponse<Image>;

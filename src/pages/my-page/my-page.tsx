@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import SampleProfile from '@/assets/images/sample-profile.png';
 import RightArrow from '@/assets/icons/arrow-right.svg';
 import ReceivedRequest from '@/assets/icons/received-request.svg';
 import SentRequest from '@/assets/icons/sent-request.svg';
@@ -45,7 +44,7 @@ export default function MyPage() {
     <div className="max-w-[480px] px-[20px]">
       <div className="flex gap-[16px]">
         <img
-          src={SampleProfile}
+          src={myInfo?.profileImageUrl}
           alt="마이 프로필"
           className="size-[100px] rounded-full object-cover"
         />
