@@ -34,27 +34,33 @@ export default function ChattingRoom() {
     threshold: 0,
   });
 
-  // 키보드 대응을 위한 화면 높이 계산
+  // 키보드 대응을 위한 전체 화면 높이 계산
   useEffect(() => {
     const setAppHeight = () => {
-      document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+      const height = window.visualViewport?.height || window.innerHeight;
+      document.documentElement.style.setProperty('--app-height', `${height}px`);
     };
 
     setAppHeight();
 
-    window.addEventListener('resize', setAppHeight);
-    return () => window.removeEventListener('resize', setAppHeight);
-  }, []);
+    // visualViewport 이벤트로 높이 변화 감지
+    window.visualViewport?.addEventListener('resize', () => {
+      const height = window.visualViewport?.height || window.innerHeight;
+      document.documentElement.style.setProperty('--app-height', `${height}px`);
 
-  // 키보드 닫힘 시 스크롤을 하단으로 복원
-  useEffect(() => {
-    const handleResize = () => {
-      if (scrollRef.current) {
+      // 키보드 닫혔을 때 스크롤 하단 복원
+      if (
+        window.visualViewport &&
+        window.visualViewport.height === window.innerHeight &&
+        scrollRef.current
+      ) {
         scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
       }
+    });
+
+    return () => {
+      window.visualViewport?.removeEventListener('resize', setAppHeight);
     };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // html, body 영역의 스크롤 없애기
