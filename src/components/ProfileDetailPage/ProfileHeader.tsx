@@ -1,5 +1,5 @@
 import profileBg from '@/assets/images/profile-bg.png';
-import sampleProfile from '@/assets/images/sample-profile.png';
+import sampleProfile from '@/assets/basic-profile.png';
 import { INTEREST_TYPE_LABELS } from '../../components/ProfileCard';
 import Pencil from '@/assets/icons/pencil.svg';
 import { useNavigate } from 'react-router-dom';
