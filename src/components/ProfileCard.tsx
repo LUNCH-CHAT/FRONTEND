@@ -11,7 +11,6 @@ interface ProfileCardProps {
   icon?: React.ReactNode;
 }
 
-// 백엔드 interestType → 화면에 보여줄 한글 매핑
 // eslint-disable-next-line react-refresh/only-export-components
 export const INTEREST_TYPE_LABELS: Record<string, string> = {
   EXCHANGE_STUDENT: '교환학생',
@@ -39,9 +38,8 @@ export default function ProfileCard({
   return (
     <div
       onClick={handleClick}
-      className={`w-full bg-white rounded-2xl ${id ? 'cursor-pointer hover:shadow-md' : ''}`}
+      className={`w-full bg-white rounded-2xl ${id ? 'cursor-pointer' : ''}`}
     >
-      {/* 이미지 영역 정사각형 비율, 중앙 기준 채움 */}
       <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-gray-100 mb-3">
         {image ? (
           <img
@@ -57,7 +55,7 @@ export default function ProfileCard({
         )}
       </div>
 
-      <h3 className="text-base font-semibold leading-4 text-black mb-1 font-[pretendard]">
+      <h3 className="text-base font-semibold leading-4 text-black mb-2 font-[pretendard]">
         {name}
       </h3>
 
@@ -65,21 +63,23 @@ export default function ProfileCard({
         {department}
       </p>
 
-      {/* 전공 밑 한 줄: 키워드 */}
+      {/* 키워드 */}
       {keywords.length > 0 && (
-        <p className="flex text-xs leading-4 mb-2 font-[pretendard] text-[#7D7D7D]">
+        <div className="flex flex-wrap items-center text-xs leading-4 mb-2 font-[pretendard] text-[#7D7D7D] break-keep">
           {keywords.map((k, i) => (
-            <span key={`${k}-${i}`} className="flex items-center">
+            <span
+              key={`${k}-${i}`}
+              className={`whitespace-nowrap flex items-center ${
+                i > 0 ? "before:content-['|'] before:mx-1 before:text-[#D4D4D4]" : ""
+              }`}
+            >
               {k}
-              {i < keywords.length - 1 && (
-                <span className="text-[#D4D4D4] mx-[4px]">|</span>
-              )}
             </span>
           ))}
-        </p>
+        </div>
       )}
 
-      {/* 아래 칩: 태그(관심사) */}
+      {/* 관심사 태그 */}
       <div className="flex flex-wrap gap-1 font-[pretendard]">
         {tags.map(tag => (
           <span

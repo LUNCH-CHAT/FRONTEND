@@ -56,7 +56,7 @@ export default function ExplorePage() {
   const [showDeptModal, setShowDeptModal] = useState(false);
   const [showYearModal, setShowYearModal] = useState(false);
 
-  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [selectedCollegeId, setSelectedCollegeId] = useState<number | ''>('');
   const [selectedMajor, setSelectedMajor] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
   const [sortOrder, setSortOrder] = useState<'추천순' | '최신순'>('추천순');
@@ -99,7 +99,7 @@ export default function ExplorePage() {
         page: p,
         sort: sortOrder === '추천순' ? 'recommend' : 'recent',
         interest: interestMap[selectedCategory],
-        college: selectedDepartment,
+        collegeId: selectedCollegeId === '' ? undefined : Number(selectedCollegeId),
         department: selectedMajor,
         studentNo: selectedYear,
       };
@@ -107,7 +107,7 @@ export default function ExplorePage() {
         Object.entries(raw).filter(([, v]) => v !== '' && v != null)
       ) as unknown as MemberFilterParams;
     },
-    [selectedCategory, sortOrder, selectedDepartment, selectedMajor, selectedYear]
+    [selectedCategory, sortOrder, selectedCollegeId, selectedMajor, selectedYear]
   );
 
   // 페이지 로드 함수
@@ -205,7 +205,7 @@ export default function ExplorePage() {
           <FilterButton
             label="학과"
             onClick={() => setShowDeptModal(true)}
-            selected={showDeptModal || !!selectedDepartment || !!selectedMajor}
+            selected={showDeptModal || selectedCollegeId !== '' || !!selectedMajor}
             variant="pill"
           />
           <FilterButton
@@ -244,15 +244,15 @@ export default function ExplorePage() {
       {showDeptModal && (
         <FilterModalDepartmentMajor
           departments={colleges}
-          localDepartment={selectedDepartment}
+          localDepartment={selectedCollegeId}
           localMajor={selectedMajor}
           resetFilters={() => {
-            setSelectedDepartment('');
+            setSelectedCollegeId('');
             setSelectedMajor('');
             setShowDeptModal(false);
           }}
           applyFilters={(d, m) => {
-            setSelectedDepartment(d);
+            setSelectedCollegeId(d === '' ? '' : Number(d));
             setSelectedMajor(m);
             setShowDeptModal(false);
           }}
