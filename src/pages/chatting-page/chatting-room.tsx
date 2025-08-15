@@ -34,6 +34,29 @@ export default function ChattingRoom() {
     threshold: 0,
   });
 
+  // 키보드 대응을 위한 화면 높이 계산
+  useEffect(() => {
+    const setAppHeight = () => {
+      document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+    };
+
+    setAppHeight();
+
+    window.addEventListener('resize', setAppHeight);
+    return () => window.removeEventListener('resize', setAppHeight);
+  }, []);
+
+  // 키보드 닫힘 시 스크롤을 하단으로 복원
+  useEffect(() => {
+    const handleResize = () => {
+      if (scrollRef.current) {
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // html, body 영역의 스크롤 없애기
   useEffect(() => {
     document.documentElement.style.overflow = 'hidden';
@@ -111,7 +134,12 @@ export default function ChattingRoom() {
   }
 
   return (
-    <div className="flex flex-col ios-fill-available">
+    <div
+      className="flex flex-col ios-fill-available"
+      style={{
+        height: 'var(--app-height)',
+      }}
+    >
       <ChatHeader
         friendId={friendId}
         name={name}
@@ -122,7 +150,13 @@ export default function ChattingRoom() {
       {status !== 'OPEN' ? (
         <p className="flex justify-center pt-7">채팅방 연결중입니다...</p>
       ) : (
-        <div ref={scrollRef} className="overflow-y-auto pt-5 pb-5 px-4 h-[calc(100dvh-65px-70px)] ">
+        <div
+          ref={scrollRef}
+          className="overflow-y-auto pt-5 pb-5 px-4"
+          style={{
+            height: `calc(var(--app-height) - 65px - 70px)`, // 헤더와 인풋 높이를 제외한 높이 설정
+          }}
+        >
           <div ref={topRef} className="h-1"></div>
           <ChatMessages messages={combinedMessages} senderName={name} userId={userId} />
         </div>
