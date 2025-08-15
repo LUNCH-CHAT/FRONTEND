@@ -2,39 +2,46 @@
 import './index.css';
 import { createBrowserRouter, RouterProvider, type RouteObject } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { lazy, Suspense, useEffect, useState, type ComponentType } from 'react';
 
-import PublicLayout from './layouts/public-layout';
-import OnboardingPage from './pages/login-page/onboarding-page';
-//import EmailStepPage from './pages/login-page/email-step-page';
-import ProfileStepPage from './pages/login-page/profile-step-page';
-import ProfileCompletePage from './pages/login-page/profile-complete-page';
-
-import ProtectedLayout from './layouts/protected-layout';
-import HomePage from './pages/Home-Page/home-page';
-import ChattingPage from './pages/chatting-page';
-import ChattingRoom from './pages/chatting-page/chatting-room';
-import MatchingListPage from './pages/matching-list-page';
-import ProfileDetailPage from './pages/Profile-Detail/profile-detail-page';
-import AlarmPage from './pages/alarm-page';
-import ExplorePage from './pages/Explore-Page/explore-page';
-import MyPage from './pages/my-page/my-page';
-// import MyMatchesPage from './pages/my-page/my-matches-page';
-
-import { lazy, Suspense, useEffect } from 'react';
 import { onMessage } from 'firebase/messaging';
 import { messaging } from './firebase/firebase';
-import GoogleLoginPage from './pages/login-page/redirect-page';
 import useFCM from './hooks/alarm/useFCM';
-import { toast, ToastContainer } from 'react-toastify';
 import ToastNoti from './components/ToastNoti';
 import { LoadingSpinner } from './components/LoadingSpinner';
 
-const MonthlyMentorPage = lazy(() => import('./pages/Home-Page/monthly-mentor-page'));
+const PublicLayout       = lazy(() => import('./layouts/public-layout'));
+const ProtectedLayout    = lazy(() => import('./layouts/protected-layout'));
 
-const EditTagPage = lazy(() => import('./pages/my-page/edit-tag-page'));
-const EditKeywordPage = lazy(() => import('./pages/my-page/edit-keyword-page'));
-const EditTimePage = lazy(() => import('./pages/my-page/edit-time-page'));
+const OnboardingPage     = lazy(() => import('./pages/login-page/onboarding-page'));
+const ProfileStepPage    = lazy(() => import('./pages/login-page/profile-step-page'));
+const ProfileCompletePage= lazy(() => import('./pages/login-page/profile-complete-page'));
+const GoogleLoginPage    = lazy(() => import('./pages/login-page/redirect-page'));
+
+const HomePage           = lazy(() => import('./pages/Home-Page/home-page'));
+const MonthlyMentorPage  = lazy(() => import('./pages/Home-Page/monthly-mentor-page'));
+
+const ChattingPage       = lazy(() => import('./pages/chatting-page'));
+const ChattingRoom       = lazy(() => import('./pages/chatting-page/chatting-room'));
+
+const MatchingListPage   = lazy(() => import('./pages/matching-list-page'));
+const ProfileDetailPage  = lazy(() => import('./pages/Profile-Detail/profile-detail-page'));
+const AlarmPage          = lazy(() => import('./pages/alarm-page'));
+const ExplorePage        = lazy(() => import('./pages/Explore-Page/explore-page'));
+const MyPage             = lazy(() => import('./pages/my-page/my-page'));
+
+const EditTagPage        = lazy(() => import('./pages/my-page/edit-tag-page'));
+const EditKeywordPage    = lazy(() => import('./pages/my-page/edit-keyword-page'));
+const EditTimePage       = lazy(() => import('./pages/my-page/edit-time-page'));
+
+const ToastContainerLazy = lazy(async () => {
+  const mod = await import('react-toastify');
+  await import('react-toastify/dist/ReactToastify.css');
+  return { default: mod.ToastContainer };
+});
+
+
+type DevtoolsCmp = ComponentType<{ initialIsOpen?: boolean }>;
 
 const publicRoutes: RouteObject[] = [
   {
@@ -44,7 +51,7 @@ const publicRoutes: RouteObject[] = [
       { index: true, element: <OnboardingPage /> },
       { path: 'profile', element: <ProfileStepPage /> },
       { path: 'complete', element: <ProfileCompletePage /> },
-      //{ path: 'email', element: <EmailStepPage /> },
+      // { path: 'email', element: <EmailStepPage /> },
     ],
   },
   {
@@ -78,18 +85,26 @@ const protectedRoutes: RouteObject[] = [
 ];
 
 const router = createBrowserRouter([...publicRoutes, ...protectedRoutes]);
-
 const queryClient = new QueryClient();
 
 function App() {
   useFCM();
 
-  // 포그라운드 메시지 처리
+  const [Devtools, setDevtools] = useState<DevtoolsCmp | null>(null);
   useEffect(() => {
-    const unsubscribe = onMessage(messaging, payload => {
-      const { title, body } = payload.data ?? {};
+    if (import.meta.env.DEV) {
+      import('@tanstack/react-query-devtools').then(m =>
+        setDevtools(() => m.ReactQueryDevtools)
+      );
+    }
+  }, []);
 
+  /**FCM 알림 수신 시점에만 react-toastify 동적 임포트 */
+  useEffect(() => {
+    const unsubscribe = onMessage(messaging, async payload => {
+      const { title, body } = payload.data ?? {};
       if (title || body) {
+        const { toast } = await import('react-toastify');
         toast(ToastNoti({ title, body }), {
           position: 'top-right',
           autoClose: 5000,
@@ -99,18 +114,21 @@ function App() {
         });
       }
     });
-
     return () => unsubscribe();
   }, []);
 
   return (
     <>
-      <ToastContainer />
+      {/* ToastContainer를 늦게 붙여도 알림 수신 시점에 동적 임포트라 초기 번들에서 제외됩니다 */}
+      <Suspense fallback={null}>
+        <ToastContainerLazy />
+      </Suspense>
+
       <QueryClientProvider client={queryClient}>
         <Suspense fallback={<LoadingSpinner />}>
           <RouterProvider router={router} />
-          {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
         </Suspense>
+        {Devtools ? <Devtools initialIsOpen={false} /> : null}
       </QueryClientProvider>
     </>
   );

@@ -1,6 +1,5 @@
 import ChatBox from '../../components/ChattingPage/ChatBox';
 import { formatDate, getDayOfWeek } from '../../utils/getDate';
-import BasicProfile from '@/assets/basic-profile.png';
 import type { ChatMessage } from '../../types/chat';
 import React, { useMemo } from 'react';
 
@@ -8,9 +7,10 @@ interface ChatMessagesProps {
   userId: number;
   messages: ChatMessage[];
   senderName: string;
+  friendImage: string;
 }
 
-const ChatMessages = ({ userId, messages, senderName }: ChatMessagesProps) => {
+const ChatMessages = ({ userId, messages, senderName, friendImage }: ChatMessagesProps) => {
   // 메시지 타임라인, 시간, 렌더링 여부 파악
   const formattedMessages = useMemo(() => {
     let prevDate = '';
@@ -59,9 +59,9 @@ const ChatMessages = ({ userId, messages, senderName }: ChatMessagesProps) => {
             senderName={senderName}
             text={msg.content}
             time={msg.time}
-            profile={BasicProfile}
             showProfile={msg.showProfile}
             showTime={msg.showTime}
+            friendImage={friendImage}
           />
         </div>
       ))}
