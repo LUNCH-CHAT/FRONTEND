@@ -1,6 +1,5 @@
 import ChatBox from '../../components/ChattingPage/ChatBox';
 import { formatDate, getDayOfWeek } from '../../utils/getDate';
-import BasicProfile from '@/assets/basic-profile.png';
 import type { ChatMessage } from '../../types/chat';
 import React, { useMemo } from 'react';
 
@@ -60,7 +59,6 @@ const ChatMessages = ({ userId, messages, senderName, friendImage }: ChatMessage
             senderName={senderName}
             text={msg.content}
             time={msg.time}
-            profile={BasicProfile}
             showProfile={msg.showProfile}
             showTime={msg.showTime}
             friendImage={friendImage}

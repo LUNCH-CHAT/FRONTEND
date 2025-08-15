@@ -5,7 +5,6 @@ interface ChatBoxProps {
   userId: number;
   senderId: number;
   senderName: string;
-  profile?: string;
   text: string;
   time: string;
   showProfile?: boolean;
@@ -17,7 +16,6 @@ const ChatBox = ({
   userId,
   senderId,
   senderName,
-  profile,
   text,
   time,
   showProfile = false,
