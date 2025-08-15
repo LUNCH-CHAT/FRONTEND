@@ -32,9 +32,9 @@ export default function OnboardingPage() {
         <div className={`mt-[42px] ${step >= 1 ? ' animate-fade-up' : 'opacity-0'}`}>
         
           <p className="text-black text-[16px] font-[pretendard] font-medium mb-[17px] leading-[22px] animate-fade-up">
-            교내 커피챗 플랫폼, 런치챗
+            교내 커피챗 플랫폼,
             <br />
-            Lunch with Insight!
+            런치챗 Lunch with Insight!
           </p>
           <p className="text-[#7D7D7D] text-[13px] font-[pretendard] font-light tracking-[-0.3px] leading-[19px] animate-fade-up">
             혼자 먹는 점심, 텅 빈 공강 시간...

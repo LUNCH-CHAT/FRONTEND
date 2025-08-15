@@ -13,7 +13,6 @@ import Step5 from '@/assets/icons/step5.svg';
 import { getColleges, getDepartments, patchSignUp } from '../../api/login';
 import { useNavigate } from 'react-router-dom';
 import type { TimeTableDto } from '../../types/profile';
-import BackHeader from '../../components/Headers/BackHeader';
 
 export default function ProfileStepPage() {
   const [step, setStep] = useState(0);
@@ -86,67 +85,14 @@ export default function ProfileStepPage() {
   //두 자리 번호인지 확인 
 
   const handleClick = () =>{
-
-    if (step===0) {
-      if (name.trim() === ''){
-        setModalText('이름을 입력해주세요.');
-        setModalOpen(true);
-        return;
-      }
-      else {
-        setStep(step + 1);
-        return;
-      }
-    }
-
     if (step===1) {
       if (!isTrueStudentNo(studentNo)){
         setModalText('학번은 입학년도 끝 두 자리만 작성해주세요.');
         setModalOpen(true);
-        return;
       }
-      else {
-        setStep(step + 1);
-        return;
-      }
+      else setStep(step + 1);
     }
-
-    if (step===2) {
-      if (departmentId == 0){
-        setModalText('학과를 선택해주세요');
-        setModalOpen(true);
-        return;
-      }
-      else {
-        setStep(step + 1);
-        return;
-      }
-    }
-
-    if (step===3) {
-      if (selectedTags.length === 0){
-        setModalText('태그를 하나 이상 선택해주세요');
-        setModalOpen(true);
-        return;
-      }
-      else {
-        setStep(step + 1);
-        return;
-      }
-    }
-
-    if (step===4) {
-      if (timeTables.length === 0){
-        setModalText('시간표를 선택해주세요');
-        setModalOpen(true);
-        return;
-      }
-      else {
-        setStep(step + 1);
-        return;
-      }
-    }
-    if (step===5) return;
+    else setStep(step + 1);
   }
 
   {/*회원가입 정보 패치*/}
@@ -161,15 +107,11 @@ export default function ProfileStepPage() {
         }
       })();
     }
-    if (step === -1) {
-      navigate(`/onboarding`);
-    }
   }, [step,navigate,body]);
 
   return (
     <div>
-      <BackHeader setStep={setStep} />
-      <div className="flex flex-col mt-16 pb-20 pt-5">
+      <div className="flex flex-col pb-20 pt-5">
         <div className="flex justify-between items-start px-[22px]">
           <div>
             <p className="text-black text-[20px] font-[pretendard] font-semibold mb-[10px]">
@@ -180,7 +122,7 @@ export default function ProfileStepPage() {
               <br />* 추후 프로필 수정에서 수정 가능합니다.
             </p>
           </div>
-          {StepImages && <img src={StepImages} alt={`스탭 ${step + 1} 이미지`} />}
+          <img src={StepImages} alt={`스탭 ${step + 1} 이미지`} />
         </div>
 
         {step === 0 && (
@@ -243,7 +185,7 @@ export default function ProfileStepPage() {
                     </div>
                   </ListboxButton>
 
-                  <ListboxOptions className="absolute right-0 w-[127px] px-[11px] py-[10px] border border-[#D4D4D4] mt-1 flex flex-col gap-3 max-h-[180px] overflow-y-auto">
+                  <ListboxOptions className="absolute right-0 w-[127px] px-[11px] py-[10px] border border-[#D4D4D4] mt-1 flex flex-col gap-3">
                     {college?.map((college) => (
                       <ListboxOption
                         key={college.id}
@@ -269,7 +211,7 @@ export default function ProfileStepPage() {
                     </div>
                   </ListboxButton>
 
-                  <ListboxOptions className="absolute right-0 w-[127px] px-[11px] py-[10px] border border-[#D4D4D4] mt-1 flex flex-col gap-3 max-h-[180px] overflow-y-auto">
+                  <ListboxOptions className="absolute right-0 w-[127px] px-[11px] py-[10px] border border-[#D4D4D4] mt-1 flex flex-col gap-3">
                     {department?.map((value) => (
                       <ListboxOption
                         key={value.id}
