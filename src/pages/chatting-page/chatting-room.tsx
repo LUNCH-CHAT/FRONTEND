@@ -158,7 +158,12 @@ export default function ChattingRoom() {
           }}
         >
           <div ref={topRef} className="h-1"></div>
-          <ChatMessages messages={combinedMessages} senderName={name} userId={userId} />
+          <ChatMessages
+            messages={combinedMessages}
+            senderName={name}
+            userId={userId}
+            friendImage={friendImage}
+          />
         </div>
       )}
 

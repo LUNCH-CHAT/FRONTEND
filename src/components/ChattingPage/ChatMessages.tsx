@@ -8,9 +8,10 @@ interface ChatMessagesProps {
   userId: number;
   messages: ChatMessage[];
   senderName: string;
+  friendImage: string;
 }
 
-const ChatMessages = ({ userId, messages, senderName }: ChatMessagesProps) => {
+const ChatMessages = ({ userId, messages, senderName, friendImage }: ChatMessagesProps) => {
   // 메시지 타임라인, 시간, 렌더링 여부 파악
   const formattedMessages = useMemo(() => {
     let prevDate = '';
@@ -62,6 +63,7 @@ const ChatMessages = ({ userId, messages, senderName }: ChatMessagesProps) => {
             profile={BasicProfile}
             showProfile={msg.showProfile}
             showTime={msg.showTime}
+            friendImage={friendImage}
           />
         </div>
       ))}
