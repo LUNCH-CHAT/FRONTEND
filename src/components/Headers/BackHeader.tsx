@@ -1,16 +1,24 @@
 import { useNavigate } from 'react-router-dom';
 import Back from '/src/assets/back.svg';
+import type { Dispatch, SetStateAction } from 'react';
 
 interface BackHeaderProps {
   title?: string;
   myPage?: boolean;
+  setStep?: Dispatch<SetStateAction<number>>;
 }
 
-const BackHeader = ({ title, myPage = false }: BackHeaderProps) => {
+const BackHeader = ({ title, myPage = false, setStep}: BackHeaderProps) => {
   const navigate = useNavigate();
 
   const handleClickBack = () => {
-    myPage ? navigate('/my') : navigate(-1);
+    if (myPage){
+      navigate('/my');
+    } else if (setStep){
+      setStep(step => step-1);
+    } else{
+      navigate(-1);
+    }
   };
 
   return (
