@@ -14,7 +14,7 @@ const ChatHeader = ({ friendId, name, friendInfo, friendImage }: ChatHeaderProps
   const navigate = useNavigate();
 
   const handleBack = () => {
-    navigate('/chatting');
+    navigate(-1);
   };
 
   const handleClickProfile = (friendId: number | undefined) => {

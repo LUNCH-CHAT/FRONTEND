@@ -51,6 +51,7 @@
 
 :root {
   --toastify-color-progress-light: #f56156;
+  --app-height: 100%;
 }
 
 /* iOS scroll */

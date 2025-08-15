@@ -5,22 +5,22 @@ interface ChatBoxProps {
   userId: number;
   senderId: number;
   senderName: string;
-  profile?: string;
   text: string;
   time: string;
   showProfile?: boolean;
   showTime?: boolean;
+  friendImage: string;
 }
 
 const ChatBox = ({
   userId,
   senderId,
   senderName,
-  profile,
   text,
   time,
   showProfile = false,
   showTime = true,
+  friendImage,
 }: ChatBoxProps) => {
   const isMine = senderId === userId;
 
@@ -33,7 +33,7 @@ const ChatBox = ({
       {/* 상대방 프로필 */}
       {!isMine && showProfile ? (
         <img
-          src={profile || BasicProfile}
+          src={friendImage || BasicProfile}
           alt="프로필"
           className="w-[30px] h-[30px] rounded-full object-cover"
         />
