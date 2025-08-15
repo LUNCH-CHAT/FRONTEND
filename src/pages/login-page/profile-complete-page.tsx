@@ -58,9 +58,9 @@ export default function ProfileCompletePage() {
 
   const handleUniName = (uniName: string) => {
     if (uniName === '가톨릭대') setUniName('가톨릭대학교');
-    else if (uniName === '항공대') setUniName('항공대학교');
+    else if (uniName === '한국항공대') setUniName('한국항공대학교');
     else if (uniName === '이화여대') setUniName('이화여자대학교');
-    else if (uniName === 'UMC대') setUniName('UMC대학교');
+    else if (uniName === 'UMC대' || uniName === 'UMC') setUniName('UMC대학교');
   };
 
   if (isLoading) {

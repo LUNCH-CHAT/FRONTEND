@@ -19,19 +19,22 @@ import ProfileDetailPage from './pages/Profile-Detail/profile-detail-page';
 import AlarmPage from './pages/alarm-page';
 import ExplorePage from './pages/Explore-Page/explore-page';
 import MyPage from './pages/my-page/my-page';
-import EditTagPage from './pages/my-page/edit-tag-page';
-import EditKeywordPage from './pages/my-page/edit-keyword-page';
-import EditTimePage from './pages/my-page/edit-time-page';
-import MonthlyMentorPage from './pages/Home-Page/monthly-mentor-page';
 // import MyMatchesPage from './pages/my-page/my-matches-page';
 
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { onMessage } from 'firebase/messaging';
 import { messaging } from './firebase/firebase';
 import GoogleLoginPage from './pages/login-page/redirect-page';
 import useFCM from './hooks/alarm/useFCM';
 import { toast, ToastContainer } from 'react-toastify';
 import ToastNoti from './components/ToastNoti';
+import { LoadingSpinner } from './components/LoadingSpinner';
+
+const MonthlyMentorPage = lazy(() => import('./pages/Home-Page/monthly-mentor-page'));
+
+const EditTagPage = lazy(() => import('./pages/my-page/edit-tag-page'));
+const EditKeywordPage = lazy(() => import('./pages/my-page/edit-keyword-page'));
+const EditTimePage = lazy(() => import('./pages/my-page/edit-time-page'));
 
 const publicRoutes: RouteObject[] = [
   {
@@ -104,8 +107,10 @@ function App() {
     <>
       <ToastContainer />
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-        {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+        <Suspense fallback={<LoadingSpinner />}>
+          <RouterProvider router={router} />
+          {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+        </Suspense>
       </QueryClientProvider>
     </>
   );
