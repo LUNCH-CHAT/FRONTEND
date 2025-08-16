@@ -158,9 +158,10 @@ export default function ChattingRoom() {
       ) : (
         <div
           ref={scrollRef}
-          className="overflow-y-auto pt-5 pb-5 px-4"
+          className="overflow-y-auto pt-5 pb-5 px-4 transition-all duration-200"
           style={{
             height: `calc(var(--app-height) - 65px - 70px)`, // 헤더와 인풋 높이를 제외한 높이 설정
+            paddingTop: '65px', // 헤더 높이만큼 보정
           }}
         >
           <div ref={topRef} className="h-1"></div>
