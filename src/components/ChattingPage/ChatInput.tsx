@@ -6,14 +6,12 @@ interface ChatInputProps {
   value: string;
   onChange: Dispatch<SetStateAction<string>>;
   onSubmit: () => void;
-  onFocus: () => void;
-  onBlur: () => void;
 }
 
-const ChatInput = ({ value, onChange, onSubmit, onFocus, onBlur }: ChatInputProps) => {
+const ChatInput = ({ value, onChange, onSubmit }: ChatInputProps) => {
   return (
     <form
-      className="max-w-[480px] w-full h-[66px] flex gap-2 px-5 py-3 fixed bottom-0 bg-[#ffffff]"
+      className="max-w-[480px] w-full h-[66px] flex gap-2 px-5 py-3 bg-[#ffffff]"
       onSubmit={e => {
         e.preventDefault();
         onSubmit();
@@ -29,8 +27,6 @@ const ChatInput = ({ value, onChange, onSubmit, onFocus, onBlur }: ChatInputProp
         className="w-full font-[pretendard] h-[36px] bg-[#F1F1F1] rounded-[20px] px-3 py-2.5"
         value={value}
         onChange={e => onChange(e.target.value)}
-        onFocus={onFocus}
-        onBlur={onBlur}
       />
       <button
         type="submit"
