@@ -167,7 +167,10 @@ export default function ChattingRoom() {
         </div>
       )}
 
-      <div className="fixed left-0 right-0" style={{ bottom: `${keyboardOffset}px` }}>
+      <div
+        className="fixed left-0 right-0 max-w-[480px] w-full mx-auto"
+        style={{ bottom: `${keyboardOffset}px` }}
+      >
         <ChatInput value={message} onChange={setMessage} onSubmit={handleSendMessage} />
       </div>
     </div>
