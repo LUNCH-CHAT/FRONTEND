@@ -52,7 +52,10 @@ export default function ExplorePage() {
   const [searchParams] = useSearchParams();
   const { setHideNav } = useNav();
 
-  const [selectedCategory, setSelectedCategory] = useState('전체');
+  //초기값을 URL 쿼리에서 즉시 가져오도록 수정
+  const initialCategory = searchParams.get('category') ?? '전체';
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+
   const [showDeptModal, setShowDeptModal] = useState(false);
   const [showYearModal, setShowYearModal] = useState(false);
 
@@ -72,11 +75,13 @@ export default function ExplorePage() {
 
   const { ref, inView } = useInView({ threshold: 0 });
 
-  // 쿼리 파라미터로 선택 카테고리 초기화
+  // 쿼리 변화 시에만 상태 동기화 초기 렌더 레이스 방지함
   useEffect(() => {
-    const param = searchParams.get('category');
-    setSelectedCategory(param ?? '전체');
-  }, [searchParams]);
+    const param = searchParams.get('category') ?? '전체';
+    if (param !== selectedCategory) {
+      setSelectedCategory(param);
+    }
+  }, [searchParams, selectedCategory]);
 
   // 단대 목록
   useEffect(() => {
@@ -158,7 +163,7 @@ export default function ExplorePage() {
     setProfiles([]);
     loadPage(0, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [buildParams]); 
+  }, [buildParams]);
 
   // 감지되면 다음 페이지 로드
   useEffect(() => {
@@ -192,6 +197,7 @@ export default function ExplorePage() {
     <div className="w-full min-h-screen bg-white font-[pretendard] flex flex-col items-center pb-28">
       <div className="w-full max-w-[700px]">
         <CategorySlider
+          key={selectedCategory} 
           categories={categories}
           selectedCategory={selectedCategory}
           onSelect={setSelectedCategory}
