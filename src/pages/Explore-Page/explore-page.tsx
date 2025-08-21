@@ -49,7 +49,6 @@ const reverseInterestMap = Object.entries(interestMap).reduce((acc, [label, key]
 const PAGE_SIZE = 10;
 
 export default function ExplorePage() {
-
   const [searchParams, setSearchParams] = useSearchParams();
   const { setHideNav } = useNav();
 
@@ -73,7 +72,7 @@ export default function ExplorePage() {
   const [colleges, setColleges] = useState<{ id: number; name: string }[]>([]);
   const [profiles, setProfiles] = useState<Profile[]>([]);
 
-  // 무한스크롤용 상태
+  // 무한스크롤 상태
   const [page, setPage] = useState(0);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [isFetching, setIsFetching] = useState(false);
@@ -81,7 +80,7 @@ export default function ExplorePage() {
 
   const { ref, inView } = useInView({ threshold: 0 });
 
-
+  // 쿼리 변경 시 상태 동기화 (interest 우선)
   useEffect(() => {
     const interestQ = searchParams.get('interest');
     const categoryQ = searchParams.get('category');
@@ -105,12 +104,13 @@ export default function ExplorePage() {
     setHideNav(showDeptModal || showYearModal);
   }, [showDeptModal, showYearModal, setHideNav]);
 
+
   const applyCategory = useCallback(
     (label: string) => {
       setSelectedCategory(label);
 
       const next = new URLSearchParams(searchParams);
-      next.delete('interest'); 
+      next.delete('interest');
       if (label && label !== '전체') next.set('category', label);
       else next.delete('category');
 
@@ -119,6 +119,7 @@ export default function ExplorePage() {
     [searchParams, setSearchParams]
   );
 
+  // 공통 파라미터 (interest 쿼리가 있으면 최우선)
   const buildParams = useCallback(
     (p: number): MemberFilterParams => {
       const interestKey = searchParams.get('interest') || interestMap[selectedCategory];
@@ -138,7 +139,7 @@ export default function ExplorePage() {
     [searchParams, selectedCategory, sortOrder, selectedCollegeId, selectedMajor, selectedYear]
   );
 
-  // 페이지 로드 함수
+  // 페이지 로드
   const loadPage = useCallback(
     async (p: number, append: boolean) => {
       setIsFetching(true);
@@ -220,10 +221,10 @@ export default function ExplorePage() {
     <div className="w-full min-h-screen bg-white font-[pretendard] flex flex-col items-center pb-28">
       <div className="w-full max-w-[700px]">
         <CategorySlider
-          key={selectedCategory} 
+          key={selectedCategory}
           categories={categories}
           selectedCategory={selectedCategory}
-          onSelect={applyCategory} 
+          onSelect={applyCategory}
         />
         <div className="flex gap-2 flex-wrap justify-start px-4 mt-4 mb-4">
           <SortDropdown
@@ -253,14 +254,12 @@ export default function ExplorePage() {
               ))}
             </div>
 
-            {/* 하단 로딩 스피너 (다음 페이지 로딩 중) */}
             {isFetching && hasNextPage && (
               <div className="py-6 flex justify-center">
                 <LoadingSpinner />
               </div>
             )}
 
-            {/* 무한스크롤 센티넬 */}
             <div ref={ref} />
           </>
         ) : (
