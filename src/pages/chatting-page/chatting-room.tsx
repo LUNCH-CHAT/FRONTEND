@@ -155,7 +155,6 @@ export default function ChattingRoom() {
           style={{
             height: `${viewportHeight - 65 - 66}px`, // 헤더와 인풋 높이를 제외한 높이 설정
             paddingTop: '65px', // 헤더 높이만큼 보정
-            paddingBottom: '67px',
           }}
         >
           <div ref={topRef} className="h-1"></div>
