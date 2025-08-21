@@ -8,6 +8,8 @@ import { useInView } from 'react-intersection-observer';
 import { useWebSocket } from '../../hooks/chat/useWebSocket';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 
+let initialScrollY = 0;
+
 export default function ChattingRoom() {
   // 상대 정보 추출
   const location = useLocation();
@@ -25,6 +27,8 @@ export default function ChattingRoom() {
   // 채팅 입력창
   const [message, setMessage] = useState('');
 
+  const [isFocus, setIsFocus] = useState(false);
+
   // 스크롤 처리 참조
   const scrollRef = useRef<HTMLDivElement | null>(null);
   // 이전 scrollHeight 저장용 참조
@@ -34,34 +38,31 @@ export default function ChattingRoom() {
     threshold: 0,
   });
 
-  // 키보드 대응을 위한 전체 화면 높이 계산
+  // 모바일 키보드 대응
   useEffect(() => {
-    const setAppHeight = () => {
-      const height = window.visualViewport?.height || window.innerHeight;
-      document.documentElement.style.setProperty('--app-height', `${height}px`);
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (isFocus) {
+        if (!initialScrollY) {
+          initialScrollY = currentScrollY;
+        }
+        if (currentScrollY > initialScrollY) {
+          window.scrollTo(0, initialScrollY);
+        }
+      } else {
+        initialScrollY = 0;
+      }
     };
 
-    setAppHeight();
-
-    // visualViewport 이벤트로 높이 변화 감지
-    window.visualViewport?.addEventListener('resize', () => {
-      const height = window.visualViewport?.height || window.innerHeight;
-      document.documentElement.style.setProperty('--app-height', `${height}px`);
-
-      // 키보드 닫혔을 때 스크롤 하단 복원
-      if (
-        window.visualViewport &&
-        window.visualViewport.height === window.innerHeight &&
-        scrollRef.current
-      ) {
-        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-      }
-    });
+    window.visualViewport?.addEventListener('resize', handleScroll);
+    window.addEventListener('scroll', handleScroll);
 
     return () => {
-      window.visualViewport?.removeEventListener('resize', setAppHeight);
+      window.visualViewport?.removeEventListener('resize', handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [isFocus]);
 
   // html, body 영역의 스크롤 없애기
   useEffect(() => {
@@ -158,10 +159,11 @@ export default function ChattingRoom() {
       ) : (
         <div
           ref={scrollRef}
-          className="overflow-y-auto pt-5 pb-5 px-4 transition-all duration-200"
+          className="overflow-y-auto pt-3 pb-3 px-4 transition-all duration-200"
           style={{
-            height: `calc(var(--app-height) - 65px - 70px)`, // 헤더와 인풋 높이를 제외한 높이 설정
+            height: `calc(var(--app-height) - 65px - 67px)`, // 헤더와 인풋 높이를 제외한 높이 설정
             paddingTop: '65px', // 헤더 높이만큼 보정
+            paddingBottom: '67px',
           }}
         >
           <div ref={topRef} className="h-1"></div>
@@ -174,7 +176,13 @@ export default function ChattingRoom() {
         </div>
       )}
 
-      <ChatInput value={message} onChange={setMessage} onSubmit={handleSendMessage} />
+      <ChatInput
+        value={message}
+        onChange={setMessage}
+        onSubmit={handleSendMessage}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+      />
     </div>
   );
 }
