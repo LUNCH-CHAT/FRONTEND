@@ -49,11 +49,17 @@ const reverseInterestMap = Object.entries(interestMap).reduce((acc, [label, key]
 const PAGE_SIZE = 10;
 
 export default function ExplorePage() {
-  const [searchParams] = useSearchParams();
+
+  const [searchParams, setSearchParams] = useSearchParams();
   const { setHideNav } = useNav();
 
-  //초기값을 URL 쿼리에서 즉시 가져오도록 수정
-  const initialCategory = searchParams.get('category') ?? '전체';
+  const interestFromQuery = searchParams.get('interest');
+  const categoryFromQuery = searchParams.get('category');
+  const initialCategory =
+    (interestFromQuery && reverseInterestMap[interestFromQuery]) ||
+    categoryFromQuery ||
+    '전체';
+
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
 
   const [showDeptModal, setShowDeptModal] = useState(false);
@@ -75,12 +81,15 @@ export default function ExplorePage() {
 
   const { ref, inView } = useInView({ threshold: 0 });
 
-  // 쿼리 변화 시에만 상태 동기화 초기 렌더 레이스 방지함
+
   useEffect(() => {
-    const param = searchParams.get('category') ?? '전체';
-    if (param !== selectedCategory) {
-      setSelectedCategory(param);
-    }
+    const interestQ = searchParams.get('interest');
+    const categoryQ = searchParams.get('category');
+    const next =
+      (interestQ && reverseInterestMap[interestQ]) ||
+      categoryQ ||
+      '전체';
+    if (next !== selectedCategory) setSelectedCategory(next);
   }, [searchParams, selectedCategory]);
 
   // 단대 목록
@@ -96,14 +105,28 @@ export default function ExplorePage() {
     setHideNav(showDeptModal || showYearModal);
   }, [showDeptModal, showYearModal, setHideNav]);
 
-  // 공통 파라미터 빌더
+  const applyCategory = useCallback(
+    (label: string) => {
+      setSelectedCategory(label);
+
+      const next = new URLSearchParams(searchParams);
+      next.delete('interest'); 
+      if (label && label !== '전체') next.set('category', label);
+      else next.delete('category');
+
+      setSearchParams(next, { replace: true });
+    },
+    [searchParams, setSearchParams]
+  );
+
   const buildParams = useCallback(
     (p: number): MemberFilterParams => {
+      const interestKey = searchParams.get('interest') || interestMap[selectedCategory];
       const raw = {
         size: PAGE_SIZE,
         page: p,
         sort: sortOrder === '추천순' ? 'recommend' : 'recent',
-        interest: interestMap[selectedCategory],
+        interest: interestKey,
         collegeId: selectedCollegeId === '' ? undefined : Number(selectedCollegeId),
         department: selectedMajor,
         studentNo: selectedYear,
@@ -112,7 +135,7 @@ export default function ExplorePage() {
         Object.entries(raw).filter(([, v]) => v !== '' && v != null)
       ) as unknown as MemberFilterParams;
     },
-    [selectedCategory, sortOrder, selectedCollegeId, selectedMajor, selectedYear]
+    [searchParams, selectedCategory, sortOrder, selectedCollegeId, selectedMajor, selectedYear]
   );
 
   // 페이지 로드 함수
@@ -200,7 +223,7 @@ export default function ExplorePage() {
           key={selectedCategory} 
           categories={categories}
           selectedCategory={selectedCategory}
-          onSelect={setSelectedCategory}
+          onSelect={applyCategory} 
         />
         <div className="flex gap-2 flex-wrap justify-start px-4 mt-4 mb-4">
           <SortDropdown
