@@ -2,6 +2,7 @@ import { Client, type IFrame, type IMessage } from '@stomp/stompjs';
 import { useEffect, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import type { ChatMessage } from '../../types/chat';
+import { getExp, patchSignUp } from '../../api/refresh';
 
 export const webSocketStatus = {
   CONNECTING: 'CONNECTING',
@@ -30,12 +31,49 @@ export const useWebSocket = (roomId: number) => {
 
     setStatus('CONNECTING');
 
+    let token = localStorage.getItem('accessToken');
+
+    const refreshAccessToken = async () => {
+      try {
+        const { result } = await patchSignUp(); // 토큰 갱신 API 호출
+        if (!result?.accessToken) {
+          throw new Error('No access token returned');
+        }
+        return result.accessToken;
+      } catch (err) {
+        console.error('Token refresh failed:', err);
+        return null;
+      }
+    };
+
+    if (token) {
+      const exp = getExp(token);
+      // 토큰이 만료되었거나 1분 이내 만료 시 재발급
+      if (!exp || exp * 1000 - 60000 < Date.now()) {
+        console.log('Access token is expired or expiring soon, refreshing for WebSocket...');
+        const newAccessToken = refreshAccessToken();
+        if (newAccessToken) {
+          localStorage.setItem('accessToken', String(newAccessToken)); // 갱신된 토큰 저장
+          token = localStorage.getItem('accessToken');
+        } else {
+          console.error('Failed to refresh token for WebSocket. Connection aborted.');
+          setStatus('CLOSED');
+          return; // 토큰 갱신 실패 시 연결 중단
+        }
+      }
+    }
+
+    if (!token) {
+      console.error('No valid access token for WebSocket connection.');
+      return;
+    }
+
     // stomp 클라이언트 객체 생성
     const client = new Client({
       webSocketFactory: () => new WebSocket(import.meta.env.VITE_WS_URL),
       // 헤더에 토큰 전달
       connectHeaders: {
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       reconnectDelay: 5000, // 자동 재연결 시도 간격
