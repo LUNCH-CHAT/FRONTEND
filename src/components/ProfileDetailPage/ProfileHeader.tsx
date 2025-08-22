@@ -87,7 +87,7 @@ const ProfileHeader = ({
           } ${department ? department : ''}`}</p>
           <p className="text-[13px] text-gray-500 font-regular leading-4 mt-[7px]">
             {userKeywords
-              ?.filter(k => k.title.trim() !== '')
+              ?.filter(k => k.title || k.title?.trim() !== '')
               .map(k => k.title)
               .join(' | ')}
           </p>
