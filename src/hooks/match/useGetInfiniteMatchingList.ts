@@ -12,7 +12,7 @@ function useGetInfiniteMatchingList(status: 'ACCEPTED' | 'REQUESTED' | 'RECEIVED
       }),
     initialPageParam: 0,
     getNextPageParam: lastPage => {
-      return lastPage.result.meta.hasNext ? lastPage.result.meta.currentPage : undefined;
+      return lastPage.result.meta.hasNext ? lastPage.result.meta.currentPage + 1 : undefined;
     },
   });
 }
