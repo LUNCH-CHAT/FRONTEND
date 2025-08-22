@@ -9,6 +9,7 @@ import type { MyInfo } from '../../types/user';
 import { INTEREST_TYPE_LABELS } from '../../components/ProfileCard';
 import { postLogout } from '../../api/login';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
+import sampleProfile from '@/assets/basic-profile.png';
 
 export default function MyPage() {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ export default function MyPage() {
       <div className="flex items-center gap-[16px]">
         <div className="w-[100px] h-[100px] aspect-square rounded-full overflow-hidden flex-none shrink-0">
           <img
-            src={myInfo?.profileImageUrl}
+            src={myInfo?.profileImageUrl ?? sampleProfile}
             alt="마이 프로필"
             className="w-full h-full rounded-full object-cover"
           />

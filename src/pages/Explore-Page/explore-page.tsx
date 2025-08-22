@@ -49,10 +49,18 @@ const reverseInterestMap = Object.entries(interestMap).reduce((acc, [label, key]
 const PAGE_SIZE = 10;
 
 export default function ExplorePage() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { setHideNav } = useNav();
 
-  const [selectedCategory, setSelectedCategory] = useState('전체');
+  const interestFromQuery = searchParams.get('interest');
+  const categoryFromQuery = searchParams.get('category');
+  const initialCategory =
+    (interestFromQuery && reverseInterestMap[interestFromQuery]) ||
+    categoryFromQuery ||
+    '전체';
+
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+
   const [showDeptModal, setShowDeptModal] = useState(false);
   const [showYearModal, setShowYearModal] = useState(false);
 
@@ -64,7 +72,7 @@ export default function ExplorePage() {
   const [colleges, setColleges] = useState<{ id: number; name: string }[]>([]);
   const [profiles, setProfiles] = useState<Profile[]>([]);
 
-  // 무한스크롤용 상태
+  // 무한스크롤 상태
   const [page, setPage] = useState(0);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [isFetching, setIsFetching] = useState(false);
@@ -72,11 +80,16 @@ export default function ExplorePage() {
 
   const { ref, inView } = useInView({ threshold: 0 });
 
-  // 쿼리 파라미터로 선택 카테고리 초기화
+  // 쿼리 변경 시 상태 동기화 (interest 우선)
   useEffect(() => {
-    const param = searchParams.get('category');
-    setSelectedCategory(param ?? '전체');
-  }, [searchParams]);
+    const interestQ = searchParams.get('interest');
+    const categoryQ = searchParams.get('category');
+    const next =
+      (interestQ && reverseInterestMap[interestQ]) ||
+      categoryQ ||
+      '전체';
+    if (next !== selectedCategory) setSelectedCategory(next);
+  }, [searchParams, selectedCategory]);
 
   // 단대 목록
   useEffect(() => {
@@ -91,14 +104,30 @@ export default function ExplorePage() {
     setHideNav(showDeptModal || showYearModal);
   }, [showDeptModal, showYearModal, setHideNav]);
 
-  // 공통 파라미터 빌더
+
+  const applyCategory = useCallback(
+    (label: string) => {
+      setSelectedCategory(label);
+
+      const next = new URLSearchParams(searchParams);
+      next.delete('interest');
+      if (label && label !== '전체') next.set('category', label);
+      else next.delete('category');
+
+      setSearchParams(next, { replace: true });
+    },
+    [searchParams, setSearchParams]
+  );
+
+  // 공통 파라미터 (interest 쿼리가 있으면 최우선)
   const buildParams = useCallback(
     (p: number): MemberFilterParams => {
+      const interestKey = searchParams.get('interest') || interestMap[selectedCategory];
       const raw = {
         size: PAGE_SIZE,
         page: p,
         sort: sortOrder === '추천순' ? 'recommend' : 'recent',
-        interest: interestMap[selectedCategory],
+        interest: interestKey,
         collegeId: selectedCollegeId === '' ? undefined : Number(selectedCollegeId),
         department: selectedMajor,
         studentNo: selectedYear,
@@ -107,10 +136,10 @@ export default function ExplorePage() {
         Object.entries(raw).filter(([, v]) => v !== '' && v != null)
       ) as unknown as MemberFilterParams;
     },
-    [selectedCategory, sortOrder, selectedCollegeId, selectedMajor, selectedYear]
+    [searchParams, selectedCategory, sortOrder, selectedCollegeId, selectedMajor, selectedYear]
   );
 
-  // 페이지 로드 함수
+  // 페이지 로드
   const loadPage = useCallback(
     async (p: number, append: boolean) => {
       setIsFetching(true);
@@ -158,7 +187,7 @@ export default function ExplorePage() {
     setProfiles([]);
     loadPage(0, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [buildParams]); 
+  }, [buildParams]);
 
   // 감지되면 다음 페이지 로드
   useEffect(() => {
@@ -192,9 +221,10 @@ export default function ExplorePage() {
     <div className="w-full min-h-screen bg-white font-[pretendard] flex flex-col items-center pb-28">
       <div className="w-full max-w-[700px]">
         <CategorySlider
+          key={selectedCategory}
           categories={categories}
           selectedCategory={selectedCategory}
-          onSelect={setSelectedCategory}
+          onSelect={applyCategory}
         />
         <div className="flex gap-2 flex-wrap justify-start px-4 mt-4 mb-4">
           <SortDropdown
@@ -224,14 +254,12 @@ export default function ExplorePage() {
               ))}
             </div>
 
-            {/* 하단 로딩 스피너 (다음 페이지 로딩 중) */}
             {isFetching && hasNextPage && (
               <div className="py-6 flex justify-center">
                 <LoadingSpinner />
               </div>
             )}
 
-            {/* 무한스크롤 센티넬 */}
             <div ref={ref} />
           </>
         ) : (

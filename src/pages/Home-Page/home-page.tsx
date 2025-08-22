@@ -22,7 +22,7 @@ import HobbyIcon from '@/assets/icons/extreaactivities.svg?react';
 import SchoolIcon from '@/assets/icons/campus.svg?react';
 import LunchatIcon from '@/assets/icons/lunchat.svg?react';
 import QuestionIcon from '@/assets/icons/question.svg?react';
-import { Autoplay } from 'swiper/modules'; 
+import { Autoplay } from 'swiper/modules';
 import homeBg1 from '@/assets/images/home-bg1.png';
 import homeBg2 from '@/assets/images/home-bg2.png';
 import homeBg3 from '@/assets/images/home-bg3.png';
@@ -49,7 +49,7 @@ export default function HomePage() {
   const { conf, key } = useMentorConfig() as {
     conf: { mentorName: string; mentorSub: string; mentorTitle: string };
     key: SchoolKey;
-  }; 
+  };
 
   const displayName: Record<SchoolKey, string> = {
     한국항공대: '한국항공대학교',
@@ -58,8 +58,22 @@ export default function HomePage() {
     UMC: 'UMC',
   };
 
+  const interestKeyMap: Record<string, string> = {
+    전체: '',
+    교환학생: 'EXCHANGE_STUDENT',
+    '취업/진로': 'EMPLOYMENT_CAREER',
+    고시준비: 'EXAM_PREPARATION',
+    창업: 'STARTUP',
+    학점관리: 'GPA_MANAGEMENT',
+    '외국어 공부': 'FOREIGN_LANGUAGE_STUDY',
+    '취미/여가': 'HOBBY_LEISURE',
+    학교생활: 'SCHOOL_LIFE',
+  };
+
   const handleCategoryClick = (label: string) => {
-    navigate(`/explore?category=${encodeURIComponent(label)}`);
+    const interest = interestKeyMap[label] ?? '';
+    const search = interest ? `?interest=${encodeURIComponent(interest)}` : '';
+    navigate(`/explore${search}`);
   };
 
   // “나와 ‘시간표 · 관심사’가 겹쳐요!” API 호출

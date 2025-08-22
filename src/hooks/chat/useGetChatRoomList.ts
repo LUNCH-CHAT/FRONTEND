@@ -11,7 +11,7 @@ function useGetChatRoomList() {
       }),
     initialPageParam: 0,
     getNextPageParam: lastpage => {
-      return lastpage.result.meta.hasNext ? lastpage.result.meta.currentPage : undefined;
+      return lastpage.result.meta.hasNext ? lastpage.result.meta.currentPage + 1 : undefined;
     },
   });
 }

@@ -29,10 +29,32 @@ export default function ChattingRoom() {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   // 이전 scrollHeight 저장용 참조
   const previousScrollHeight = useRef<number>(0);
+  const [viewportHeight, setViewportHeight] = useState<number>(window.innerHeight);
+  const [keyboardOffset, setKeyboardOffset] = useState(0);
 
   const { ref: topRef, inView } = useInView({
     threshold: 0,
   });
+
+  // 키보드 대응을 위한 전체 화면 높이 계산
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.visualViewport) {
+        const vh = window.visualViewport.height;
+        setViewportHeight(vh);
+
+        // 키보드 높이 계산
+        const offset = window.innerHeight - vh - window.visualViewport.offsetTop;
+        setKeyboardOffset(offset > 0 ? offset : 0);
+      }
+    };
+
+    handleResize();
+    window.visualViewport?.addEventListener('resize', handleResize);
+    return () => {
+      window.visualViewport?.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   // html, body 영역의 스크롤 없애기
   useEffect(() => {
@@ -111,7 +133,12 @@ export default function ChattingRoom() {
   }
 
   return (
-    <div className="flex flex-col ios-fill-available">
+    <div
+      className="flex flex-col ios-fill-available"
+      style={{
+        height: `${viewportHeight}px`,
+      }}
+    >
       <ChatHeader
         friendId={friendId}
         name={name}
@@ -122,13 +149,30 @@ export default function ChattingRoom() {
       {status !== 'OPEN' ? (
         <p className="flex justify-center pt-7">채팅방 연결중입니다...</p>
       ) : (
-        <div ref={scrollRef} className="overflow-y-auto pt-5 pb-5 px-4 h-[calc(100dvh-65px-70px)] ">
+        <div
+          ref={scrollRef}
+          className="overflow-y-auto px-4 transition-all duration-200"
+          style={{
+            height: `${viewportHeight - 65 - 66}px`, // 헤더와 인풋 높이를 제외한 높이 설정
+            paddingTop: '65px', // 헤더 높이만큼 보정
+          }}
+        >
           <div ref={topRef} className="h-1"></div>
-          <ChatMessages messages={combinedMessages} senderName={name} userId={userId} />
+          <ChatMessages
+            messages={combinedMessages}
+            senderName={name}
+            userId={userId}
+            friendImage={friendImage}
+          />
         </div>
       )}
 
-      <ChatInput value={message} onChange={setMessage} onSubmit={handleSendMessage} />
+      <div
+        className="fixed left-0 right-0 max-w-[480px] w-full mx-auto"
+        style={{ bottom: `${keyboardOffset}px` }}
+      >
+        <ChatInput value={message} onChange={setMessage} onSubmit={handleSendMessage} />
+      </div>
     </div>
   );
 }
