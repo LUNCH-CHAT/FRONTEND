@@ -1,6 +1,6 @@
 import React from 'react';
 import TimeTable from '../../components/TimeTable';
-import Pencil from '@/assets/icons/pencil.svg';
+import Pencil from '../../assets/icons/pencil.svg';
 import { useNavigate } from 'react-router-dom';
 import type { TimeTableDto } from '../../types/profile';
 

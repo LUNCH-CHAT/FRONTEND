@@ -1,7 +1,7 @@
-import profileBg from '@/assets/images/profile-bg.png';
-import sampleProfile from '@/assets/basic-profile.png';
+import profileBg from '../../assets/images/profile-bg.png';
+import sampleProfile from '../../assets/basic-profile.png';
 import { INTEREST_TYPE_LABELS } from '../../components/ProfileCard';
-import Pencil from '@/assets/icons/pencil.svg';
+import Pencil from '../../assets/icons/pencil.svg';
 import { useNavigate } from 'react-router-dom';
 import type { UserKeywordDto } from '../../types/profile';
 import React, { useRef } from 'react';
