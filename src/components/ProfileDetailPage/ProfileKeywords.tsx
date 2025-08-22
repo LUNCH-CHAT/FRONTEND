@@ -33,20 +33,20 @@ const ProfileKeywords = ({ my = false, userKeywords }: ProfileKeywordsProps) => 
           <KeywordCard
             key={userKeywords[0]?.id}
             question="지금 나를 표현한 키워드는?"
-            keyword={userKeywords[0]?.title}
-            text={userKeywords[0]?.description}
+            keyword={userKeywords[0]?.title ?? ''}
+            text={userKeywords[0]?.description ?? ''}
           />
           <KeywordCard
             key={userKeywords[1]?.id}
             question="요즘 나의 목표 키워드는?"
-            keyword={userKeywords[1]?.title}
-            text={userKeywords[1]?.description}
+            keyword={userKeywords[1]?.title ?? ''}
+            text={userKeywords[1]?.description ?? ''}
           />
           <KeywordCard
             key={userKeywords[2]?.id}
             question="요즘 나의 최대 관심사 키워드는?"
-            keyword={userKeywords[2]?.title}
-            text={userKeywords[2]?.description}
+            keyword={userKeywords[2]?.title ?? ''}
+            text={userKeywords[2]?.description ?? ''}
           />
         </>
       ) : (
